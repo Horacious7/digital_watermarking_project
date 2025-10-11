@@ -28,17 +28,18 @@ import numpy as np
 text = "GloryToLordJesusChrist"
 bits = text_to_bits(text)
 
-# Check number of available blocks
-img = cv2.imread("data/test.png", cv2.IMREAD_GRAYSCALE)
-h, w = img.shape
+# Load image in color
+img = cv2.imread("data/test.png", cv2.IMREAD_COLOR)
+blue = img[:, :, 0]
+h, w = blue.shape
 block_size = 8
 num_blocks = (h // block_size) * (w // block_size)
-print(f"Available blocks: {num_blocks}, Watermark bits: {len(bits)}")
+print(f"Available blocks (blue channel): {num_blocks}, Watermark bits: {len(bits)}")
 
-# Embed
+# Embed watermark in blue channel
 embed_watermark("data/test.png", bits, "data/watermarked/test_wm.png")
 
-# Extract
+# Extract watermark from blue channel
 extracted_bits = extract_watermark("data/watermarked/test_wm.png", len(bits))
 print("Embedded bits:", bits)
 print("Extracted bits:", extracted_bits)

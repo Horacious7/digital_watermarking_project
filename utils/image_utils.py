@@ -2,9 +2,9 @@
 import cv2
 import numpy as np
 
-def load_image(path: str, grayscale: bool = True) -> np.ndarray:
+def load_image(path: str, grayscale: bool = False) -> np.ndarray:
     """
-    Load image as NumPy array. Default = grayscale.
+    Load image as NumPy array. Default = color.
     """
     flag = cv2.IMREAD_GRAYSCALE if grayscale else cv2.IMREAD_COLOR
     image = cv2.imread(path, flag)

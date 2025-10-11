@@ -1,25 +1,21 @@
 # extract.py
 import numpy as np
-from scipy.fftpack import dct
+import pywt
 from utils.image_utils import load_image
 
 def extract_watermark(image_path: str, n_bits: int) -> str:
     """
-    Extract binary watermark from image using block-based DCT (8x8 blocks).
+    Extract binary watermark from the blue channel of a color image using 1-level DWT (robust quantization).
     """
-    img = load_image(image_path)
-    h, w = img.shape
-    block_size = 8
-    wm_idx = 0
+    img = load_image(image_path)  # shape: (h, w, 3) for color
+    if img.ndim == 3:
+        blue = img[:, :, 0].copy()  # select blue channel
+    else:
+        blue = img.copy()  # fallback for grayscale
+    coeffs2 = pywt.dwt2(blue, 'haar')
+    cA, (cH, cV, cD) = coeffs2
+    flat = cA.flatten()
     bits = []
-    for i in range(0, h, block_size):
-        for j in range(0, w, block_size):
-            block = img[i:i+block_size, j:j+block_size]
-            if block.shape != (block_size, block_size):
-                continue
-            dct_block = dct(dct(block.T, norm='ortho').T, norm='ortho')
-            if wm_idx < n_bits:
-                coeff = dct_block[4, 4]
-                bits.append('1' if coeff > 0 else '0')
-                wm_idx += 1
+    for i in range(n_bits):
+        bits.append('1' if flat[i] > 0 else '0')
     return ''.join(bits)
