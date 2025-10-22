@@ -1,5 +1,5 @@
 # main_window.py
-from PyQt5 import QtWidgets
+from gui.qt_compat import QtWidgets
 from gui.embed_tab import EmbedTab
 from gui.verify_tab import VerifyTab
 

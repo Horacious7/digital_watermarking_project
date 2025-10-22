@@ -1,0 +1,5 @@
+cryptography
+pywavelets
+numpy
+opencv-python
+PySide6
