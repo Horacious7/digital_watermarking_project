@@ -1,5 +1,5 @@
 # verify_tab.py
-from gui.qt_compat import QtWidgets, QtGui, QtCore
+from backend.gui.qt_compat import QtWidgets, QtGui, QtCore
 import os
 
 class VerifyTab(QtWidgets.QWidget):
@@ -95,9 +95,9 @@ class VerifyTab(QtWidgets.QWidget):
 
         try:
             # Lazy imports
-            from watermarking.extract import extract_watermark
-            from utils.conversions import bits_to_bytes
-            from crypto.verify import verify_signature
+            from backend.watermarking.extract import extract_watermark
+            from backend.utils.conversions import bits_to_bytes
+            from backend.crypto.verify import verify_signature
             import cv2, pywt, numpy as np
             from pathlib import Path
 

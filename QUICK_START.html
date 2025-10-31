@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="ro">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Watermarking - Quick Start</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+            min-height: 100vh;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+        }
+        h1 {
+            color: #667eea;
+            text-align: center;
+            margin-bottom: 0.5rem;
+            font-size: 2.5rem;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 3rem;
+            font-size: 1.2rem;
+        }
+        .step {
+            background: #f8f9fa;
+            padding: 2rem;
+            margin: 1.5rem 0;
+            border-radius: 12px;
+            border-left: 5px solid #667eea;
+        }
+        .step-number {
+            display: inline-block;
+            background: #667eea;
+            color: white;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            text-align: center;
+            line-height: 40px;
+            font-weight: bold;
+            margin-right: 1rem;
+            font-size: 1.2rem;
+        }
+        .step h2 {
+            display: inline-block;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+        .step p {
+            margin-left: 56px;
+            color: #555;
+            line-height: 1.8;
+            margin-top: 1rem;
+        }
+        .btn {
+            display: inline-block;
+            padding: 1rem 2rem;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            text-decoration: none;
+            border-radius: 8px;
+            font-weight: bold;
+            margin: 0.5rem;
+            transition: transform 0.3s ease;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        .btn-success {
+            background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            box-shadow: 0 4px 15px rgba(17, 153, 142, 0.4);
+        }
+        .btn-success:hover {
+            box-shadow: 0 6px 20px rgba(17, 153, 142, 0.6);
+        }
+        .actions {
+            text-align: center;
+            margin: 3rem 0 2rem 0;
+            padding: 2rem;
+            background: #e8eaf6;
+            border-radius: 12px;
+        }
+        .warning {
+            background: #fff3cd;
+            border-left: 5px solid #ffc107;
+            padding: 1.5rem;
+            margin: 2rem 0;
+            border-radius: 8px;
+        }
+        .warning strong {
+            color: #856404;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 0.2rem 0.5rem;
+            border-radius: 4px;
+            font-family: 'Courier New', monospace;
+            color: #d63384;
+        }
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        .feature {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border: 2px solid #e0e0e0;
+            text-align: center;
+        }
+        .feature-icon {
+            font-size: 3rem;
+            margin-bottom: 0.5rem;
+        }
+        .footer {
+            text-align: center;
+            color: #666;
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 2px solid #e0e0e0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🖼️ Digital Watermarking</h1>
+        <p class="subtitle">Ghid Rapid de Pornire</p>
+
+        <div class="warning">
+            <strong>⚠️ IMPORTANT:</strong> Pentru ca aplicația să funcționeze, trebuie să ai instalat:
+            <br>✓ Python 3.8+ (pentru backend)
+            <br>✓ Node.js 14+ (pentru frontend)
+        </div>
+
+        <div class="step">
+            <span class="step-number">1</span>
+            <h2>Pornește Aplicația</h2>
+            <p>
+                <strong>Metoda Simplă:</strong> Dublu-click pe <code>start-all.bat</code>
+                <br><br>
+                <strong>Metoda Manuală:</strong><br>
+                1. Pornește backend: dublu-click pe <code>start-backend.bat</code><br>
+                2. Pornește frontend: dublu-click pe <code>start-frontend.bat</code>
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">2</span>
+            <h2>Deschide Aplicația</h2>
+            <p>
+                După ce serverele pornesc, browserul se va deschide automat la:<br>
+                <strong>http://localhost:3000</strong>
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">3</span>
+            <h2>Embed Watermark</h2>
+            <p>
+                <strong>Tab "Embed Watermark":</strong><br>
+                1. Selectează o imagine (PNG, JPG, BMP)<br>
+                2. Introdu mesajul dorit<br>
+                3. Verifică că mesajul se încadrează în capacitate<br>
+                4. Click pe "Embed & Sign Watermark"<br>
+                5. Imaginea se descarcă automat
+            </p>
+        </div>
+
+        <div class="step">
+            <span class="step-number">4</span>
+            <h2>Verify Watermark</h2>
+            <p>
+                <strong>Tab "Verify Watermark":</strong><br>
+                1. Selectează imaginea watermarked<br>
+                2. Setează același block size (default: 8)<br>
+                3. Click pe "Extract & Verify Watermark"<br>
+                4. Vezi mesajul extras și statusul semnăturii
+            </p>
+        </div>
+
+        <h2 style="margin-top: 3rem; color: #667eea;">✨ Features Principale</h2>
+        <div class="features">
+            <div class="feature">
+                <div class="feature-icon">🔐</div>
+                <h3>Semnături RSA</h3>
+                <p>Autentificare criptografică sigură</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">👁️</div>
+                <h3>Invizibil</h3>
+                <p>Watermark-ul nu afectează imaginea vizual</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">✅</div>
+                <h3>Verificare</h3>
+                <p>Detectează modificări în imagine</p>
+            </div>
+            <div class="feature">
+                <div class="feature-icon">⚡</div>
+                <h3>Rapid</h3>
+                <p>Procesare rapidă cu DWT</p>
+            </div>
+        </div>
+
+        <div class="actions">
+            <h2 style="margin-bottom: 1.5rem;">🚀 Gata să începi?</h2>
+            <a href="#" onclick="startBackend()" class="btn">▶️ Pornește Backend</a>
+            <a href="#" onclick="startFrontend()" class="btn">▶️ Pornește Frontend</a>
+            <br><br>
+            <a href="http://localhost:3000" target="_blank" class="btn btn-success">🌐 Deschide Aplicația</a>
+        </div>
+
+        <div class="warning">
+            <strong>💡 Tips:</strong><br>
+            • Folosește imagini PNG pentru calitate maximă<br>
+            • Block size 8 este optim pentru majoritatea cazurilor<br>
+            • Mesaje scurte (sub 100 caractere) funcționează cel mai bine<br>
+            • Salvează block size-ul pentru a putea verifica mai târziu
+        </div>
+
+        <div class="footer">
+            <p><strong>📚 Documentație Completă:</strong></p>
+            <p>Vezi <code>GHID_UTILIZARE.md</code> pentru instrucțiuni detaliate</p>
+            <p style="margin-top: 2rem;">Developed with ❤️ for Historical Photo Preservation</p>
+        </div>
+    </div>
+
+    <script>
+        function startBackend() {
+            alert('Deschide fișierul "start-backend.bat" din folderul proiectului');
+        }
+        function startFrontend() {
+            alert('Deschide fișierul "start-frontend.bat" din folderul proiectului');
+        }
+    </script>
+</body>
+</html>
+

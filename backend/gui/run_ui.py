@@ -1,7 +1,8 @@
+
 # Small runner to launch the GUI for a quick smoke test
 import sys
-from gui.qt_compat import QtWidgets
-from gui.main_window import MainWindow
+from backend.gui.qt_compat import QtWidgets
+from backend.gui.main_window import MainWindow
 
 if __name__ == '__main__':
     app = QtWidgets.QApplication(sys.argv)

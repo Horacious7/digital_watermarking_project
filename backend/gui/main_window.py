@@ -1,7 +1,7 @@
 # main_window.py
-from gui.qt_compat import QtWidgets
-from gui.embed_tab import EmbedTab
-from gui.verify_tab import VerifyTab
+from backend.gui.qt_compat import QtWidgets
+from backend.gui.embed_tab import EmbedTab
+from backend.gui.verify_tab import VerifyTab
 
 class MainWindow(QtWidgets.QMainWindow):
     def __init__(self):

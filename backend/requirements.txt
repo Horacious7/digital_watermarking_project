@@ -1,0 +1,9 @@
+flask
+flask-cors
+requests
+cryptography
+pillow
+numpy>=2.1.0
+opencv-python
+pywavelets
+

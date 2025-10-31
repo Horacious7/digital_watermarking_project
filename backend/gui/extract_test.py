@@ -9,8 +9,8 @@ if not img_path.exists():
     print('Image not found, abort')
     raise SystemExit(1)
 
-from watermarking.extract import extract_watermark
-from utils.conversions import bits_to_bytes
+from backend.watermarking.extract import extract_watermark
+from backend.utils.conversions import bits_to_bytes
 
 # find public key
 candidate_pub = [project_root / 'data' / 'keys' / 'public.pem', project_root / 'keys' / 'public.pem']
@@ -47,7 +47,7 @@ for b in range(2, 17):
                 print('message preview:', repr(msg_text[:200]))
                 # try verify if pub exists
                 if pub is not None:
-                    from crypto.verify import verify_signature
+                    from backend.crypto.verify import verify_signature
                     ok = verify_signature(str(pub), message, signature)
                     print('verify_signature ->', ok)
             else:

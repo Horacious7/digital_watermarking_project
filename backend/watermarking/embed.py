@@ -2,7 +2,7 @@
 import numpy as np
 import pywt
 import cv2
-from utils.image_utils import load_image, save_image
+from backend.utils.image_utils import load_image, save_image
 
 
 def _pad_to_block(img, block_size):

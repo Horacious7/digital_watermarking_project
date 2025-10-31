@@ -1,5 +1,5 @@
 # embed_tab.py
-from gui.qt_compat import QtWidgets, QtGui, QtCore
+from backend.gui.qt_compat import QtWidgets, QtGui, QtCore
 import os
 
 class EmbedTab(QtWidgets.QWidget):
@@ -88,9 +88,9 @@ class EmbedTab(QtWidgets.QWidget):
 
         try:
             # Lazy imports to avoid heavy imports at module load
-            from crypto.sign import sign_hash
-            from utils.conversions import bytes_to_bits
-            from watermarking.embed import embed_watermark
+            from backend.crypto.sign import sign_hash
+            from backend.utils.conversions import bytes_to_bits
+            from backend.watermarking.embed import embed_watermark
             from pathlib import Path
             import cv2, pywt, numpy as np
 
@@ -146,8 +146,8 @@ class EmbedTab(QtWidgets.QWidget):
 
             # compute payload bits from current message
             text = self.msg_edit.text() or ""
-            from utils.conversions import bytes_to_bits
-            from crypto.sign import sign_hash
+            from backend.utils.conversions import bytes_to_bits
+            from backend.crypto.sign import sign_hash
             project_root = Path(__file__).resolve().parent.parent
             # find private key for signature
             candidate_paths = [project_root / 'data' / 'keys' / 'private.pem', project_root / 'keys' / 'private.pem']
