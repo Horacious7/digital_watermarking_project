@@ -15,6 +15,143 @@
   font-style: italic;
 }
 
+/* Carousel Styles */
+.carousel-container {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+
+.carousel-main {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  justify-content: center;
+}
+
+.carousel-image-wrapper {
+  position: relative;
+  flex: 1;
+  max-width: 800px;
+}
+
+.carousel-arrow {
+  background: rgba(102, 126, 234, 0.9);
+  color: white;
+  border: none;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  font-size: 2rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  flex-shrink: 0;
+}
+
+.carousel-arrow:hover:not(:disabled) {
+  background: rgba(102, 126, 234, 1);
+  transform: scale(1.1);
+}
+
+.carousel-arrow:disabled {
+  background: rgba(200, 200, 200, 0.5);
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+.carousel-counter {
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.carousel-thumbnails {
+  display: flex;
+  gap: 0.5rem;
+  overflow-x: auto;
+  padding: 0.5rem;
+  background: #f8f9fa;
+  border-radius: 8px;
+  max-width: 100%;
+}
+
+.thumbnail {
+  flex-shrink: 0;
+  width: 100px;
+  height: 100px;
+  border: 3px solid transparent;
+  border-radius: 8px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  position: relative;
+}
+
+.thumbnail:hover {
+  border-color: #667eea;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.thumbnail.active {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+}
+
+.thumbnail img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.thumbnail-name {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 0.25rem;
+  font-size: 0.7rem;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.keyboard-hint {
+  text-align: center;
+  padding: 0.5rem;
+  background: #fff8dc;
+  border-radius: 8px;
+  font-size: 0.9rem;
+  color: #666;
+  border: 1px solid #f0e68c;
+}
+
+.preview-info {
+  background: #f0f8ff;
+  padding: 1rem;
+  border-radius: 8px;
+  border-left: 4px solid #2196F3;
+}
+
+.preview-info p {
+  margin: 0.3rem 0;
+  color: #333;
+}
+
 .preview-section {
   display: flex;
   justify-content: center;
@@ -27,6 +164,98 @@
   border-radius: 8px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border: 2px solid #e0e0e0;
+}
+
+/* Batch Results Styles */
+.batch-results {
+  margin-top: 2rem;
+}
+
+.batch-summary {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 1.5rem;
+  border-radius: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.batch-summary h2 {
+  margin: 0 0 1rem 0;
+}
+
+.batch-summary p {
+  margin: 0.5rem 0;
+  font-size: 1.1rem;
+}
+
+.batch-results-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.batch-result-item {
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 1rem;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.batch-result-item:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.batch-result-item.valid {
+  border-left: 4px solid #28a745;
+}
+
+.batch-result-item.invalid {
+  border-left: 4px solid #dc3545;
+}
+
+.batch-result-item .result-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.8rem;
+}
+
+.batch-result-item .result-header strong {
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.status-badge {
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 600;
+}
+
+.status-badge.valid {
+  background: #d4edda;
+  color: #155724;
+}
+
+.status-badge.invalid {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.batch-result-item .result-details {
+  font-size: 0.95rem;
+  color: #555;
+}
+
+.batch-result-item .result-details p {
+  margin: 0.3rem 0;
+}
+
+.batch-result-item .error-text {
+  color: #dc3545;
+  margin: 0.5rem 0;
+  font-style: italic;
 }
 
 .input-section {

@@ -34,7 +34,7 @@ def _idct2(block):
     return cv2.idct(block)
 
 
-def embed_watermark(image_path: str, watermark_bits: str, output_path: str, block_size: int = 8, mag: float = 50.0):
+def embed_watermark(image_path: str, watermark_bits: str, output_path: str, block_size: int = 8, mag: float = 150.0):
     """
     Hybrid DWT + block-DCT watermark embedding.
     - Load image (color or grayscale).

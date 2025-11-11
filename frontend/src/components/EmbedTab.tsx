@@ -11,8 +11,9 @@ interface CapacityInfo {
 }
 
 const EmbedTab: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [message, setMessage] = useState<string>('');
   const [blockSize, setBlockSize] = useState<number>(8);
   const [capacity, setCapacity] = useState<CapacityInfo | null>(null);
@@ -23,16 +24,45 @@ const EmbedTab: React.FC = () => {
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
 
   const handleImageSelect = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    setSelectedImage(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    setSelectedImages(files);
+    setCurrentImageIndex(0);
+
+    // Create preview URLs for all images
+    const urls = files.map(file => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+
     setError('');
     setStatus('');
 
-    // Calculate capacity
-    await calculateCapacity(file, blockSize);
+    // Calculate capacity for first image
+    await calculateCapacity(files[0], blockSize);
+  };
+
+  // Navigate to previous image
+  const handlePrevImage = async () => {
+    if (currentImageIndex > 0) {
+      const newIndex = currentImageIndex - 1;
+      setCurrentImageIndex(newIndex);
+      await calculateCapacity(selectedImages[newIndex], blockSize);
+    }
+  };
+
+  // Navigate to next image
+  const handleNextImage = async () => {
+    if (currentImageIndex < selectedImages.length - 1) {
+      const newIndex = currentImageIndex + 1;
+      setCurrentImageIndex(newIndex);
+      await calculateCapacity(selectedImages[newIndex], blockSize);
+    }
+  };
+
+  // Navigate to specific image by index
+  const handleSelectImage = async (index: number) => {
+    setCurrentImageIndex(index);
+    await calculateCapacity(selectedImages[index], blockSize);
   };
 
   const calculateCapacity = async (file: File, bs: number) => {
@@ -71,60 +101,115 @@ const EmbedTab: React.FC = () => {
     }
 
     // Set new timer - only call API after 300ms of no changes
-    if (selectedImage) {
+    if (selectedImages.length > 0) {
       debounceTimerRef.current = setTimeout(() => {
-        calculateCapacity(selectedImage, newSize);
+        calculateCapacity(selectedImages[currentImageIndex], newSize);
       }, 300);
     }
   };
 
-  // Cleanup timer on unmount
+  // Cleanup timer and preview URLs on unmount
   useEffect(() => {
     return () => {
       if (debounceTimerRef.current) {
         clearTimeout(debounceTimerRef.current);
       }
+      // Cleanup preview URLs
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
     };
-  }, []);
+  }, [previewUrls]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImages.length <= 1) return;
+
+      if (e.key === 'ArrowLeft') {
+        handlePrevImage();
+      } else if (e.key === 'ArrowRight') {
+        handleNextImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentImageIndex, selectedImages.length]);
 
   const handleEmbed = async () => {
-    if (!selectedImage || !message) {
-      setError('Please select an image and enter a message');
+    if (selectedImages.length === 0 || !message) {
+      setError('Please select image(s) and enter a message');
       return;
     }
 
     setLoading(true);
     setError('');
-    setStatus('Embedding watermark...');
+
+    const isBatch = selectedImages.length > 1;
+    setStatus(isBatch ? `Embedding watermark into ${selectedImages.length} images...` : 'Embedding watermark...');
 
     try {
       const formData = new FormData();
-      formData.append('image', selectedImage);
-      formData.append('message', message);
-      formData.append('block_size', blockSize.toString());
 
-      const response = await fetch(`${API_BASE_URL}/embed`, {
-        method: 'POST',
-        body: formData,
-      });
+      if (isBatch) {
+        // Batch processing
+        selectedImages.forEach(img => {
+          formData.append('images', img);
+        });
+        formData.append('message', message);
+        formData.append('block_size', blockSize.toString());
 
-      if (response.ok) {
-        const blob = await response.blob();
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `watermarked_${selectedImage.name}`;
-        document.body.appendChild(a);
-        a.click();
-        window.URL.revokeObjectURL(url);
-        document.body.removeChild(a);
+        const response = await fetch(`${API_BASE_URL}/embed/batch`, {
+          method: 'POST',
+          body: formData,
+        });
 
-        setStatus('✅ Watermark embedded successfully! File downloaded.');
-        setError('');
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = 'watermarked_images.zip';
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          setStatus(`✅ Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`);
+          setError('');
+        } else {
+          const errorData = await response.json();
+          setError(errorData.error || 'Failed to embed watermarks');
+          setStatus('');
+        }
       } else {
-        const errorData = await response.json();
-        setError(errorData.error || 'Failed to embed watermark');
-        setStatus('');
+        // Single image processing
+        formData.append('image', selectedImages[0]);
+        formData.append('message', message);
+        formData.append('block_size', blockSize.toString());
+
+        const response = await fetch(`${API_BASE_URL}/embed`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        if (response.ok) {
+          const blob = await response.blob();
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          a.download = `watermarked_${selectedImages[0].name}`;
+          document.body.appendChild(a);
+          a.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(a);
+
+          setStatus('✅ Watermark embedded successfully! File downloaded.');
+          setError('');
+        } else {
+          const errorData = await response.json();
+          setError(errorData.error || 'Failed to embed watermark');
+          setStatus('');
+        }
       }
     } catch (err) {
       setError('Network error: Could not connect to server');
@@ -148,28 +233,95 @@ const EmbedTab: React.FC = () => {
           ref={fileInputRef}
           onChange={handleImageSelect}
           accept="image/png,image/jpeg,image/jpg,image/bmp"
+          multiple
           style={{ display: 'none' }}
         />
         <button
           className="btn-primary"
           onClick={() => fileInputRef.current?.click()}
         >
-          📁 Select Image
+          📁 Select Image(s)
         </button>
-        {selectedImage && <span className="filename">{selectedImage.name}</span>}
+        {selectedImages.length > 0 && (
+          <span className="filename">
+            {selectedImages.length === 1
+              ? selectedImages[0].name
+              : `${selectedImages.length} images selected`}
+          </span>
+        )}
       </div>
 
-      {previewUrl && (
-        <div className="preview-section">
-          <img src={previewUrl} alt="Preview" className="image-preview" />
-          {capacity && (
-            <div className="capacity-info">
-              <h3>Image Information</h3>
-              <p><strong>Size:</strong> {capacity.image_size.width} × {capacity.image_size.height} px</p>
-              <p><strong>Capacity:</strong> {capacity.capacity_bits} bits ({capacity.capacity_bytes} bytes)</p>
-              <p><strong>Block Size:</strong> {capacity.block_size}</p>
+      {previewUrls.length > 0 && (
+        <div className="carousel-container">
+          {/* Main Image Display */}
+          <div className="carousel-main">
+            {selectedImages.length > 1 && (
+              <button
+                className="carousel-arrow carousel-arrow-left"
+                onClick={handlePrevImage}
+                disabled={currentImageIndex === 0}
+              >
+                ‹
+              </button>
+            )}
+
+            <div className="carousel-image-wrapper">
+              <img
+                src={previewUrls[currentImageIndex]}
+                alt={`Preview ${currentImageIndex + 1}`}
+                className="image-preview"
+              />
+              {selectedImages.length > 1 && (
+                <div className="carousel-counter">
+                  {currentImageIndex + 1} / {selectedImages.length}
+                </div>
+              )}
+            </div>
+
+            {selectedImages.length > 1 && (
+              <button
+                className="carousel-arrow carousel-arrow-right"
+                onClick={handleNextImage}
+                disabled={currentImageIndex === selectedImages.length - 1}
+              >
+                ›
+              </button>
+            )}
+          </div>
+
+          {/* Thumbnail Gallery */}
+          {selectedImages.length > 1 && (
+            <div className="carousel-thumbnails">
+              {selectedImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className={`thumbnail ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => handleSelectImage(idx)}
+                >
+                  <img src={previewUrls[idx]} alt={`Thumb ${idx + 1}`} />
+                  <span className="thumbnail-name">{img.name}</span>
+                </div>
+              ))}
             </div>
           )}
+
+          {selectedImages.length > 1 && (
+            <div className="keyboard-hint">
+              💡 <strong>Tip:</strong> Use ← → arrow keys to navigate between images
+            </div>
+          )}
+
+          {/* Image Info */}
+          <div className="preview-section">
+            {capacity && (
+              <div className="capacity-info">
+                <h3>Image Information - {selectedImages[currentImageIndex].name}</h3>
+                <p><strong>Size:</strong> {capacity.image_size.width} × {capacity.image_size.height} px</p>
+                <p><strong>Capacity:</strong> {capacity.capacity_bits} bits ({capacity.capacity_bytes} bytes)</p>
+                <p><strong>Block Size:</strong> {capacity.block_size}</p>
+              </div>
+            )}
+          </div>
         </div>
       )}
 
@@ -214,9 +366,9 @@ const EmbedTab: React.FC = () => {
       <button
         className="btn-embed"
         onClick={handleEmbed}
-        disabled={loading || !selectedImage || !message || !capacityOk}
+        disabled={loading || selectedImages.length === 0 || !message || !capacityOk}
       >
-        {loading ? '⏳ Embedding...' : '🔐 Embed & Sign Watermark'}
+        {loading ? '⏳ Embedding...' : selectedImages.length > 1 ? `🔐 Embed & Sign ${selectedImages.length} Images` : '🔐 Embed & Sign Watermark'}
       </button>
 
       {status && <div className="status-success">{status}</div>}

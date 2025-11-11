@@ -1,60 +1,145 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './VerifyTab.css';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
 interface VerifyResult {
+  filename?: string;
   message: string;
   valid: boolean;
   signature_length: number;
-  block_size: number;  // Auto-detected or used block size
+  block_size: number;
   error?: string;
+  success?: boolean;
+}
+
+interface BatchResult {
+  results: VerifyResult[];
+  summary: {
+    total: number;
+    successful: number;
+    valid_signatures: number;
+  };
 }
 
 const VerifyTab: React.FC = () => {
-  const [selectedImage, setSelectedImage] = useState<File | null>(null);
-  const [previewUrl, setPreviewUrl] = useState<string>('');
+  const [selectedImages, setSelectedImages] = useState<File[]>([]);
+  const [currentImageIndex, setCurrentImageIndex] = useState<number>(0);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
+  const [batchResults, setBatchResults] = useState<BatchResult | null>(null);
   const [error, setError] = useState<string>('');
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files?.[0];
-    if (!file) return;
+    const files = Array.from(e.target.files || []);
+    if (files.length === 0) return;
 
-    setSelectedImage(file);
-    setPreviewUrl(URL.createObjectURL(file));
+    setSelectedImages(files);
+    setCurrentImageIndex(0);
+
+    // Create preview URLs for all images
+    const urls = files.map(file => URL.createObjectURL(file));
+    setPreviewUrls(urls);
+
     setError('');
     setResult(null);
+    setBatchResults(null);
   };
 
+  // Navigate to previous image
+  const handlePrevImage = () => {
+    if (currentImageIndex > 0) {
+      setCurrentImageIndex(currentImageIndex - 1);
+    }
+  };
+
+  // Navigate to next image
+  const handleNextImage = () => {
+    if (currentImageIndex < selectedImages.length - 1) {
+      setCurrentImageIndex(currentImageIndex + 1);
+    }
+  };
+
+  // Navigate to specific image by index
+  const handleSelectImage = (index: number) => {
+    setCurrentImageIndex(index);
+  };
+
+  // Cleanup preview URLs on unmount
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
+
+  // Keyboard navigation
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (selectedImages.length <= 1) return;
+
+      if (e.key === 'ArrowLeft') {
+        handlePrevImage();
+      } else if (e.key === 'ArrowRight') {
+        handleNextImage();
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [currentImageIndex, selectedImages.length]);
+
   const handleVerify = async () => {
-    if (!selectedImage) {
-      setError('Please select an image');
+    if (selectedImages.length === 0) {
+      setError('Please select image(s)');
       return;
     }
 
     setLoading(true);
     setError('');
     setResult(null);
+    setBatchResults(null);
+
+    const isBatch = selectedImages.length > 1;
 
     try {
       const formData = new FormData();
-      formData.append('image', selectedImage);
-      // Don't send block_size - let backend auto-detect
 
-      const response = await fetch(`${API_BASE_URL}/verify`, {
-        method: 'POST',
-        body: formData,
-      });
+      if (isBatch) {
+        // Batch verification
+        selectedImages.forEach(img => {
+          formData.append('images', img);
+        });
 
-      const data = await response.json();
+        const response = await fetch(`${API_BASE_URL}/verify/batch`, {
+          method: 'POST',
+          body: formData,
+        });
 
-      if (response.ok) {
-        setResult(data);
+        const data = await response.json();
+
+        if (response.ok) {
+          setBatchResults(data);
+        } else {
+          setError(data.error || 'Failed to verify watermarks');
+        }
       } else {
-        setError(data.error || 'Failed to verify watermark');
+        // Single image verification
+        formData.append('image', selectedImages[0]);
+
+        const response = await fetch(`${API_BASE_URL}/verify`, {
+          method: 'POST',
+          body: formData,
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          setResult(data);
+        } else {
+          setError(data.error || 'Failed to verify watermark');
+        }
       }
     } catch (err) {
       setError('Network error: Could not connect to server. Make sure the backend is running.');
@@ -71,32 +156,135 @@ const VerifyTab: React.FC = () => {
           ref={fileInputRef}
           onChange={handleImageSelect}
           accept="image/png,image/jpeg,image/jpg,image/bmp"
+          multiple
           style={{ display: 'none' }}
         />
         <button
           className="btn-primary"
           onClick={() => fileInputRef.current?.click()}
         >
-          📁 Select Watermarked Image
+          📁 Select Watermarked Image(s)
         </button>
-        {selectedImage && <span className="filename">{selectedImage.name}</span>}
+        {selectedImages.length > 0 && (
+          <span className="filename">
+            {selectedImages.length === 1
+              ? selectedImages[0].name
+              : `${selectedImages.length} images selected`}
+          </span>
+        )}
       </div>
 
-      {previewUrl && (
-        <div className="preview-section">
-          <img src={previewUrl} alt="Preview" className="image-preview" />
+      {previewUrls.length > 0 && !batchResults && (
+        <div className="carousel-container">
+          {/* Main Image Display */}
+          <div className="carousel-main">
+            {selectedImages.length > 1 && (
+              <button
+                className="carousel-arrow carousel-arrow-left"
+                onClick={handlePrevImage}
+                disabled={currentImageIndex === 0}
+              >
+                ‹
+              </button>
+            )}
+
+            <div className="carousel-image-wrapper">
+              <img
+                src={previewUrls[currentImageIndex]}
+                alt={`Preview ${currentImageIndex + 1}`}
+                className="image-preview"
+              />
+              {selectedImages.length > 1 && (
+                <div className="carousel-counter">
+                  {currentImageIndex + 1} / {selectedImages.length}
+                </div>
+              )}
+            </div>
+
+            {selectedImages.length > 1 && (
+              <button
+                className="carousel-arrow carousel-arrow-right"
+                onClick={handleNextImage}
+                disabled={currentImageIndex === selectedImages.length - 1}
+              >
+                ›
+              </button>
+            )}
+          </div>
+
+          {/* Thumbnail Gallery */}
+          {selectedImages.length > 1 && (
+            <div className="carousel-thumbnails">
+              {selectedImages.map((img, idx) => (
+                <div
+                  key={idx}
+                  className={`thumbnail ${idx === currentImageIndex ? 'active' : ''}`}
+                  onClick={() => handleSelectImage(idx)}
+                >
+                  <img src={previewUrls[idx]} alt={`Thumb ${idx + 1}`} />
+                  <span className="thumbnail-name">{img.name}</span>
+                </div>
+              ))}
+            </div>
+          )}
+
+          {selectedImages.length > 1 && (
+            <div className="keyboard-hint">
+              💡 <strong>Tip:</strong> Use ← → arrow keys to navigate between images
+            </div>
+          )}
+
+          <div className="preview-info">
+            <p><strong>Current:</strong> {selectedImages[currentImageIndex].name}</p>
+            {selectedImages.length > 1 && (
+              <p><strong>Ready to verify:</strong> {selectedImages.length} images</p>
+            )}
+          </div>
         </div>
       )}
 
       <button
         className="btn-verify"
         onClick={handleVerify}
-        disabled={loading || !selectedImage}
+        disabled={loading || selectedImages.length === 0}
       >
-        {loading ? '⏳ Verifying...' : '🔍 Extract & Verify Watermark'}
+        {loading ? '⏳ Verifying...' : selectedImages.length > 1 ? `🔍 Verify ${selectedImages.length} Images` : '🔍 Extract & Verify Watermark'}
       </button>
 
       {error && <div className="status-error">❌ {error}</div>}
+
+      {batchResults && (
+        <div className="batch-results">
+          <div className="batch-summary">
+            <h2>📊 Batch Verification Results</h2>
+            <p><strong>Total Images:</strong> {batchResults.summary.total}</p>
+            <p><strong>Successfully Processed:</strong> {batchResults.summary.successful}</p>
+            <p><strong>Valid Signatures:</strong> {batchResults.summary.valid_signatures}</p>
+            <p><strong>Success Rate:</strong> {((batchResults.summary.valid_signatures / batchResults.summary.total) * 100).toFixed(1)}%</p>
+          </div>
+
+          <div className="batch-results-list">
+            {batchResults.results.map((res, idx) => (
+              <div key={idx} className={`batch-result-item ${res.valid ? 'valid' : 'invalid'}`}>
+                <div className="result-header">
+                  <strong>{res.filename}</strong>
+                  <span className={`status-badge ${res.valid ? 'valid' : 'invalid'}`}>
+                    {res.valid ? '✅ Valid' : res.success ? '⚠️ Invalid' : '❌ Error'}
+                  </span>
+                </div>
+                {res.success && (
+                  <div className="result-details">
+                    <p><strong>Message:</strong> {res.message || '(empty)'}</p>
+                    <p><strong>Block Size:</strong> {res.block_size}x{res.block_size}</p>
+                    {res.signature_length && <p><strong>Signature:</strong> {res.signature_length} bytes</p>}
+                  </div>
+                )}
+                {res.error && <p className="error-text">Error: {res.error}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
 
       {result && (
         <div className={`result-section ${result.valid ? 'valid' : 'invalid'}`}>

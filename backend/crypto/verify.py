@@ -26,5 +26,5 @@ def verify_signature(public_key_path, image_hash, signature):
         )
         return True
     except Exception as e:
-        print(f"Verification failed: {e}")
+        print(f"Verification failed: {type(e).__name__}")
         return False
