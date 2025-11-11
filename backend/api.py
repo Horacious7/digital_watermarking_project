@@ -17,7 +17,7 @@ from crypto.sign import sign_hash
 from crypto.verify import verify_signature
 from utils.conversions import bytes_to_bits, bits_to_bytes
 from watermarking.embed import embed_watermark
-from watermarking.extract import extract_watermark
+from watermarking.extract import extract_watermark, detect_block_size
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for React frontend
@@ -166,7 +166,8 @@ def verify():
     if file.filename == '' or not allowed_file(file.filename):
         return jsonify({'error': 'Invalid file'}), 400
 
-    block_size = int(request.form.get('block_size', 8))
+    # Optional: allow manual override, but auto-detect by default
+    block_size_param = request.form.get('block_size', None)
 
     try:
         # Save file with unique name
@@ -174,6 +175,14 @@ def verify():
         unique_filename = f"{uuid.uuid4()}_{filename}"
         filepath = os.path.join(app.config['UPLOAD_FOLDER'], unique_filename)
         file.save(filepath)
+
+        # Auto-detect block_size if not provided
+        if block_size_param is None or block_size_param == '':
+            block_size = detect_block_size(filepath)
+            print(f"🔍 Auto-detected block_size: {block_size}")
+        else:
+            block_size = int(block_size_param)
+            print(f"📌 Using manual block_size: {block_size}")
 
         # Calculate capacity to know how many bits to extract
         img = cv2.imread(filepath, cv2.IMREAD_COLOR)
@@ -183,8 +192,14 @@ def verify():
         cA_h, cA_w = cA.shape
         num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
-        # Extract watermark (try to extract maximum capacity)
+        # Extract watermark (skip first 8 bits as they're the header)
+        # But we need to extract all bits first to get the full payload
         extracted_bits = extract_watermark(filepath, num_blocks, block_size=block_size)
+
+        # Skip the first 8 bits (block_size header)
+        if len(extracted_bits) > 8:
+            extracted_bits = extracted_bits[8:]  # Remove header
+
         extracted_bytes = bits_to_bytes(extracted_bits)
 
         # Parse payload
@@ -248,7 +263,8 @@ def verify():
         return jsonify({
             'message': message,
             'valid': is_valid,
-            'signature_length': sig_len
+            'signature_length': sig_len,
+            'block_size': block_size  # Return detected/used block_size
         })
     except Exception as e:
         # Clean up file if it exists

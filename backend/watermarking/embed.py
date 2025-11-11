@@ -42,6 +42,7 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     - 1-level DWT (haar) -> get cA (approximation).
     - Pad cA to multiples of block_size, split into blocks, apply 2D DCT.
     - Embed one bit per block by setting a mid-frequency coefficient to +mag (bit=1) or -mag (bit=0).
+    - First 8 bits encode block_size for auto-detection during extraction.
     - Inverse DCT per block, unpad, inverse DWT to reconstruct blue channel, save image.
     """
     img = load_image(image_path)  # float32
@@ -62,9 +63,14 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     nb_h = H // block_size
     nb_w = W // block_size
     available_blocks = nb_h * nb_w
-    n_bits = min(available_blocks, len(watermark_bits))
 
-    print(f"Available blocks: {available_blocks}, Watermark bits: {len(watermark_bits)}")
+    # Encode block_size as 8-bit header (valid values: 2, 4, 8, 16, 32, 64)
+    block_size_header = format(block_size, '08b')
+    watermark_with_header = block_size_header + watermark_bits
+
+    n_bits = min(available_blocks, len(watermark_with_header))
+
+    print(f"Available blocks: {available_blocks}, Watermark bits: {len(watermark_with_header)} (8-bit header + {len(watermark_bits)} data)")
 
     # Process blocks and embed
     embedded = padded.copy()
@@ -84,7 +90,7 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
             # ensure block is float32
             block_f = block.astype(np.float32)
             d = _dct2(block_f)
-            bit = int(watermark_bits[bit_idx])
+            bit = int(watermark_with_header[bit_idx])
             # Force chosen coefficient to +mag or -mag to encode bit
             d[u, v] = mag if bit == 1 else -mag
             # Reconstruct block

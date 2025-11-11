@@ -7,13 +7,13 @@ interface VerifyResult {
   message: string;
   valid: boolean;
   signature_length: number;
+  block_size: number;  // Auto-detected or used block size
   error?: string;
 }
 
 const VerifyTab: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<File | null>(null);
   const [previewUrl, setPreviewUrl] = useState<string>('');
-  const [blockSize, setBlockSize] = useState<number>(8);
   const [loading, setLoading] = useState<boolean>(false);
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [error, setError] = useState<string>('');
@@ -42,7 +42,7 @@ const VerifyTab: React.FC = () => {
     try {
       const formData = new FormData();
       formData.append('image', selectedImage);
-      formData.append('block_size', blockSize.toString());
+      // Don't send block_size - let backend auto-detect
 
       const response = await fetch(`${API_BASE_URL}/verify`, {
         method: 'POST',
@@ -88,24 +88,6 @@ const VerifyTab: React.FC = () => {
         </div>
       )}
 
-      <div className="input-section">
-        <label>
-          <strong>Block Size:</strong>
-          <div className="block-size-control">
-            <input
-              type="range"
-              min="2"
-              max="64"
-              value={blockSize}
-              onChange={(e) => setBlockSize(parseInt(e.target.value))}
-              className="slider"
-            />
-            <span className="block-size-value">{blockSize}</span>
-          </div>
-          <small>Use the same block size that was used for embedding</small>
-        </label>
-      </div>
-
       <button
         className="btn-verify"
         onClick={handleVerify}
@@ -148,6 +130,11 @@ const VerifyTab: React.FC = () => {
             <div className="result-field">
               <label>Signature Length:</label>
               <div>{result.signature_length} bytes</div>
+            </div>
+
+            <div className="result-field">
+              <label>Detected Block Size:</label>
+              <div>{result.block_size}x{result.block_size} pixels</div>
             </div>
           </div>
 

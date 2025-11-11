@@ -30,6 +30,41 @@ def _dct2(block):
     return cv2.dct(block)
 
 
+def detect_block_size(image_path: str) -> int:
+    """
+    Auto-detect block_size from the 8-bit header embedded in the watermark.
+    The trick: when we extract with the CORRECT block_size, the header will decode to that same block_size.
+    Example: If embedded with block_size=13, the header is '00001101' (13 in binary).
+             When we extract with block_size=13, we'll read '00001101' → 13. Match!
+    Returns the detected block_size or 8 (default) if detection fails.
+    """
+    print("🔍 Starting block_size auto-detection (trying all values 2-64)...")
+
+    # Try each possible block size from 2 to 64
+    for try_block_size in range(2, 65):
+        try:
+            header_bits = extract_watermark(image_path, n_bits=8, block_size=try_block_size)
+            detected_value = int(header_bits, 2)
+
+            # The correct block_size will decode its own value from the header!
+            if detected_value == try_block_size:
+                print(f"✅ Auto-detected block_size: {detected_value} (header matched: '{header_bits}')")
+                return detected_value
+
+            # Optional: show first few and last few attempts for debugging
+            if try_block_size <= 4 or try_block_size >= 62:
+                print(f"  Trying block_size={try_block_size}: header_bits='{header_bits}' → value={detected_value} (no match)")
+
+        except Exception as e:
+            if try_block_size <= 4 or try_block_size >= 62:
+                print(f"  Trying block_size={try_block_size}: ERROR - {e}")
+            continue
+
+    # Fallback to default
+    print("⚠️ Could not auto-detect block_size, using default: 8")
+    return 8
+
+
 def extract_watermark(image_path: str, n_bits: int, block_size: int = 8) -> str:
     """
     Hybrid DWT + block-DCT watermark extraction.
