@@ -1,0 +1,68 @@
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+.venv/
+venv/
+ENV/
+env/
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Project specific - watermarked output images
+backend/data/watermarked/*.png
+backend/data/watermarked/*.jpg
+backend/data/watermarked/*.jpeg
+backend/data/watermarked/*.bmp
+!backend/data/watermarked/.gitkeep
+backend/data/test_output/
+
+# Project specific - generated data
+data/watermarked/*.png
+data/watermarked/*.jpg
+data/watermarked/*.jpeg
+data/watermarked/*.bmp
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json
+
+# Frontend build
+frontend/build/
+frontend/.env.local
+frontend/.env.development.local
+frontend/.env.test.local
+frontend/.env.production.local
+
+# Logs
+*.log
+
+# OS
+Thumbs.db
+.DS_Store
+
