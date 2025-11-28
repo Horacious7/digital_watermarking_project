@@ -5,40 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="UI simplu cu react, aplicatie full functionala la testele facute de mine, nevoie de clean up in fisiere, mesaje din cod schimbate, nevoie de adaugat feature-uri in plus,">
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/LICENSE" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/.name" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/DOCUMENTATIE_LICENTA.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/QUICK_START.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/START_HERE.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/Imagine WhatsApp 2025-10-31 la 21.37.14_2587ae1b.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/Imagine WhatsApp 2025-10-31 la 21.37.14_78af34b5.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/Imagine WhatsApp 2025-10-31 la 22.09.39_f764e597.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/schema noua.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/testam pt whatsapp(2).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/testtst-10-31 la 22.12.34_115174eb.jpg" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_showcase.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test (3).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test (4).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test_8 (1).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/watermarked/watermarked_test_8 (2).png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/embed_tab.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/extract_test.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/main_window.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/qt_compat.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/run_ui.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/gui/verify_tab.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/main.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/test_api.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/README.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/start-all.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/start-backend.bat" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/start-frontend.bat" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/index.html" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,12 +29,12 @@
     &quot;assignee&quot;: &quot;Horacious7&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Horacious7/digital_watermarking_project.git&quot;,
-    &quot;accountId&quot;: &quot;9537e3cc-35ca-4124-a876-f1d066ec3643&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Horacious7/digital_watermarking_project.git",
+    "accountId": "17b28730-7bb6-49b2-b9d1-a358e878ec54"
   }
-}</component>
+}]]></component>
   <component name="ProjectColorInfo">{
   &quot;associatedIndex&quot;: 1
 }</component>
@@ -147,8 +115,8 @@
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-1d06a55b98c1-0b3e54e931b4-JavaScript-PY-241.19416.19" />
-        <option value="bundled-python-sdk-337b0a7a993a-2767605e8bc2-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-241.19416.19" />
+        <option value="bundled-js-predefined-d6986cc7102b-a71380e98a7c-JavaScript-PY-252.28238.29" />
+        <option value="bundled-python-sdk-a101402ee41c-968fe969f28a-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-252.28238.29" />
       </set>
     </attachedChunks>
   </component>
@@ -180,6 +148,7 @@
       <workItem from="1762354729817" duration="26000" />
       <workItem from="1762880584556" duration="4713000" />
       <workItem from="1764364059680" duration="641000" />
+      <workItem from="1764366013644" duration="580000" />
     </task>
     <task id="LOCAL-00001" summary="Structura Initiala">
       <option name="closed" value="true" />
@@ -278,16 +247,17 @@
     <option name="LAST_COMMIT_MESSAGE" value="verificare automata la ala" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
-    <SUITE FILE_PATH="coverage/main_py$api.coverage" NAME="api Coverage Results" MODIFIED="1762885256179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1760183480681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Lib/site-packages/pip" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$conversions.coverage" NAME="conversions Coverage Results" MODIFIED="1760191271619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
-    <SUITE FILE_PATH="coverage/digital_watermarking_project$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1760185363913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
+    <SUITE FILE_PATH="coverage/digital_watermarking_project$api.coverage" NAME="api Coverage Results" MODIFIED="1764366166138" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$main.coverage" NAME="main Coverage Results" MODIFIED="1760794675270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
-    <SUITE FILE_PATH="coverage/main_py$run_ui.coverage" NAME="run_ui Coverage Results" MODIFIED="1761917337258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/gui" />
-    <SUITE FILE_PATH="coverage/digital_watermarking_project$embed.coverage" NAME="embed Coverage Results" MODIFIED="1760200299832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/watermarking" />
+    <SUITE FILE_PATH="coverage/main_py$api.coverage" NAME="api Coverage Results" MODIFIED="1762885256179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
     <SUITE FILE_PATH="coverage/main_py$qt_compat.coverage" NAME="qt_compat Coverage Results" MODIFIED="1761165422028" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
+    <SUITE FILE_PATH="coverage/main_py$run_ui.coverage" NAME="run_ui Coverage Results" MODIFIED="1761917337258" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend/gui" />
+    <SUITE FILE_PATH="coverage/digital_watermarking_project$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1760185363913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
     <SUITE FILE_PATH="coverage/main_py$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1761166347890" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
     <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1762881806133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
+    <SUITE FILE_PATH="coverage/digital_watermarking_project$embed.coverage" NAME="embed Coverage Results" MODIFIED="1760200299832" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/watermarking" />
   </component>
   <component name="github-copilot-workspace">
     <instructionFileLocations>
