@@ -374,13 +374,13 @@ const EmbedTab: React.FC = () => {
       {status && <div className="status-success">{status}</div>}
       {error && <div className="status-error">❌ {error}</div>}
 
-      <div className="info-box" style={{ marginTop: '20px', padding: '15px', backgroundColor: '#f0f8ff', borderLeft: '4px solid #2196F3', borderRadius: '4px' }}>
+      <div className="info-box">
         <p><strong>ℹ️ Important Information</strong></p>
-        <p style={{ margin: '5px 0', fontSize: '14px' }}>
+        <p>
           This watermarking system works best with <strong>lossless image formats (PNG)</strong>.
           The watermark will be embedded in the DCT coefficients of the image.
         </p>
-        <p style={{ margin: '5px 0', fontSize: '14px' }}>
+        <p>
           <strong>⚠️ Note:</strong> Compression (JPEG, WebP) or sharing via social media
           (WhatsApp, Facebook, Instagram) will alter the embedded data. While the message
           may still be extractable, the cryptographic signature verification will likely fail.
