@@ -31,10 +31,11 @@ const VerifyTab: React.FC = () => {
   const [result, setResult] = useState<VerifyResult | null>(null);
   const [batchResults, setBatchResults] = useState<BatchResult | null>(null);
   const [error, setError] = useState<string>('');
+  const [dragActive, setDragActive] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const files = Array.from(e.target.files || []);
+  // Process files (used by both file input and drag & drop)
+  const processFiles = (files: File[]) => {
     if (files.length === 0) return;
 
     setSelectedImages(files);
@@ -47,6 +48,49 @@ const VerifyTab: React.FC = () => {
     setError('');
     setResult(null);
     setBatchResults(null);
+  };
+
+  const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    processFiles(files);
+  };
+
+  // Drag & Drop handlers
+  const handleDrag = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+  };
+
+  const handleDragIn = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (e.dataTransfer.items && e.dataTransfer.items.length > 0) {
+      setDragActive(true);
+    }
+  };
+
+  const handleDragOut = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+  };
+
+  const handleDrop = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setDragActive(false);
+
+    const files = Array.from(e.dataTransfer.files).filter(file =>
+      file.type.startsWith('image/')
+    );
+
+    if (files.length === 0) {
+      toast.error('Please drop valid image files (PNG, JPEG, BMP)');
+      return;
+    }
+
+    processFiles(files);
+    toast.success(`${files.length} image${files.length > 1 ? 's' : ''} loaded successfully!`);
   };
 
   // Navigate to previous image
@@ -66,6 +110,55 @@ const VerifyTab: React.FC = () => {
   // Navigate to specific image by index
   const handleSelectImage = (index: number) => {
     setCurrentImageIndex(index);
+  };
+
+  // Remove image from selection
+  const handleRemoveImage = (indexToRemove: number) => {
+    // Revoke the URL of the image being removed
+    URL.revokeObjectURL(previewUrls[indexToRemove]);
+
+    // Filter out the removed image
+    const newImages = selectedImages.filter((_, idx) => idx !== indexToRemove);
+
+    if (newImages.length === 0) {
+      // No images left - cleanup all URLs
+      previewUrls.forEach(url => URL.revokeObjectURL(url));
+      setSelectedImages([]);
+      setPreviewUrls([]);
+      setCurrentImageIndex(0);
+      setResult(null);
+      setBatchResults(null);
+      toast.success('All images removed');
+    } else {
+      // Recreate preview URLs for remaining images
+      const newUrls = newImages.map(file => URL.createObjectURL(file));
+
+      // Cleanup old URLs (except the one we already revoked)
+      previewUrls.forEach((url, idx) => {
+        if (idx !== indexToRemove) {
+          URL.revokeObjectURL(url);
+        }
+      });
+
+      // Adjust current index
+      let newIndex = currentImageIndex;
+
+      if (indexToRemove === currentImageIndex) {
+        // Removed the current image - go to previous or stay at same position
+        newIndex = Math.max(0, currentImageIndex - 1);
+      } else if (indexToRemove < currentImageIndex) {
+        // Removed image before current - adjust index down
+        newIndex = currentImageIndex - 1;
+      }
+      // else: removed image after current - index stays the same
+
+      // Update state
+      setSelectedImages(newImages);
+      setPreviewUrls(newUrls);
+      setCurrentImageIndex(newIndex);
+
+      toast.success(`Image removed (${newImages.length} remaining)`);
+    }
   };
 
   // Cleanup preview URLs on unmount
@@ -178,7 +271,13 @@ const VerifyTab: React.FC = () => {
 
   return (
     <div className="verify-tab">
-      <div className="upload-section">
+      <div
+        className={`upload-section ${dragActive ? 'drag-active' : ''}`}
+        onDragEnter={handleDragIn}
+        onDragLeave={handleDragOut}
+        onDragOver={handleDrag}
+        onDrop={handleDrop}
+      >
         <input
           type="file"
           ref={fileInputRef}
@@ -187,13 +286,25 @@ const VerifyTab: React.FC = () => {
           multiple
           style={{ display: 'none' }}
         />
-        <button
-          className="btn-primary"
-          onClick={() => fileInputRef.current?.click()}
-        >
-          📁 Select Watermarked Image(s)
-        </button>
-        {selectedImages.length > 0 && (
+
+        {dragActive ? (
+          <div className="drop-zone-active">
+            <div className="drop-icon">📥</div>
+            <p className="drop-text">Drop images here...</p>
+          </div>
+        ) : (
+          <>
+            <button
+              className="btn-primary"
+              onClick={() => fileInputRef.current?.click()}
+            >
+              📁 Select Watermarked Image(s)
+            </button>
+            <span className="drag-hint">or drag & drop images here</span>
+          </>
+        )}
+
+        {selectedImages.length > 0 && !dragActive && (
           <span className="filename">
             {selectedImages.length === 1
               ? selectedImages[0].name
@@ -202,8 +313,8 @@ const VerifyTab: React.FC = () => {
         )}
       </div>
 
-      {previewUrls.length > 0 && !batchResults && (
-        <div className="carousel-container">
+      {previewUrls.length > 0 && (
+        <div className="carousel-container" key={`carousel-${previewUrls.length}`}>
           {/* Main Image Display */}
           <div className="carousel-main">
             {selectedImages.length > 1 && (
@@ -218,13 +329,14 @@ const VerifyTab: React.FC = () => {
 
             <div className="carousel-image-wrapper">
               <img
-                src={previewUrls[currentImageIndex]}
+                src={previewUrls[Math.min(currentImageIndex, previewUrls.length - 1)]}
                 alt={`Preview ${currentImageIndex + 1}`}
                 className="image-preview"
+                key={`preview-${currentImageIndex}-${previewUrls.length}`}
               />
               {selectedImages.length > 1 && (
                 <div className="carousel-counter">
-                  {currentImageIndex + 1} / {selectedImages.length}
+                  {Math.min(currentImageIndex + 1, selectedImages.length)} / {selectedImages.length}
                 </div>
               )}
             </div>
@@ -245,11 +357,24 @@ const VerifyTab: React.FC = () => {
             <div className="carousel-thumbnails">
               {selectedImages.map((img, idx) => (
                 <div
-                  key={idx}
+                  key={`thumb-${idx}-${img.name}-${selectedImages.length}`}
                   className={`thumbnail ${idx === currentImageIndex ? 'active' : ''}`}
-                  onClick={() => handleSelectImage(idx)}
                 >
-                  <img src={previewUrls[idx]} alt={`Thumb ${idx + 1}`} />
+                  <img
+                    src={previewUrls[idx] || ''}
+                    alt={`Thumb ${idx + 1}`}
+                    onClick={() => handleSelectImage(idx)}
+                  />
+                  <button
+                    className="thumbnail-remove"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleRemoveImage(idx);
+                    }}
+                    title="Remove image"
+                  >
+                    ✕
+                  </button>
                   <span className="thumbnail-name">{img.name}</span>
                 </div>
               ))}
