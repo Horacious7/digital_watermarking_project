@@ -1,5 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './VerifyTab.css';
+import toast from 'react-hot-toast';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -92,7 +93,7 @@ const VerifyTab: React.FC = () => {
 
   const handleVerify = async () => {
     if (selectedImages.length === 0) {
-      setError('Please select image(s)');
+      toast.error('Please select image(s) to verify');
       return;
     }
 
@@ -102,6 +103,11 @@ const VerifyTab: React.FC = () => {
     setBatchResults(null);
 
     const isBatch = selectedImages.length > 1;
+    const loadingToast = toast.loading(
+      isBatch
+        ? `Verifying ${selectedImages.length} images...`
+        : 'Verifying watermark...'
+    );
 
     try {
       const formData = new FormData();
@@ -121,8 +127,15 @@ const VerifyTab: React.FC = () => {
 
         if (response.ok) {
           setBatchResults(data);
+          const validCount = data.results.filter((r: any) => r.valid).length;
+          toast.success(
+            `✅ Verified ${selectedImages.length} images: ${validCount} valid, ${selectedImages.length - validCount} invalid`,
+            { id: loadingToast, duration: 5000 }
+          );
         } else {
-          setError(data.error || 'Failed to verify watermarks');
+          const errorMsg = data.error || 'Failed to verify watermarks';
+          toast.error(errorMsg, { id: loadingToast });
+          setError(errorMsg);
         }
       } else {
         // Single image verification
@@ -137,12 +150,27 @@ const VerifyTab: React.FC = () => {
 
         if (response.ok) {
           setResult(data);
+          if (data.valid) {
+            toast.success('✅ Signature verified! Watermark is authentic.', {
+              id: loadingToast,
+              duration: 5000
+            });
+          } else {
+            toast.error('❌ Signature verification failed! Watermark may be tampered.', {
+              id: loadingToast,
+              duration: 5000
+            });
+          }
         } else {
-          setError(data.error || 'Failed to verify watermark');
+          const errorMsg = data.error || 'Failed to verify watermark';
+          toast.error(errorMsg, { id: loadingToast });
+          setError(errorMsg);
         }
       }
     } catch (err) {
-      setError('Network error: Could not connect to server. Make sure the backend is running.');
+      const errorMsg = 'Network error: Could not connect to server. Make sure the backend is running.';
+      toast.error(errorMsg, { id: loadingToast });
+      setError(errorMsg);
     } finally {
       setLoading(false);
     }

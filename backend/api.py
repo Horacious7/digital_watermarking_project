@@ -37,6 +37,18 @@ PUBLIC_KEY = "data/keys/public.pem"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config['MAX_CONTENT_LENGTH'] = 100 * 1024 * 1024  # 100MB max for batch processing
 
+# RSA-2048 signature size: 256 bytes
+# Payload structure: 4 bytes (sig_len) + 256 bytes (signature) + message + 4 bytes (terminator)
+RSA_SIGNATURE_SIZE = 256  # bytes for RSA-2048
+SIGNATURE_LENGTH_FIELD = 4  # bytes to store signature length
+MESSAGE_TERMINATOR_SIZE = 4  # bytes for null terminator
+SIGNATURE_OVERHEAD = SIGNATURE_LENGTH_FIELD + RSA_SIGNATURE_SIZE + MESSAGE_TERMINATOR_SIZE  # 264 bytes total
+
+# Safety margin: Reserve at least 1 byte (8 bits) to avoid edge cases with bit/byte conversion
+# This prevents issues when payload uses exactly all available capacity
+SAFETY_MARGIN_BYTES = 1  # Extra byte for safe extraction
+TOTAL_OVERHEAD = SIGNATURE_OVERHEAD + SAFETY_MARGIN_BYTES  # 265 bytes
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -87,7 +99,8 @@ def calculate_capacity():
             'capacity_bits': num_blocks,
             'capacity_bytes': num_blocks // 8,
             'image_size': {'width': img.shape[1], 'height': img.shape[0]},
-            'block_size': block_size
+            'block_size': block_size,
+            'signature_overhead_bytes': TOTAL_OVERHEAD  # Include signature overhead + safety margin
         })
     except Exception as e:
         # Clean up file if it exists
@@ -136,11 +149,19 @@ def embed():
         cA_h, cA_w = cA.shape
         num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
-        if len(payload_bits) > num_blocks:
+        # Check capacity with safety margin (need at least 8 extra bits for safe extraction)
+        required_bits = len(payload_bits) + 8  # Add 8-bit safety margin
+
+        if required_bits > num_blocks:
             os.remove(input_path)
             return jsonify({
-                'error': 'Message too long for image capacity',
-                'required_bits': len(payload_bits),
+                'error': 'Message + signature too long for image capacity',
+                'details': f'Need {required_bits} bits ({required_bits//8} bytes) including safety margin, but image only has {num_blocks} bits ({num_blocks//8} bytes)',
+                'message_size_bytes': len(message_bytes),
+                'signature_overhead_bytes': TOTAL_OVERHEAD,
+                'total_required_bytes': required_bits // 8,
+                'available_bytes': num_blocks // 8,
+                'required_bits': required_bits,
                 'available_bits': num_blocks
             }), 400
 
@@ -353,13 +374,16 @@ def embed_batch():
                 cA_h, cA_w = cA.shape
                 num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
-                if len(payload_bits) > num_blocks:
+                # Check capacity with safety margin
+                required_bits = len(payload_bits) + 8  # Add 8-bit safety margin
+
+                if required_bits > num_blocks:
                     results.append({
                         'filename': filename,
                         'success': False,
-                        'error': f'Message too long (need {len(payload_bits)} bits, have {num_blocks})'
+                        'error': f'Message + signature too long (need {required_bits//8} bytes including safety margin, have {num_blocks//8} bytes)'
                     })
-                    print(f"  ❌ {idx+1}/{len(files)}: {filename} - Message too long")
+                    print(f"  ❌ {idx+1}/{len(files)}: {filename} - Message + signature too long")
                     continue
 
                 # Embed watermark

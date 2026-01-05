@@ -1,5 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './EmbedTab.css';
+import toast from 'react-hot-toast';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -8,6 +9,7 @@ interface CapacityInfo {
   capacity_bytes: number;
   image_size: { width: number; height: number };
   block_size: number;
+  signature_overhead_bytes?: number;  // Optional for backward compatibility
 }
 
 const EmbedTab: React.FC = () => {
@@ -82,12 +84,16 @@ const EmbedTab: React.FC = () => {
         setError('');
       } else {
         const errorData = await response.json();
-        setError(errorData.error || 'Failed to calculate image capacity');
+        const errorMsg = errorData.error || 'Failed to calculate image capacity';
+        toast.error(errorMsg);
+        setError(errorMsg);
         setCapacity(null);
       }
     } catch (err) {
       console.error('Error calculating capacity:', err);
-      setError('Network error: Could not connect to server. Make sure the backend is running.');
+      const errorMsg = 'Network error: Could not connect to server. Make sure the backend is running.';
+      toast.error(errorMsg);
+      setError(errorMsg);
       setCapacity(null);
     }
   };
@@ -137,7 +143,7 @@ const EmbedTab: React.FC = () => {
 
   const handleEmbed = async () => {
     if (selectedImages.length === 0 || !message) {
-      setError('Please select image(s) and enter a message');
+      toast.error('Please select image(s) and enter a message');
       return;
     }
 
@@ -145,7 +151,11 @@ const EmbedTab: React.FC = () => {
     setError('');
 
     const isBatch = selectedImages.length > 1;
-    setStatus(isBatch ? `Embedding watermark into ${selectedImages.length} images...` : 'Embedding watermark...');
+    const loadingToast = toast.loading(
+      isBatch
+        ? `Embedding watermark into ${selectedImages.length} images...`
+        : 'Embedding watermark...'
+    );
 
     try {
       const formData = new FormData();
@@ -174,11 +184,17 @@ const EmbedTab: React.FC = () => {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          setStatus(`✅ Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`);
+          toast.success(`✅ Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`, {
+            id: loadingToast,
+            duration: 5000,
+          });
+          setStatus('');
           setError('');
         } else {
           const errorData = await response.json();
-          setError(errorData.error || 'Failed to embed watermarks');
+          const errorMsg = errorData.error || 'Failed to embed watermarks';
+          toast.error(errorMsg, { id: loadingToast });
+          setError(errorMsg);
           setStatus('');
         }
       } else {
@@ -203,16 +219,24 @@ const EmbedTab: React.FC = () => {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          setStatus('✅ Watermark embedded successfully! File downloaded.');
+          toast.success('✅ Watermark embedded successfully! File downloaded.', {
+            id: loadingToast,
+            duration: 5000,
+          });
+          setStatus('');
           setError('');
         } else {
           const errorData = await response.json();
-          setError(errorData.error || 'Failed to embed watermark');
+          const errorMsg = errorData.error || 'Failed to embed watermark';
+          toast.error(errorMsg, { id: loadingToast });
+          setError(errorMsg);
           setStatus('');
         }
       }
     } catch (err) {
-      setError('Network error: Could not connect to server');
+      const errorMsg = 'Network error: Could not connect to server';
+      toast.error(errorMsg, { id: loadingToast });
+      setError(errorMsg);
       setStatus('');
     } finally {
       setLoading(false);
@@ -220,7 +244,9 @@ const EmbedTab: React.FC = () => {
   };
 
   const messageBytes = new TextEncoder().encode(message).length;
-  const signatureOverhead = 260; // Approximate RSA signature size + length field
+  // Use actual signature overhead from backend, or fallback to 265 bytes
+  // (4 bytes sig_len + 256 bytes RSA-2048 signature + 4 bytes terminator + 1 byte safety margin)
+  const signatureOverhead = capacity?.signature_overhead_bytes || 265;
   const totalPayloadBytes = messageBytes + signatureOverhead;
   const totalPayloadBits = totalPayloadBytes * 8;
   const capacityOk = capacity && totalPayloadBits <= capacity.capacity_bits;
@@ -338,11 +364,19 @@ const EmbedTab: React.FC = () => {
         </label>
 
         <div className="payload-info">
-          <p>Message: {messageBytes} bytes | Signature: ~{signatureOverhead} bytes | <strong>Total: {totalPayloadBits} bits</strong></p>
+          <p><strong>Payload Breakdown:</strong></p>
+          <p>• Message: {messageBytes} bytes</p>
+          <p>• Digital Signature + Overhead: {signatureOverhead} bytes (includes 1-byte safety margin)</p>
+          <p>• <strong>Total Required:</strong> {totalPayloadBytes} bytes ({totalPayloadBits} bits)</p>
           {capacity && (
-            <p className={capacityOk ? 'text-success' : 'text-error'}>
-              {capacityOk ? '✅ Message fits in image' : '❌ Message too large for image capacity'}
-            </p>
+            <>
+              <p>• <strong>Available Capacity:</strong> {capacity.capacity_bytes} bytes ({capacity.capacity_bits} bits)</p>
+              <p className={capacityOk ? 'text-success' : 'text-error'}>
+                {capacityOk
+                  ? '✅ Message + signature fits safely in image!'
+                  : `❌ Need ${totalPayloadBytes - capacity.capacity_bytes} more bytes (reduce message or decrease block size)`}
+              </p>
+            </>
           )}
         </div>
 

@@ -5,6 +5,7 @@ import VerifyTab from './components/VerifyTab';
 import { useTheme } from './hooks/useTheme';
 import logoLight from './logo-light.png';
 import logoDark from './logo-dark.png';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'embed' | 'verify'>('embed');
@@ -12,6 +13,46 @@ function App() {
 
   return (
     <div className="App">
+      {/* Toast Notifications Container */}
+      <Toaster
+        position="top-right"
+        reverseOrder={false}
+        toastOptions={{
+          // Default options
+          duration: 4000,
+          style: {
+            background: theme === 'dark' ? '#273469' : '#FAFAFF',
+            color: theme === 'dark' ? '#FAFAFF' : '#30343F',
+            border: `2px solid ${theme === 'dark' ? '#D6C6FF' : '#273469'}`,
+            borderRadius: '8px',
+            padding: '16px',
+            fontSize: '14px',
+            fontWeight: '600',
+          },
+          // Success
+          success: {
+            iconTheme: {
+              primary: '#28a745',
+              secondary: '#FFFAEE',
+            },
+          },
+          // Error
+          error: {
+            iconTheme: {
+              primary: '#dc3545',
+              secondary: '#FFFAEE',
+            },
+          },
+          // Loading
+          loading: {
+            iconTheme: {
+              primary: theme === 'dark' ? '#D6C6FF' : '#273469',
+              secondary: '#FFFAEE',
+            },
+          },
+        }}
+      />
+
       <header className="App-header">
         <div className="header-content">
           <div className="logo-container">
