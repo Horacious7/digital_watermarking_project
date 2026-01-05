@@ -129,7 +129,7 @@ const VerifyTab: React.FC = () => {
           setBatchResults(data);
           const validCount = data.results.filter((r: any) => r.valid).length;
           toast.success(
-            `✅ Verified ${selectedImages.length} images: ${validCount} valid, ${selectedImages.length - validCount} invalid`,
+            `Verified ${selectedImages.length} images: ${validCount} valid, ${selectedImages.length - validCount} invalid`,
             { id: loadingToast, duration: 5000 }
           );
         } else {
@@ -151,12 +151,12 @@ const VerifyTab: React.FC = () => {
         if (response.ok) {
           setResult(data);
           if (data.valid) {
-            toast.success('✅ Signature verified! Watermark is authentic.', {
+            toast.success('Signature verified! Watermark is authentic.', {
               id: loadingToast,
               duration: 5000
             });
           } else {
-            toast.error('❌ Signature verification failed! Watermark may be tampered.', {
+            toast.error('Signature verification failed! Watermark may be tampered.', {
               id: loadingToast,
               duration: 5000
             });

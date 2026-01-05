@@ -184,7 +184,7 @@ const EmbedTab: React.FC = () => {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          toast.success(`✅ Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`, {
+          toast.success(`Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`, {
             id: loadingToast,
             duration: 5000,
           });
@@ -192,9 +192,7 @@ const EmbedTab: React.FC = () => {
           setError('');
         } else {
           const errorData = await response.json();
-          const errorMsg = errorData.error || 'Failed to embed watermarks';
-          toast.error(errorMsg, { id: loadingToast });
-          setError(errorMsg);
+          setError(errorData.error || 'Failed to embed watermarks');
           setStatus('');
         }
       } else {
@@ -219,7 +217,7 @@ const EmbedTab: React.FC = () => {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          toast.success('✅ Watermark embedded successfully! File downloaded.', {
+          toast.success('Watermark embedded successfully! File downloaded.', {
             id: loadingToast,
             duration: 5000,
           });
@@ -227,16 +225,12 @@ const EmbedTab: React.FC = () => {
           setError('');
         } else {
           const errorData = await response.json();
-          const errorMsg = errorData.error || 'Failed to embed watermark';
-          toast.error(errorMsg, { id: loadingToast });
-          setError(errorMsg);
+          setError(errorData.error || 'Failed to embed watermark');
           setStatus('');
         }
       }
     } catch (err) {
-      const errorMsg = 'Network error: Could not connect to server';
-      toast.error(errorMsg, { id: loadingToast });
-      setError(errorMsg);
+      setError('Network error: Could not connect to server');
       setStatus('');
     } finally {
       setLoading(false);

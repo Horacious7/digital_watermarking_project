@@ -4,23 +4,15 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="improving front end WIP">
+    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="Solved a bug regarding the length of the signature and a buffer bit and also improving front end with CSS animations and some toast notifications">
+      <change afterPath="$PROJECT_DIR$/SESSION_SUMMARY_2026_01_05.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_CAPACITY_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_FIX_SUMMARY.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/test_signature_capacity.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/TOAST_NOTIFICATIONS_IMPLEMENTATION.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/UI_ENHANCEMENTS.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/VISUAL_GUIDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -174,7 +166,7 @@
       <workItem from="1767544773223" duration="79000" />
       <workItem from="1767558945289" duration="732000" />
       <workItem from="1767615166782" duration="948000" />
-      <workItem from="1767618409031" duration="4525000" />
+      <workItem from="1767618409031" duration="5546000" />
     </task>
     <task id="LOCAL-00001" summary="Structura Initiala">
       <option name="closed" value="true" />
@@ -256,7 +248,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767544601405</updated>
     </task>
-    <option name="localTasksCounter" value="11" />
+    <task id="LOCAL-00011" summary="Solved a bug regarding the length of the signature and a buffer bit and also improving front end with CSS animations and some toast notifications">
+      <option name="closed" value="true" />
+      <created>1767623900411</created>
+      <option name="number" value="00011" />
+      <option name="presentableId" value="LOCAL-00011" />
+      <option name="project" value="LOCAL" />
+      <updated>1767623900411</updated>
+    </task>
+    <option name="localTasksCounter" value="12" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -288,7 +288,8 @@
     <MESSAGE value="verificare automata la ala" />
     <MESSAGE value="cleaning" />
     <MESSAGE value="improving front end WIP" />
-    <option name="LAST_COMMIT_MESSAGE" value="improving front end WIP" />
+    <MESSAGE value="Solved a bug regarding the length of the signature and a buffer bit and also improving front end with CSS animations and some toast notifications" />
+    <option name="LAST_COMMIT_MESSAGE" value="Solved a bug regarding the length of the signature and a buffer bit and also improving front end with CSS animations and some toast notifications" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/digital_watermarking_project$main.coverage" NAME="main Coverage Results" MODIFIED="1760794675270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
