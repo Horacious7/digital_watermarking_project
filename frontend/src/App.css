@@ -250,7 +250,7 @@
 /* Common Button Styles */
 .btn-primary {
   background: var(--btn-primary-bg);
-  color: var(--text-on-dark);
+  color: white; /* Always white text for primary buttons */
   border: none;
   padding: 0.8rem 1.5rem;
   font-size: 1rem;
@@ -261,6 +261,11 @@
   box-shadow: var(--shadow-md);
   position: relative;
   overflow: hidden;
+}
+
+/* Dark mode - light button needs dark text */
+[data-theme="dark"] .btn-primary {
+  color: var(--bg-dark); /* Dark text on light purple button */
 }
 
 .btn-primary::before {
