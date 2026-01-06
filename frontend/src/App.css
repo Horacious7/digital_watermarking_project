@@ -48,11 +48,11 @@
 }
 
 .app-logo {
-  width: 60px;
-  height: 60px;
+  width: 70px;
+  height: 70px;
   object-fit: contain;
   transition: transform var(--transition-normal), filter var(--transition-normal);
-  cursor: pointer;
+  cursor: default;
 }
 
 .app-logo:hover {
@@ -168,8 +168,7 @@
   flex: 1;
   padding: 1rem 2rem;
   background: var(--bg-secondary);
-  border: 2px solid var(--border-color);
-  border-bottom: none;
+  border: none;
   color: var(--text-secondary);
   font-size: 1.1rem;
   font-weight: 600;
@@ -178,6 +177,15 @@
   border-radius: var(--radius-lg) var(--radius-lg) 0 0;
   position: relative;
   overflow: hidden;
+  box-shadow: 0 -4px 15px rgba(39, 52, 105, 0.15),
+              4px 0 15px rgba(39, 52, 105, 0.08),
+              -4px 0 15px rgba(39, 52, 105, 0.08);
+}
+
+[data-theme="dark"] .tab {
+  box-shadow: 0 -4px 15px rgba(228, 217, 255, 0.1),
+              4px 0 15px rgba(228, 217, 255, 0.05),
+              -4px 0 15px rgba(228, 217, 255, 0.05);
 }
 
 .tab::before {
@@ -198,53 +206,113 @@
 .tab:hover {
   background: var(--btn-secondary-hover);
   transform: translateY(-4px);
-  box-shadow: var(--shadow-md);
+  box-shadow: 0 -8px 25px rgba(39, 52, 105, 0.2),
+              4px 0 20px rgba(39, 52, 105, 0.12),
+              -4px 0 20px rgba(39, 52, 105, 0.12);
+}
+
+[data-theme="dark"] .tab:hover {
+  box-shadow: 0 -8px 25px rgba(228, 217, 255, 0.12),
+              4px 0 20px rgba(228, 217, 255, 0.08),
+              -4px 0 20px rgba(228, 217, 255, 0.08);
 }
 
 .tab:focus {
-  outline: 3px solid var(--btn-primary-bg);
-  outline-offset: 2px;
+  outline: none;
+}
+
+.tab:focus-visible {
+  outline: 2px solid var(--btn-primary-bg);
+  outline-offset: 4px;
 }
 
 .tab.active {
   background: var(--bg-primary);
   color: var(--btn-primary-bg);
-  box-shadow: var(--shadow-md);
-  border-color: var(--btn-primary-bg);
+  box-shadow: 0 -8px 30px rgba(39, 52, 105, 0.3),
+              4px -4px 15px rgba(39, 52, 105, 0.15),
+              -4px -4px 15px rgba(39, 52, 105, 0.15);
   transform: translateY(0);
+  margin-bottom: 0;
+  z-index: 10;
+  border: 2px solid var(--btn-primary-bg);
+  border-bottom: none;
+  position: relative;
+}
+
+[data-theme="dark"] .tab.active {
+  box-shadow: 0 -8px 30px rgba(228, 217, 255, 0.15),
+              4px -4px 15px rgba(228, 217, 255, 0.06),
+              -4px -4px 15px rgba(228, 217, 255, 0.06);
+  margin-bottom: 0;
+  z-index: 10;
+  border: 2px solid rgba(228, 217, 255, 0.5);
+  border-bottom: none;
+  position: relative;
 }
 
 .tab.active::after {
   content: '';
   position: absolute;
-  bottom: -2px;
+  bottom: 0;
   left: 0;
   right: 0;
-  height: 3px;
-  background: var(--btn-primary-bg);
-  animation: slideInFromLeft 0.4s ease;
+  height: 0;
+  background: transparent;
 }
 
 /* Tab Content */
 .tab-content {
   background: var(--bg-primary);
-  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
   padding: 2rem;
-  box-shadow: var(--shadow-lg);
   min-height: 500px;
   border: 2px solid var(--btn-primary-bg);
   border-top: none;
+  box-shadow: 0 10px 50px rgba(39, 52, 105, 0.25);
   animation: scaleIn 0.4s ease;
+  transition: all var(--transition-normal);
+  position: relative;
+  z-index: 5;
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
+}
+
+[data-theme="dark"] .tab-content {
+  box-shadow: 0 10px 60px rgba(228, 217, 255, 0.15);
+  border-color: rgba(228, 217, 255, 0.5);
+}
+
+.tab-content:hover {
+  box-shadow: 0 15px 60px rgba(39, 52, 105, 0.35);
+}
+
+[data-theme="dark"] .tab-content:hover {
+  box-shadow: 0 15px 70px rgba(228, 217, 255, 0.2);
 }
 
 /* Footer */
 .App-footer {
-  background: var(--bg-dark);
-  color: var(--text-on-dark);
+  background: var(--bg-secondary);
+  color: var(--text-primary);
   text-align: center;
-  padding: 1rem;
+  padding: 1.5rem;
   margin-top: auto;
-  border-top: 2px solid var(--btn-primary-bg);
+  border: none;
+  box-shadow: 0 -10px 40px rgba(39, 52, 105, 0.25);
+  transition: all var(--transition-normal);
+}
+
+[data-theme="dark"] .App-footer {
+  background: var(--bg-secondary);
+  color: var(--text-on-dark);
+  box-shadow: 0 -10px 50px rgba(228, 217, 255, 0.15);
+}
+
+.App-footer:hover {
+  box-shadow: 0 -15px 50px rgba(39, 52, 105, 0.35);
+}
+
+[data-theme="dark"] .App-footer:hover {
+  box-shadow: 0 -15px 60px rgba(228, 217, 255, 0.25);
 }
 
 /* Common Button Styles */

@@ -102,7 +102,8 @@ function App() {
       </div>
 
       <footer className="App-footer">
-        <p>Digital Watermarking System with RSA Signatures</p>
+        <p>© 2025 TRACE - Digital Watermarking System | Made by Maier Horatiu-Gabriel</p>
+        <p style={{ fontSize: '0.85rem', marginTop: '0.5rem', opacity: 0.8 }}>All Rights Reserved</p>
       </footer>
     </div>
   );
