@@ -4,8 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="frontend brrrr">
-      <change afterPath="$PROJECT_DIR$/.ai/mcp/mcp.json" afterDir="false" />
+    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="frontend shooooo">
       <change afterPath="$PROJECT_DIR$/SESSION_SUMMARY_2026_01_05.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_CAPACITY_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_FIX_SUMMARY.md" afterDir="false" />
@@ -17,8 +16,10 @@
       <change afterPath="$PROJECT_DIR$/frontend/UI_ENHANCEMENTS.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/VISUAL_GUIDE.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -176,7 +177,7 @@
       <workItem from="1767615166782" duration="948000" />
       <workItem from="1767618409031" duration="10399000" />
       <workItem from="1767702986864" duration="2233000" />
-      <workItem from="1767733533176" duration="2422000" />
+      <workItem from="1767733533176" duration="5023000" />
     </task>
     <task id="LOCAL-00001" summary="Structura Initiala">
       <option name="closed" value="true" />
@@ -290,7 +291,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767632064251</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="frontend shooooo">
+      <option name="closed" value="true" />
+      <created>1767736131807</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1767736131807</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -326,7 +335,8 @@
     <MESSAGE value="mic improvement vizual" />
     <MESSAGE value="bagat drag and drop, bagat x la carusel, rezolvat bugu de la x ul de la carusel si ce sa mai zic" />
     <MESSAGE value="frontend brrrr" />
-    <option name="LAST_COMMIT_MESSAGE" value="frontend brrrr" />
+    <MESSAGE value="frontend shooooo" />
+    <option name="LAST_COMMIT_MESSAGE" value="frontend shooooo" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/digital_watermarking_project$main.coverage" NAME="main Coverage Results" MODIFIED="1760794675270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

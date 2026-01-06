@@ -82,6 +82,12 @@
 .filename {
   color: var(--text-light);
   font-style: italic;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 var(--space-2);
+  font-size: 0.9rem;
 }
 
 /* Carousel Styles */
@@ -315,6 +321,8 @@
 .preview-info p {
   margin: var(--space-1) 0;
   color: var(--text-primary);
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .preview-section {
@@ -744,11 +752,57 @@ small {
   font-size: 0.9rem;
 }
 
+/* Ascunde hints pe touch devices (detectează pointer coarse = deget) */
+@media (pointer: coarse) {
+  .drag-hint {
+    display: none; /* Ascunde drag hint - drag & drop nu funcționează bine cu touch */
+  }
+
+  .keyboard-hint {
+    display: none; /* Ascunde keyboard hint - touch devices nu au arrow keys */
+  }
+}
+
+/* Alternative: ascunde hints pe device-uri care nu pot face hover */
+@media (hover: none) {
+  .drag-hint {
+    display: none;
+  }
+
+  .keyboard-hint {
+    display: none;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .upload-section {
     flex-direction: column;
     align-items: stretch;
+    padding: var(--space-4);
+    min-height: 100px;
+  }
+
+  .filename {
+    font-size: 0.85rem;
+    max-width: 90%;
+  }
+
+
+  .upload-btn,
+  .verify-btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .image-preview {
+    max-height: 300px;
+    width: 100%;
   }
 
   .result-header h2 {
@@ -758,6 +812,116 @@ small {
   .result-content {
     padding: var(--space-4);
   }
+
+  .result-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .thumbnail-gallery {
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+  }
+
+  .message-display {
+    font-size: 0.95rem;
+    padding: var(--space-3);
+    word-break: break-word;
+  }
+
+  .signature-badge {
+    padding: 0.4rem 0.8rem;
+    font-size: 0.85rem;
+  }
+
+  .preview-info {
+    padding: var(--space-3);
+  }
+
+  .preview-info p {
+    font-size: 0.85rem;
+  }
+
+  .result-item p {
+    word-break: break-word;
+  }
 }
 
+@media (max-width: 480px) {
+  .upload-section {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .filename {
+    font-size: 0.8rem;
+    max-width: 85%;
+  }
+
+  .drag-hint {
+    font-size: 0.8rem;
+  }
+
+  .upload-btn,
+  .verify-btn {
+    padding: 0.8rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .image-preview {
+    max-height: 250px;
+  }
+
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+
+  .thumbnail-gallery {
+    gap: var(--space-1);
+  }
+
+  .result-header h2 {
+    font-size: 1.2rem;
+  }
+
+  .result-content {
+    padding: var(--space-3);
+  }
+
+  .result-item {
+    padding: var(--space-2);
+  }
+
+  .result-item label {
+    font-size: 0.85rem;
+  }
+
+  .result-item p {
+    font-size: 0.9rem;
+  }
+
+  .message-display {
+    font-size: 0.9rem;
+    padding: var(--space-2);
+  }
+
+  .signature-badge {
+    padding: 0.35rem 0.7rem;
+    font-size: 0.8rem;
+  }
+
+  .preview-info {
+    padding: var(--space-2);
+  }
+
+  .preview-info p {
+    font-size: 0.8rem;
+  }
+}
 

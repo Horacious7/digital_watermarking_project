@@ -4,9 +4,16 @@
   padding: 0;
 }
 
+html, body {
+  overflow-x: hidden;
+  max-width: 100%;
+}
+
 /* App Container with Background Pattern */
 .App {
   min-height: 100vh;
+  max-width: 100vw;
+  overflow-x: hidden;
   background:
     linear-gradient(rgba(250, 250, 255, 0.75), rgba(250, 250, 255, 0.75)),
     url('./background-pattern-light.svg') center/cover fixed;
@@ -480,5 +487,77 @@
 
   .tab-content {
     padding: 1rem;
+  }
+
+  /* Fix pentruoverflow pe mobile */
+  .App {
+    overflow-x: hidden;
+  }
+
+  .tab-container {
+    padding: 0 0.5rem;
+    margin: 1rem auto;
+  }
+
+  /* Header responsive */
+  .App-header {
+    padding: 1rem;
+  }
+
+  .header-content {
+    gap: 1rem;
+  }
+
+  .app-logo {
+    width: 50px;
+    height: 50px;
+  }
+
+  .App-header h1 {
+    font-size: 2rem;
+  }
+
+  .subtitle {
+    font-size: 0.85rem;
+  }
+
+  /* Footer responsive */
+  .App-footer {
+    padding: 1rem;
+    font-size: 0.85rem;
+  }
+
+  .App-footer p {
+    font-size: 0.85rem;
+  }
+}
+
+/* Media query specific pentru dispozitive mici (sub 480px) */
+@media (max-width: 480px) {
+  .App-header h1 {
+    font-size: 1.75rem;
+    letter-spacing: 0.1em;
+  }
+
+  .app-logo {
+    width: 45px;
+    height: 45px;
+  }
+
+  .tabs {
+    gap: 0.5rem;
+  }
+
+  .tab {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.9rem;
+  }
+
+  .tab-content {
+    padding: 0.75rem;
+  }
+
+  .tab-container {
+    margin: 0.5rem auto;
   }
 }

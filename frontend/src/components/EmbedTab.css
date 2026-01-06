@@ -82,6 +82,12 @@
 .filename {
   color: var(--text-light);
   font-style: italic;
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  padding: 0 var(--space-2);
+  font-size: 0.9rem;
 }
 
 /* Carousel Styles */
@@ -337,11 +343,14 @@
   margin-bottom: var(--space-4);
   color: var(--text-primary);
   font-size: 1.1rem;
+  word-break: break-word;
+  overflow-wrap: break-word;
 }
 
 .capacity-info p {
   margin: var(--space-2) 0;
   color: var(--text-primary);
+  word-break: break-word;
 }
 
 .input-section {
@@ -533,6 +542,28 @@ small {
   margin-bottom: var(--space-3);
 }
 
+/* Ascunde hints pe touch devices (detectează pointer coarse = deget) */
+@media (pointer: coarse) {
+  .drag-hint {
+    display: none; /* Ascunde drag hint - drag & drop nu funcționează bine cu touch */
+  }
+
+  .keyboard-hint {
+    display: none; /* Ascunde keyboard hint - touch devices nu au arrow keys */
+  }
+}
+
+/* Alternative: ascunde hints pe device-uri care nu pot face hover */
+@media (hover: none) {
+  .drag-hint {
+    display: none;
+  }
+
+  .keyboard-hint {
+    display: none;
+  }
+}
+
 /* Responsive */
 @media (max-width: 768px) {
   .preview-section {
@@ -542,6 +573,156 @@ small {
   .upload-section {
     flex-direction: column;
     align-items: stretch;
+    padding: var(--space-4);
+    min-height: 100px;
+  }
+
+  .filename {
+    font-size: 0.85rem;
+    max-width: 90%;
+  }
+
+
+  .upload-btn,
+  .embed-btn {
+    width: 100%;
+    max-width: 100%;
+    padding: 0.9rem 1rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .image-preview {
+    max-height: 300px;
+    width: 100%;
+  }
+
+  .message-input {
+    font-size: 0.95rem;
+    padding: var(--space-3);
+  }
+
+  .capacity-bar-container {
+    font-size: 0.85rem;
+  }
+
+  .thumbnail-gallery {
+    gap: var(--space-2);
+    padding: var(--space-2);
+  }
+
+  .thumbnail {
+    width: 80px;
+    height: 80px;
+  }
+
+  .payload-breakdown {
+    padding: var(--space-3);
+    font-size: 0.85rem;
+  }
+
+  .payload-breakdown ul {
+    font-size: 0.85rem;
+  }
+
+  .capacity-info {
+    padding: var(--space-3);
+  }
+
+  .capacity-info h3 {
+    font-size: 0.95rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .capacity-info p {
+    font-size: 0.85rem;
+  }
+
+  .info-box {
+    padding: var(--space-3);
+    font-size: 0.85rem;
+    margin-top: var(--space-4);
+  }
+
+  .info-box p {
+    font-size: 0.85rem;
+    word-break: break-word;
   }
 }
 
+@media (max-width: 480px) {
+  .upload-section {
+    padding: var(--space-3);
+    gap: var(--space-3);
+  }
+
+  .filename {
+    font-size: 0.8rem;
+    max-width: 85%;
+  }
+
+  .drag-hint {
+    font-size: 0.8rem;
+  }
+
+  .upload-btn,
+  .embed-btn {
+    padding: 0.8rem 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  .image-preview {
+    max-height: 250px;
+  }
+
+  .thumbnail {
+    width: 70px;
+    height: 70px;
+  }
+
+  .thumbnail-gallery {
+    gap: var(--space-1);
+  }
+
+  .block-size-control {
+    font-size: 0.85rem;
+  }
+
+  .capacity-bar-container {
+    font-size: 0.8rem;
+  }
+
+  .payload-breakdown {
+    padding: var(--space-2);
+    font-size: 0.8rem;
+  }
+
+  .payload-breakdown ul {
+    font-size: 0.8rem;
+  }
+
+  .capacity-info {
+    padding: var(--space-2);
+  }
+
+  .capacity-info h3 {
+    font-size: 0.9rem;
+    margin-bottom: var(--space-2);
+  }
+
+  .capacity-info p {
+    font-size: 0.8rem;
+  }
+
+  .info-box {
+    padding: var(--space-2);
+    font-size: 0.8rem;
+    margin-top: var(--space-3);
+  }
+
+  .info-box p {
+    font-size: 0.8rem;
+  }
+}
