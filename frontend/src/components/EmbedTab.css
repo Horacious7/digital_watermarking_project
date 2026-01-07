@@ -209,6 +209,7 @@
   inset: 0;
   background: rgba(0, 0, 0, 0);
   transition: background var(--transition-normal);
+  pointer-events: none; /* Don't block clicks on thumbnail */
 }
 
 .thumbnail:hover::after {
