@@ -4,13 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="emoji uri top">
+    <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="Key mangement + auto verification after embed">
       <change afterPath="$PROJECT_DIR$/SESSION_SUMMARY_2026_01_05.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_CAPACITY_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/SIGNATURE_FIX_SUMMARY.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/ADAPTIVE_SAFETY_MARGIN.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/BLOCK_SIZE_7x7_ISSUE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/backend/BLOCK_SIZE_TESTING_FINAL_RESULTS.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/SAFETY_MARGIN_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/TESTING.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/data/native_checkerboard.png" afterDir="false" />
@@ -30,6 +29,7 @@
       <change afterPath="$PROJECT_DIR$/backend/test_problematic.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/backend/test_reliability.py" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/AUTO_VERIFICATION_IMPLEMENTATION.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/BATCH_AUTO_VERIFICATION.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/DRAG_DROP_IMPLEMENTATION.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/THUMBNAIL_REMOVE_FEATURE.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/THUMBNAIL_REMOVE_NAVIGATION_FIX.md" afterDir="false" />
@@ -37,24 +37,11 @@
       <change afterPath="$PROJECT_DIR$/frontend/TOAST_SUCCESS_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/UI_ENHANCEMENTS.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/VISUAL_GUIDE.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/KeyManager.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/components/KeyManager.tsx" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/frontend/src/services/keyManager.ts" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/crypto/sign.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/crypto/sign.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/crypto/verify.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/crypto/verify.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/data/keys/private.pem" beforeDir="false" afterPath="$PROJECT_DIR$/backend/data/keys/private.pem" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/backend/data/keys/public.pem" beforeDir="false" afterPath="$PROJECT_DIR$/backend/data/keys/public.pem" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/data/test.png" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/watermarking/embed.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/watermarking/embed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/watermarking/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/watermarking/extract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/Icons.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/Icons.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/index.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/index.css" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -101,50 +88,50 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ASKED_ADD_EXTERNAL_FILES": "true",
-    "Jest.App.test.tsx.executor": "Run",
-    "Python.__main__.executor": "Run",
-    "Python.api.executor": "Run",
-    "Python.conversions.executor": "Run",
-    "Python.embed.executor": "Run",
-    "Python.generate_more_natives.executor": "Run",
-    "Python.generate_native_pngs.executor": "Run",
-    "Python.main.executor": "Run",
-    "Python.main_window.executor": "Run",
-    "Python.qt_compat.executor": "Run",
-    "Python.quick_check.executor": "Run",
-    "Python.run_ui.executor": "Run",
-    "Python.test_13_fixed.executor": "Run",
-    "Python.test_13_varying_lengths.executor": "Run",
-    "Python.test_13x13.executor": "Run",
-    "Python.test_on_multiple_images.executor": "Run",
-    "Python.test_prime_theory.executor": "Run",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.OpenProjectViewOnStart": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "WebServerToolWindowFactoryState": "false",
-    "ai.playground.ignore.import.keys.banner.in.settings": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "main",
-    "javascript.preferred.runtime.type.id": "node",
-    "last_opened_file_path": "C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs.jest.jest_package": "C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project/frontend/node_modules/react-scripts",
-    "nodejs_package_manager_path": "npm",
-    "settings.editor.selected.configurable": "com.github.copilot.settings.chat.ChatConfigurable",
-    "ts.external.directory.path": "C:\\Users\\Horatiu\\Desktop\\facultate\\licenta\\digital_watermarking_project\\frontend\\node_modules\\typescript\\lib",
-    "vue.rearranger.settings.migration": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
+    &quot;Jest.App.test.tsx.executor&quot;: &quot;Run&quot;,
+    &quot;Python.__main__.executor&quot;: &quot;Run&quot;,
+    &quot;Python.api.executor&quot;: &quot;Run&quot;,
+    &quot;Python.conversions.executor&quot;: &quot;Run&quot;,
+    &quot;Python.embed.executor&quot;: &quot;Run&quot;,
+    &quot;Python.generate_more_natives.executor&quot;: &quot;Run&quot;,
+    &quot;Python.generate_native_pngs.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main.executor&quot;: &quot;Run&quot;,
+    &quot;Python.main_window.executor&quot;: &quot;Run&quot;,
+    &quot;Python.qt_compat.executor&quot;: &quot;Run&quot;,
+    &quot;Python.quick_check.executor&quot;: &quot;Run&quot;,
+    &quot;Python.run_ui.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_13_fixed.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_13_varying_lengths.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_13x13.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_on_multiple_images.executor&quot;: &quot;Run&quot;,
+    &quot;Python.test_prime_theory.executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
+    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
+    &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project/frontend/node_modules/react-scripts&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;com.github.copilot.settings.chat.ChatConfigurable&quot;,
+    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Horatiu\\Desktop\\facultate\\licenta\\digital_watermarking_project\\frontend\\node_modules\\typescript\\lib&quot;,
+    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\maier\Desktop\facultate\licenta cu Crivei\digital_watermarking_project\backend" />
@@ -365,7 +352,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767745513800</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="Key mangement + auto verification after embed">
+      <option name="closed" value="true" />
+      <created>1767807095733</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1767807095733</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -404,7 +399,8 @@
     <MESSAGE value="frontend shooooo" />
     <MESSAGE value="Responsive to all the devices, it's dynamic now, works on mobile, ipad, whatever you want! :)" />
     <MESSAGE value="emoji uri top" />
-    <option name="LAST_COMMIT_MESSAGE" value="emoji uri top" />
+    <MESSAGE value="Key mangement + auto verification after embed" />
+    <option name="LAST_COMMIT_MESSAGE" value="Key mangement + auto verification after embed" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/main_py$api.coverage" NAME="api Coverage Results" MODIFIED="1762885256179" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />

@@ -298,8 +298,14 @@ const EmbedTab: React.FC = () => {
       // Add private key to form data
       formData.append('private_key', privateKey);
 
+      // Add public key for batch auto-verification
+      const publicKey = getPublicKey();
+      if (publicKey) {
+        formData.append('public_key', publicKey);
+      }
+
       if (isBatch) {
-        // Batch processing
+        // Batch processing with auto-verification
         selectedImages.forEach(img => {
           formData.append('images', img);
         });
@@ -313,6 +319,29 @@ const EmbedTab: React.FC = () => {
 
         if (response.ok) {
           const blob = await response.blob();
+
+          // Parse batch statistics from headers
+          const totalHeader = response.headers.get('X-Batch-Total');
+          const successfulHeader = response.headers.get('X-Batch-Successful');
+          const failedHeader = response.headers.get('X-Batch-Failed');
+          const failedImagesJson = response.headers.get('X-Batch-Failed-Images');
+
+          // Debug: log headers
+          console.log('Batch headers:', {
+            total: totalHeader,
+            successful: successfulHeader,
+            failed: failedHeader,
+            failedImagesJson: failedImagesJson
+          });
+
+          const total = parseInt(totalHeader || String(selectedImages.length));
+          const successful = parseInt(successfulHeader || '0');
+          const failed = parseInt(failedHeader || '0');
+          const failedImages = failedImagesJson ? JSON.parse(failedImagesJson) : [];
+
+          console.log('Parsed batch stats:', { total, successful, failed, failedImages });
+
+          // Download ZIP with successful images
           const url = window.URL.createObjectURL(blob);
           const a = document.createElement('a');
           a.href = url;
@@ -322,15 +351,55 @@ const EmbedTab: React.FC = () => {
           window.URL.revokeObjectURL(url);
           document.body.removeChild(a);
 
-          toast.success(`Watermarked ${selectedImages.length} images successfully! ZIP file downloaded.`, {
-            id: loadingToast,
-            duration: 5000,
-          });
-          setStatus('');
-          setError('');
+          // AUTO-REMOVE: Remove successful images from list
+          if (failed > 0 && failedImages.length > 0) {
+            // Keep only failed images
+            const failedFilenames = new Set(failedImages.map((f: any) => f.filename));
+            const remainingImages = selectedImages.filter(img => failedFilenames.has(img.name));
+            const remainingUrls = previewUrls.filter((_, idx) => failedFilenames.has(selectedImages[idx].name));
+
+            setSelectedImages(remainingImages);
+            setPreviewUrls(remainingUrls);
+            setCurrentImageIndex(0);
+
+            // Show detailed toast with failures
+            const failureDetails = failedImages.map((f: any) => `• ${f.filename}: ${f.error}`).join('\n');
+            toast.error(
+              `${successful}/${total} images watermarked successfully!\n\n` +
+              `${failed} images failed:\n${failureDetails}\n\n` +
+              `Failed images remain in the list. Try a different block size.`,
+              { id: loadingToast, duration: 10000 }
+            );
+            setError(`${failed} images failed verification. Check toast notification for details.`);
+          } else {
+            // All succeeded - clear all images
+            setSelectedImages([]);
+            setPreviewUrls([]);
+            setCurrentImageIndex(0);
+
+            toast.success(`All ${successful} images watermarked & verified successfully! ZIP downloaded.`, {
+              id: loadingToast,
+              duration: 5000,
+            });
+            setStatus('');
+            setError('');
+          }
         } else {
           const errorData = await response.json();
-          setError(errorData.error || 'Failed to embed watermarks');
+
+          // Handle case where ALL images failed
+          if (errorData.failed_images && errorData.failed_images.length > 0) {
+            const failureDetails = errorData.failed_images.map((f: any) => `• ${f.filename}: ${f.error}`).join('\n');
+            toast.error(
+              `All ${errorData.total} images failed!\n\n${failureDetails}\n\n` +
+              `Try using a different block size or smaller message.`,
+              { id: loadingToast, duration: 10000 }
+            );
+            setError(`All images failed: ${errorData.error}`);
+          } else {
+            toast.error(errorData.error || 'Failed to embed watermarks', { id: loadingToast });
+            setError(errorData.error || 'Failed to embed watermarks');
+          }
           setStatus('');
         }
       } else {

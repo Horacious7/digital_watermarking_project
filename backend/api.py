@@ -391,6 +391,14 @@ def embed_batch():
         elif 'private_key' in request.form:
             private_key_content = request.form.get('private_key').encode('utf-8')
 
+        # Check if public key is provided in request (needed for verification)
+        public_key_content = None
+        if 'public_key' in request.files:
+            public_key_file = request.files['public_key']
+            public_key_content = public_key_file.read()
+        elif 'public_key' in request.form:
+            public_key_content = request.form.get('public_key').encode('utf-8')
+
         # Prepare payload once (same for all images)
         message_bytes = message.encode('utf-8')
         message_bytes_with_terminator = message_bytes + b'\x00\x00\x00\x00'
@@ -471,14 +479,79 @@ def embed_batch():
                 embed_watermark(input_path, payload_bits, output_path, block_size=block_size)
                 temp_files.append(output_path)
 
-                results.append({
-                    'filename': filename,
-                    'success': True,
-                    'output_path': output_path,
-                    'watermarked_filename': f'watermarked_{filename}'
-                })
+                # AUTO-VERIFY: Check signature before adding to ZIP
+                try:
+                    # Extract watermark with known block size (skip auto-detection)
+                    verify_img = cv2.imread(output_path, cv2.IMREAD_COLOR)
+                    verify_blue = verify_img[:, :, 0].astype(np.float32)
+                    verify_coeffs2 = pywt.dwt2(verify_blue, 'haar')
+                    verify_cA, _ = verify_coeffs2
+                    verify_cA_h, verify_cA_w = verify_cA.shape
+                    verify_num_blocks = (verify_cA_h // block_size) * (verify_cA_w // block_size)
 
-                print(f"  ✅ {idx+1}/{len(files)}: {filename} embedded successfully")
+                    # Extract watermark
+                    extracted_bits = extract_watermark(output_path, verify_num_blocks, block_size=block_size)
+
+                    # Skip header (first 8 bits)
+                    if len(extracted_bits) > 8:
+                        extracted_bits = extracted_bits[8:]
+
+                    extracted_bytes = bits_to_bytes(extracted_bits)
+
+                    # Parse signature
+                    if len(extracted_bytes) >= 4:
+                        sig_len = int.from_bytes(extracted_bytes[0:4], 'big')
+                        if sig_len > 0 and sig_len <= len(extracted_bytes) - 4:
+                            extracted_signature = extracted_bytes[4:4+sig_len]
+                            extracted_message_bytes = extracted_bytes[4+sig_len:]
+
+                            # Find terminator
+                            terminator = b'\x00\x00\x00\x00'
+                            term_idx = extracted_message_bytes.find(terminator)
+                            if term_idx != -1:
+                                extracted_message_bytes = extracted_message_bytes[:term_idx]
+
+                            # Verify signature
+                            from crypto.verify import verify_signature_with_key_content
+                            is_valid = verify_signature_with_key_content(
+                                public_key_content if public_key_content else private_key_content,
+                                extracted_message_bytes,
+                                extracted_signature
+                            )
+
+                            if is_valid:
+                                # Signature valid - add to results
+                                results.append({
+                                    'filename': filename,
+                                    'success': True,
+                                    'output_path': output_path,
+                                    'watermarked_filename': f'watermarked_{filename}',
+                                    'verified': True
+                                })
+                                print(f"  ✅ {idx+1}/{len(files)}: {filename} - Embed OK, Verify OK")
+                            else:
+                                # Signature invalid - mark as failed
+                                results.append({
+                                    'filename': filename,
+                                    'success': False,
+                                    'error': f'Signature verification failed (block size {block_size}×{block_size} may be unreliable for this image)',
+                                    'verified': False
+                                })
+                                print(f"  ❌ {idx+1}/{len(files)}: {filename} - Signature verification failed")
+                        else:
+                            raise Exception("Invalid signature format")
+                    else:
+                        raise Exception("Extracted data too short")
+
+                except Exception as verify_error:
+                    # Verification failed - don't include in ZIP
+                    results.append({
+                        'filename': filename,
+                        'success': False,
+                        'error': f'Verification error: {str(verify_error)}',
+                        'verified': False
+                    })
+                    print(f"  ❌ {idx+1}/{len(files)}: {filename} - Verification error: {verify_error}")
 
             except Exception as e:
                 results.append({
@@ -488,15 +561,31 @@ def embed_batch():
                 })
                 print(f"  ❌ {idx+1}/{len(files)}: {file.filename if file else 'unknown'} - ERROR: {e}")
 
-        # Create a zip file with all watermarked images
+        # Create a zip file with all watermarked images that passed verification
         import zipfile
         from io import BytesIO
 
+        successful_results = [r for r in results if r['success']]
+        failed_results = [{'filename': r['filename'], 'error': r.get('error', 'Unknown error')} for r in results if not r['success']]
+
+        if len(successful_results) == 0:
+            # No images succeeded - return error with details
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
+
+            return jsonify({
+                'error': 'All images failed processing',
+                'total': len(files),
+                'successful': 0,
+                'failed': len(failed_results),
+                'failed_images': failed_results
+            }), 400
+
         zip_buffer = BytesIO()
         with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            for result in results:
-                if result['success']:
-                    zip_file.write(result['output_path'], result['watermarked_filename'])
+            for result in successful_results:
+                zip_file.write(result['output_path'], result['watermarked_filename'])
 
         zip_buffer.seek(0)
 
@@ -505,14 +594,28 @@ def embed_batch():
             if os.path.exists(temp_file):
                 os.remove(temp_file)
 
-        print(f"✅ Batch embed complete: {sum(1 for r in results if r['success'])}/{len(files)} successful")
+        print(f"✅ Batch embed complete: {len(successful_results)}/{len(files)} successful")
 
-        return send_file(
+        # If some failed, include failed_images in response header (as JSON string)
+        response = send_file(
             zip_buffer,
             mimetype='application/zip',
             as_attachment=True,
             download_name='watermarked_images.zip'
         )
+
+        # Add custom headers with batch statistics
+        response.headers['X-Batch-Total'] = str(len(files))
+        response.headers['X-Batch-Successful'] = str(len(successful_results))
+        response.headers['X-Batch-Failed'] = str(len(failed_results))
+        if failed_results:
+            import json
+            response.headers['X-Batch-Failed-Images'] = json.dumps(failed_results)
+
+        # CORS: Expose custom headers to frontend
+        response.headers['Access-Control-Expose-Headers'] = 'X-Batch-Total, X-Batch-Successful, X-Batch-Failed, X-Batch-Failed-Images'
+
+        return response
 
     except Exception as e:
         # Clean up on error
