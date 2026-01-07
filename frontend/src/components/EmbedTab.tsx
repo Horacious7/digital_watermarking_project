@@ -356,11 +356,23 @@ const EmbedTab: React.FC = () => {
             // Keep only failed images
             const failedFilenames = new Set(failedImages.map((f: any) => f.filename));
             const remainingImages = selectedImages.filter(img => failedFilenames.has(img.name));
-            const remainingUrls = previewUrls.filter((_, idx) => failedFilenames.has(selectedImages[idx].name));
+
+            // Revoke old preview URLs
+            previewUrls.forEach(url => URL.revokeObjectURL(url));
+
+            // Create new preview URLs for remaining images
+            const remainingUrls = remainingImages.map(file => URL.createObjectURL(file));
 
             setSelectedImages(remainingImages);
             setPreviewUrls(remainingUrls);
             setCurrentImageIndex(0);
+
+            // Recalculate capacity for first remaining image
+            if (remainingImages.length > 0) {
+              setTimeout(() => {
+                calculateCapacity(remainingImages[0], blockSize);
+              }, 0);
+            }
 
             // Show detailed toast with failures
             const failureDetails = failedImages.map((f: any) => `• ${f.filename}: ${f.error}`).join('\n');
