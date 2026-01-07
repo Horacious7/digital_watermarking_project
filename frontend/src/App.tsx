@@ -6,6 +6,7 @@ import { useTheme } from './hooks/useTheme';
 import logoLight from './logo-light.png';
 import logoDark from './logo-dark.png';
 import { Toaster } from 'react-hot-toast';
+import { ImagePenIcon, SearchIcon, SunIcon, MoonIcon } from './components/Icons';
 
 function App() {
   const [activeTab, setActiveTab] = useState<'embed' | 'verify'>('embed');
@@ -74,7 +75,7 @@ function App() {
               className="theme-toggle-btn"
               title={theme === 'light' ? 'Switch to dark mode' : 'Switch to light mode'}
             >
-              {theme === 'light' ? '🌙' : '☀️'}
+              {theme === 'light' ? <MoonIcon size={20} /> : <SunIcon size={20} />}
             </button>
           </div>
         </div>
@@ -86,13 +87,13 @@ function App() {
             className={`tab ${activeTab === 'embed' ? 'active' : ''}`}
             onClick={() => setActiveTab('embed')}
           >
-            📝 Embed Watermark
+            <ImagePenIcon size={18} /> Embed Watermark
           </button>
           <button
             className={`tab ${activeTab === 'verify' ? 'active' : ''}`}
             onClick={() => setActiveTab('verify')}
           >
-            🔍 Verify Watermark
+            <SearchIcon size={18} /> Verify Watermark
           </button>
         </div>
 

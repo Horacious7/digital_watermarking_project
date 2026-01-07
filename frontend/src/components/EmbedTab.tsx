@@ -1,6 +1,7 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import './EmbedTab.css';
 import toast from 'react-hot-toast';
+import { ImagePlusIcon, BulbIcon, ArrowDownIcon, FileLockIcon, AttentionIcon, HourglassIcon, CheckIcon, XMarkIcon } from './Icons';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -362,16 +363,18 @@ const EmbedTab: React.FC = () => {
 
         {dragActive ? (
           <div className="drop-zone-active">
-            <div className="drop-icon">📥</div>
+            <div className="drop-icon">
+              <ArrowDownIcon size={48} />
+            </div>
             <p className="drop-text">Drop images here...</p>
           </div>
         ) : (
           <>
             <button
-              className="btn-primary"
+              className="btn-primary upload-btn"
               onClick={() => fileInputRef.current?.click()}
             >
-              📁 Select Image(s)
+              <ImagePlusIcon size={18} /> Select Image(s)
             </button>
             <span className="drag-hint">or drag & drop images here</span>
           </>
@@ -456,7 +459,7 @@ const EmbedTab: React.FC = () => {
 
           {selectedImages.length > 1 && (
             <div className="keyboard-hint">
-              💡 <strong>Tip:</strong> Use ← → arrow keys to navigate between images
+              <BulbIcon size={16} /> <strong>Tip:</strong> Use ← → arrow keys to navigate between images
             </div>
           )}
 
@@ -496,8 +499,8 @@ const EmbedTab: React.FC = () => {
               <p>• <strong>Available Capacity:</strong> {capacity.capacity_bytes} bytes ({capacity.capacity_bits} bits)</p>
               <p className={capacityOk ? 'text-success' : 'text-error'}>
                 {capacityOk
-                  ? '✅ Message + signature fits safely in image!'
-                  : `❌ Need ${totalPayloadBytes - capacity.capacity_bytes} more bytes (reduce message or decrease block size)`}
+                  ? <><CheckIcon size={16} /> Message + signature fits safely in image!</>
+                  : <><XMarkIcon size={16} /> Need {totalPayloadBytes - capacity.capacity_bytes} more bytes (reduce message or decrease block size)</>}
               </p>
             </>
           )}
@@ -525,20 +528,26 @@ const EmbedTab: React.FC = () => {
         onClick={handleEmbed}
         disabled={loading || selectedImages.length === 0 || !message || !capacityOk}
       >
-        {loading ? '⏳ Embedding...' : selectedImages.length > 1 ? `🔐 Embed & Sign ${selectedImages.length} Images` : '🔐 Embed & Sign Watermark'}
+        {loading ? (
+          <><HourglassIcon size={18} /> Embedding...</>
+        ) : selectedImages.length > 1 ? (
+          <><FileLockIcon size={18} /> Embed & Sign {selectedImages.length} Images</>
+        ) : (
+          <><FileLockIcon size={18} /> Embed & Sign Watermark</>
+        )}
       </button>
 
       {status && <div className="status-success">{status}</div>}
       {error && <div className="status-error">❌ {error}</div>}
 
       <div className="info-box">
-        <p><strong>ℹ️ Important Information</strong></p>
+        <p><strong><AttentionIcon size={18} /> Important Information</strong></p>
         <p>
           This watermarking system works best with <strong>lossless image formats (PNG)</strong>.
           The watermark will be embedded in the DCT coefficients of the image.
         </p>
         <p>
-          <strong>⚠️ Note:</strong> Compression (JPEG, WebP) or sharing via social media
+          <strong>Note:</strong> Compression (JPEG, WebP) or sharing via social media
           (WhatsApp, Facebook, Instagram) will alter the embedded data. While the message
           may still be extractable, the cryptographic signature verification will likely fail.
         </p>

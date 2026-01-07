@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import './VerifyTab.css';
 import toast from 'react-hot-toast';
+import { ImagePlusIcon, BulbIcon, ArrowDownIcon, SearchIcon, CheckIcon, XMarkIcon, LockIcon, AttentionIcon, HourglassIcon, ChartIcon } from './Icons';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -289,16 +290,18 @@ const VerifyTab: React.FC = () => {
 
         {dragActive ? (
           <div className="drop-zone-active">
-            <div className="drop-icon">📥</div>
+            <div className="drop-icon">
+              <ArrowDownIcon size={48} />
+            </div>
             <p className="drop-text">Drop images here...</p>
           </div>
         ) : (
           <>
             <button
-              className="btn-primary"
+              className="btn-primary upload-btn"
               onClick={() => fileInputRef.current?.click()}
             >
-              📁 Select Watermarked Image(s)
+              <ImagePlusIcon size={18} /> Select Watermarked Image(s)
             </button>
             <span className="drag-hint">or drag & drop images here</span>
           </>
@@ -383,7 +386,7 @@ const VerifyTab: React.FC = () => {
 
           {selectedImages.length > 1 && (
             <div className="keyboard-hint">
-              💡 <strong>Tip:</strong> Use ← → arrow keys to navigate between images
+              <BulbIcon size={16} /> <strong>Tip:</strong> Use ← → arrow keys to navigate between images
             </div>
           )}
 
@@ -401,7 +404,13 @@ const VerifyTab: React.FC = () => {
         onClick={handleVerify}
         disabled={loading || selectedImages.length === 0}
       >
-        {loading ? '⏳ Verifying...' : selectedImages.length > 1 ? `🔍 Verify ${selectedImages.length} Images` : '🔍 Extract & Verify Watermark'}
+        {loading ? (
+          <><HourglassIcon size={18} /> Verifying...</>
+        ) : selectedImages.length > 1 ? (
+          <><SearchIcon size={18} /> Verify {selectedImages.length} Images</>
+        ) : (
+          <><SearchIcon size={18} /> Extract & Verify Watermark</>
+        )}
       </button>
 
       {error && <div className="status-error">❌ {error}</div>}
@@ -409,7 +418,7 @@ const VerifyTab: React.FC = () => {
       {batchResults && (
         <div className="batch-results">
           <div className="batch-summary">
-            <h2>📊 Batch Verification Results</h2>
+            <h2><ChartIcon size={24} /> Batch Verification Results</h2>
             <p><strong>Total Images:</strong> {batchResults.summary.total}</p>
             <p><strong>Successfully Processed:</strong> {batchResults.summary.successful}</p>
             <p><strong>Valid Signatures:</strong> {batchResults.summary.valid_signatures}</p>
@@ -422,7 +431,7 @@ const VerifyTab: React.FC = () => {
                 <div className="result-header">
                   <strong>{res.filename}</strong>
                   <span className={`status-badge ${res.valid ? 'valid' : 'invalid'}`}>
-                    {res.valid ? '✅ Valid' : res.success ? '⚠️ Invalid' : '❌ Error'}
+                    {res.valid ? <><CheckIcon size={16} /> Valid</> : res.success ? <><AttentionIcon size={16} /> Invalid</> : <><XMarkIcon size={16} /> Error</>}
                   </span>
                 </div>
                 {res.success && (
@@ -442,7 +451,7 @@ const VerifyTab: React.FC = () => {
       {result && (
         <div className={`result-section ${result.valid ? 'valid' : 'invalid'}`}>
           <div className="result-header">
-            <h2>{result.valid ? '✅ Signature Valid' : '❌ Signature Invalid'}</h2>
+            <h2>{result.valid ? <><CheckIcon size={28} /> Signature Valid</> : <><XMarkIcon size={28} /> Signature Invalid</>}</h2>
           </div>
 
           <div className="result-content">
@@ -456,12 +465,12 @@ const VerifyTab: React.FC = () => {
               <div className={`signature-status ${result.valid ? 'valid' : 'invalid'}`}>
                 {result.valid ? (
                   <>
-                    <span className="icon">🔒</span>
+                    <span className="icon"><LockIcon size={20} /></span>
                     <span>Cryptographically verified - message is authentic</span>
                   </>
                 ) : (
                   <>
-                    <span className="icon">⚠️</span>
+                    <span className="icon"><AttentionIcon size={20} /></span>
                     <span>Verification failed - message may be tampered</span>
                   </>
                 )}
@@ -481,7 +490,7 @@ const VerifyTab: React.FC = () => {
 
           {result.valid && (
             <div className="info-box">
-              <p><strong>ℹ️ What does this mean?</strong></p>
+              <p><strong><BulbIcon size={18} /> What does this mean?</strong></p>
               <p>The digital signature has been successfully verified using the public key.
                  This proves that the watermark was created by someone with access to the private key
                  and the message has not been altered since embedding.</p>
@@ -490,7 +499,7 @@ const VerifyTab: React.FC = () => {
 
           {!result.valid && (
             <div className="warning-box">
-              <p><strong>⚠️ Warning</strong></p>
+              <p><strong><AttentionIcon size={18} /> Warning</strong></p>
               <p>The signature verification failed. This could mean:</p>
               <ul>
                 <li>The image has been modified after watermarking</li>
@@ -499,7 +508,7 @@ const VerifyTab: React.FC = () => {
                 <li>This image was not watermarked with this system</li>
               </ul>
               <p className="info-note">
-                <strong>ℹ️ Note:</strong> This watermarking system is designed for lossless formats (PNG).
+                <strong><AttentionIcon size={16} /> Note:</strong> This watermarking system is designed for lossless formats (PNG).
                 Compression algorithms (JPEG, WebP) or social media platforms (WhatsApp, Facebook, Instagram)
                 will modify the DCT coefficients, making the signature verification fail even though
                 the message can still be extracted.

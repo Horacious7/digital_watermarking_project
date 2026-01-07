@@ -51,6 +51,13 @@
 .drop-icon {
   font-size: 3rem;
   animation: bounce 0.5s ease infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-icon svg {
+  color: var(--btn-primary-bg);
 }
 
 @keyframes bounce {
@@ -294,6 +301,14 @@
   border: 1px solid var(--warning-border);
   animation: fadeIn 0.5s ease;
   transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.keyboard-hint svg {
+  flex-shrink: 0;
 }
 
 .keyboard-hint:hover {
@@ -413,11 +428,27 @@
 .text-success {
   color: var(--success-text);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.text-success svg {
+  flex-shrink: 0;
+  color: #22c55e; /* Verde pentru check */
 }
 
 .text-error {
   color: var(--error-text);
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.text-error svg {
+  flex-shrink: 0;
+  color: #ef4444; /* Roșu pentru X */
 }
 
 .block-size-control {
@@ -528,6 +559,16 @@ small {
 .info-box:hover {
   box-shadow: var(--shadow-md);
   transform: translateX(4px);
+}
+
+.info-box strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-box svg {
+  flex-shrink: 0;
 }
 
 .info-box p {

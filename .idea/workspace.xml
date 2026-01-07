@@ -15,11 +15,34 @@
       <change afterPath="$PROJECT_DIR$/frontend/TOAST_SUCCESS_FIX.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/UI_ENHANCEMENTS.md" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/frontend/VISUAL_GUIDE.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/arrow-down-to-arc-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/attention-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/bulb-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/check-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/file-lock-alt-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/fingerprint-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/hourglass-half-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/image-pen-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/image-plus-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/image-square-check-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/key-alt-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/light-emergency-on-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/lock-alt-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/moon-stars-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/presentation-chart-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/search-alt-2-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/sun-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/trash-alt-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/unlock-alt-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/assets/icons/xmark-svgrepo-com.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/frontend/src/components/Icons.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/public/index.html" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/public/index.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/App.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/App.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/App.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -177,7 +200,7 @@
       <workItem from="1767615166782" duration="948000" />
       <workItem from="1767618409031" duration="10399000" />
       <workItem from="1767702986864" duration="2233000" />
-      <workItem from="1767733533176" duration="5023000" />
+      <workItem from="1767733533176" duration="11585000" />
     </task>
     <task id="LOCAL-00001" summary="Structura Initiala">
       <option name="closed" value="true" />
@@ -299,7 +322,15 @@
       <option name="project" value="LOCAL" />
       <updated>1767736131807</updated>
     </task>
-    <option name="localTasksCounter" value="16" />
+    <task id="LOCAL-00016" summary="Responsive to all the devices, it's dynamic now, works on mobile, ipad, whatever you want! :)">
+      <option name="closed" value="true" />
+      <created>1767738733717</created>
+      <option name="number" value="00016" />
+      <option name="presentableId" value="LOCAL-00016" />
+      <option name="project" value="LOCAL" />
+      <updated>1767738733717</updated>
+    </task>
+    <option name="localTasksCounter" value="17" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -336,7 +367,8 @@
     <MESSAGE value="bagat drag and drop, bagat x la carusel, rezolvat bugu de la x ul de la carusel si ce sa mai zic" />
     <MESSAGE value="frontend brrrr" />
     <MESSAGE value="frontend shooooo" />
-    <option name="LAST_COMMIT_MESSAGE" value="frontend shooooo" />
+    <MESSAGE value="Responsive to all the devices, it's dynamic now, works on mobile, ipad, whatever you want! :)" />
+    <option name="LAST_COMMIT_MESSAGE" value="Responsive to all the devices, it's dynamic now, works on mobile, ipad, whatever you want! :)" />
   </component>
   <component name="com.intellij.coverage.CoverageDataManagerImpl">
     <SUITE FILE_PATH="coverage/digital_watermarking_project$main.coverage" NAME="main Coverage Results" MODIFIED="1760794675270" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />

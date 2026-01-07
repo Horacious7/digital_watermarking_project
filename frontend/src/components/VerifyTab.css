@@ -51,6 +51,13 @@
 .drop-icon {
   font-size: 3rem;
   animation: bounce 0.5s ease infinite alternate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.drop-icon svg {
+  color: var(--btn-primary-bg);
 }
 
 @keyframes bounce {
@@ -297,6 +304,14 @@
   border: 1px solid var(--warning-border);
   animation: fadeIn 0.5s ease;
   transition: all var(--transition-normal);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.keyboard-hint svg {
+  flex-shrink: 0;
 }
 
 .keyboard-hint:hover {
@@ -388,6 +403,13 @@
 
 .batch-summary h2 {
   margin: 0 0 var(--space-4) 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.batch-summary h2 svg {
+  flex-shrink: 0;
 }
 
 .batch-summary p {
@@ -440,6 +462,13 @@
   border-radius: var(--radius-full);
   font-size: 0.9rem;
   font-weight: 600;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.status-badge svg {
+  flex-shrink: 0;
 }
 
 .status-badge.valid {
@@ -447,9 +476,17 @@
   color: var(--success-text);
 }
 
+.status-badge.valid svg {
+  color: #22c55e; /* Verde pentru check */
+}
+
 .status-badge.invalid {
   background: var(--error-bg);
   color: var(--error-text);
+}
+
+.status-badge.invalid svg {
+  color: #f59e0b; /* Portocaliu/galben pentru attention și roșu pentru X */
 }
 
 .batch-result-item .result-details {
@@ -631,6 +668,21 @@ small {
   font-size: 1.8rem;
   position: relative;
   z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.result-header h2 svg {
+  flex-shrink: 0;
+}
+
+.result-section.valid .result-header h2 svg {
+  color: white; /* Alb pentru contrast pe background verde */
+}
+
+.result-section.invalid .result-header h2 svg {
+  color: #ef4444; /* Roșu pentru X */
 }
 
 .result-content {
@@ -728,6 +780,18 @@ small {
 .warning-box {
   background: var(--warning-bg);
   border-left: 4px solid var(--warning-border);
+}
+
+.info-box strong,
+.warning-box strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.info-box svg,
+.warning-box svg {
+  flex-shrink: 0;
 }
 
 .info-box p,
