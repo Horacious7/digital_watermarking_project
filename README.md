@@ -651,15 +651,52 @@ Fields:
 
 ---
 
-## Intellectual Property
+## Intellectual Property and Licensing
 
 This project, including all source code, documentation, algorithms, and user interface designs, is the sole intellectual property of **Maier Horațiu-Gabriel**.
 
 **Copyright 2026 Maier Horațiu-Gabriel. All rights reserved.**
 
-**Academic Use:** This work is submitted as part of a bachelor's thesis in Computer Science. Any reproduction, distribution, or derivative works require explicit written permission from the author.
+### Current License
 
-**GitHub:** https://github.com/Horacious7/digital_watermarking_project
+This software is currently under a **proprietary license** with selective permissions. The code is publicly available with specific usage rights.
+
+**Permitted Uses (No Permission Required):**
+- Educational purposes: Learning, teaching, academic research
+- Personal, non-commercial use and experimentation
+- Viewing, studying, and analyzing the source code
+- Academic citations and references with proper attribution
+
+**Prohibited Without Written Permission:**
+- Commercial use or deployment in business environments
+- Distribution or redistribution of the software
+- Integration into commercial products or services
+- Use by businesses or organizations for any commercial purpose
+
+This approach encourages learning and experimentation while protecting commercial interests.
+
+### Future Licensing Plans
+
+The author is considering transitioning to a **dual-licensing model** after thesis defense:
+
+**Option 1: Open Source (GPL v3)**
+- Free for academic, personal, and non-commercial use
+- Copyleft: Derivative works must also be open source
+- Contributions from community welcome
+
+**Option 2: Commercial License**
+- For businesses integrating TRACE into commercial products
+- Custom terms and pricing available
+- Technical support and customization options
+
+### Contact
+
+For licensing inquiries, collaboration opportunities, or permission requests:
+- **Author:** Maier Horațiu-Gabriel
+- **GitHub:** https://github.com/Horacious7/digital_watermarking_project
+- **Project:** TRACE - Digital Image Watermarking Platform
+
+All licensing decisions and terms are subject to change at the sole discretion of the author.
 
 ---
 
