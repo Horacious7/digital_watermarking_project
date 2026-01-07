@@ -989,3 +989,47 @@ small {
   }
 }
 
+/* Extra small screens (Galaxy Fold, etc.) */
+@media (max-width: 380px) {
+  .upload-btn,
+  .verify-btn {
+    padding: 0.7rem 0.5rem;
+    font-size: 0.8rem;
+    gap: 0.3rem;
+  }
+
+  .upload-btn svg,
+  .verify-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .drag-hint {
+    font-size: 0.7rem;
+  }
+
+  .filename {
+    font-size: 0.75rem;
+  }
+
+  .upload-section {
+    padding: var(--space-4);
+    min-height: 100px;
+  }
+
+  .carousel-nav-btn {
+    width: 32px;
+    height: 32px;
+  }
+
+  .carousel-nav-btn svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .thumbnail {
+    width: 60px;
+    height: 60px;
+  }
+}
+
