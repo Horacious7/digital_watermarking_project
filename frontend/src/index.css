@@ -103,7 +103,7 @@ body {
   -moz-osx-font-smoothing: grayscale;
   background: var(--bg-primary);
   color: var(--text-primary);
-  transition: background-color var(--transition-normal), color var(--transition-normal);
+  transition: background-color var(--transition-normal);
 }
 
 code {
@@ -111,11 +111,34 @@ code {
     monospace;
 }
 
-/* Smooth transitions for theme changes */
-* {
+/* Smooth transitions for theme changes - applied to specific elements only */
+body,
+.App,
+.App-header,
+.app-body,
+input,
+textarea,
+select,
+.tab-button,
+.btn-upload,
+.btn-verify,
+.btn-batch-verify,
+.info-box,
+.watermark-preview-container {
   transition: background-color var(--transition-normal),
-              border-color var(--transition-normal),
-              color var(--transition-normal);
+              border-color var(--transition-normal);
+}
+
+
+/* Remove transitions from SVG icons for instant theme change */
+svg,
+svg path,
+svg circle,
+svg rect,
+svg line,
+svg polyline,
+svg polygon {
+  transition: none !important;
 }
 
 /* Keyframe Animations */

@@ -49,6 +49,29 @@ SIGNATURE_OVERHEAD = SIGNATURE_LENGTH_FIELD + RSA_SIGNATURE_SIZE + MESSAGE_TERMI
 SAFETY_MARGIN_BYTES = 1  # Extra byte for safe extraction
 TOTAL_OVERHEAD = SIGNATURE_OVERHEAD + SAFETY_MARGIN_BYTES  # 265 bytes
 
+def get_safety_margin_bits(block_size):
+    """
+    Get adaptive safety margin based on block size reliability.
+
+    Based on extensive testing on native PNG images:
+    - Safe block sizes (4,6,8,9,13): 100% reliable → minimal margin
+    - Warning block sizes (10,12,15): 80-90% reliable → moderate margin
+    - Danger block sizes (7,11,14,16,17,18): <80% reliable → large margin
+
+    Returns safety margin in bits.
+    """
+    # Safe block sizes (100% tested) - minimal margin
+    if block_size in [4, 6, 8, 9, 13]:
+        return 32  # 4 bytes = header (8) + extraction safety (8) + padding (16)
+
+    # Warning block sizes (80-90% reliable) - moderate margin
+    elif block_size in [10, 12, 15]:
+        return 64  # 8 bytes = safe + extra buffer for edge cases
+
+    # Danger/unknown block sizes (<80% reliable) - large margin
+    else:
+        return 96  # 12 bytes = warning + extra protection for unstable sizes
+
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
@@ -92,12 +115,17 @@ def calculate_capacity():
         cA_h, cA_w = cA.shape
         num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
+        # Adaptive safety margin based on block size reliability
+        safety_margin = get_safety_margin_bits(block_size)
+        # Embed requires: len(payload_bits) + 8 (header) + safety_margin <= num_blocks
+        usable_capacity_bits = max(0, num_blocks - safety_margin)
+
         # Clean up
         os.remove(filepath)
 
         return jsonify({
-            'capacity_bits': num_blocks,
-            'capacity_bytes': num_blocks // 8,
+            'capacity_bits': usable_capacity_bits,
+            'capacity_bytes': usable_capacity_bits // 8,
             'image_size': {'width': img.shape[1], 'height': img.shape[0]},
             'block_size': block_size,
             'signature_overhead_bytes': TOTAL_OVERHEAD  # Include signature overhead + safety margin
@@ -125,6 +153,14 @@ def embed():
         return jsonify({'error': 'No message provided'}), 400
 
     try:
+        # Check if private key is provided in request
+        private_key_content = None
+        if 'private_key' in request.files:
+            private_key_file = request.files['private_key']
+            private_key_content = private_key_file.read()
+        elif 'private_key' in request.form:
+            private_key_content = request.form.get('private_key').encode('utf-8')
+
         # Save input file with unique name
         filename = secure_filename(file.filename)
         unique_id = uuid.uuid4()
@@ -136,7 +172,16 @@ def embed():
         # Add 4 null bytes as terminator to mark end of message
         message_bytes_with_terminator = message_bytes + b'\x00\x00\x00\x00'
 
-        signature = sign_hash(PRIVATE_KEY, message_bytes)  # Sign ONLY the message, not the terminator
+        # Require private key to be provided (no fallback to default)
+        if not private_key_content:
+            os.remove(input_path)
+            return jsonify({
+                'error': 'Private key is required for signing. Please upload a private key in the Key Management section.'
+            }), 400
+
+        from crypto.sign import sign_hash_with_key_content
+        signature = sign_hash_with_key_content(private_key_content, message_bytes)
+
         sig_len_bytes = len(signature).to_bytes(4, 'big')
         payload = sig_len_bytes + signature + message_bytes_with_terminator
         payload_bits = bytes_to_bits(payload)
@@ -149,8 +194,9 @@ def embed():
         cA_h, cA_w = cA.shape
         num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
-        # Check capacity with safety margin (need at least 8 extra bits for safe extraction)
-        required_bits = len(payload_bits) + 8  # Add 8-bit safety margin
+        # Check capacity with adaptive safety margin based on block size reliability
+        safety_margin = get_safety_margin_bits(block_size)
+        required_bits = len(payload_bits) + safety_margin
 
         if required_bits > num_blocks:
             os.remove(input_path)
@@ -181,6 +227,8 @@ def embed():
             os.remove(input_path)
         if 'output_path' in locals() and os.path.exists(output_path):
             os.remove(output_path)
+
+
         return jsonify({'error': f'Error embedding watermark: {str(e)}'}), 500
 
 @app.route('/api/verify', methods=['POST'])
@@ -197,6 +245,14 @@ def verify():
     block_size_param = request.form.get('block_size', None)
 
     try:
+        # Check if public key is provided in request
+        public_key_content = None
+        if 'public_key' in request.files:
+            public_key_file = request.files['public_key']
+            public_key_content = public_key_file.read()
+        elif 'public_key' in request.form:
+            public_key_content = request.form.get('public_key').encode('utf-8')
+
         # Save file with unique name
         filename = secure_filename(file.filename)
         unique_filename = f"{uuid.uuid4()}_{filename}"
@@ -280,8 +336,15 @@ def verify():
         except UnicodeDecodeError:
             message = message_bytes_clean.decode('utf-8', errors='ignore')
 
-        # Verify signature using the clean message bytes
-        is_valid = verify_signature(PUBLIC_KEY, message_bytes_clean, signature)
+        # Require public key to be provided (no fallback to default)
+        if not public_key_content:
+            os.remove(filepath)
+            return jsonify({
+                'error': 'Public key is required for verification. Please upload a public key in the Key Management section.'
+            }), 400
+
+        from crypto.verify import verify_signature_with_key_content
+        is_valid = verify_signature_with_key_content(public_key_content, message_bytes_clean, signature)
 
         # Clean up
         os.remove(filepath)
@@ -320,10 +383,26 @@ def embed_batch():
     temp_files = []
 
     try:
+        # Check if private key is provided in request
+        private_key_content = None
+        if 'private_key' in request.files:
+            private_key_file = request.files['private_key']
+            private_key_content = private_key_file.read()
+        elif 'private_key' in request.form:
+            private_key_content = request.form.get('private_key').encode('utf-8')
+
         # Prepare payload once (same for all images)
         message_bytes = message.encode('utf-8')
         message_bytes_with_terminator = message_bytes + b'\x00\x00\x00\x00'
-        signature = sign_hash(PRIVATE_KEY, message_bytes)
+
+        # Require private key to be provided (no fallback to default)
+        if not private_key_content:
+            return jsonify({
+                'error': 'Private key is required for signing. Please upload a private key in the Key Management section.'
+            }), 400
+
+        from crypto.sign import sign_hash_with_key_content
+        signature = sign_hash_with_key_content(private_key_content, message_bytes)
 
         # Store for debugging
         global _last_signature, _last_message
@@ -374,8 +453,9 @@ def embed_batch():
                 cA_h, cA_w = cA.shape
                 num_blocks = (cA_h // block_size) * (cA_w // block_size)
 
-                # Check capacity with safety margin
-                required_bits = len(payload_bits) + 8  # Add 8-bit safety margin
+                # Check capacity with adaptive safety margin based on block size reliability
+                safety_margin = get_safety_margin_bits(block_size)
+                required_bits = len(payload_bits) + safety_margin
 
                 if required_bits > num_blocks:
                     results.append({
@@ -458,6 +538,14 @@ def verify_batch():
     temp_files = []
 
     try:
+        # Check if public key is provided in request
+        public_key_content = None
+        if 'public_key' in request.files:
+            public_key_file = request.files['public_key']
+            public_key_content = public_key_file.read()
+        elif 'public_key' in request.form:
+            public_key_content = request.form.get('public_key').encode('utf-8')
+
         for idx, file in enumerate(files):
             if not file or file.filename == '' or not allowed_file(file.filename):
                 results.append({
@@ -559,8 +647,17 @@ def verify_batch():
                 except UnicodeDecodeError:
                     message = message_bytes_clean.decode('utf-8', errors='ignore')
 
-                # Verify signature
-                is_valid = verify_signature(PUBLIC_KEY, message_bytes_clean, signature)
+                # Require public key to be provided (no fallback to default)
+                if not public_key_content:
+                    results.append({
+                        'filename': filename,
+                        'success': False,
+                        'error': 'Public key is required for verification'
+                    })
+                    continue
+
+                from crypto.verify import verify_signature_with_key_content
+                is_valid = verify_signature_with_key_content(public_key_content, message_bytes_clean, signature)
 
                 results.append({
                     'filename': filename,
@@ -607,9 +704,100 @@ def verify_batch():
         return jsonify({'error': f'Batch processing failed: {str(e)}'}), 500
 
 
-if __name__ == '__main__':
-    # Ensure keys exist
-    if not os.path.exists(PRIVATE_KEY) or not os.path.exists(PUBLIC_KEY):
-        print("Warning: Cryptographic keys not found. Please generate them first.")
+@app.route('/api/keys/generate', methods=['POST'])
+def generate_keys():
+    """Generate new RSA key pair and return as downloadable ZIP"""
+    try:
+        from crypto.keys import generate_rsa_keys
 
+        # Create temporary directory for keys
+        temp_dir = tempfile.mkdtemp()
+        private_key_path = os.path.join(temp_dir, 'private.pem')
+        public_key_path = os.path.join(temp_dir, 'public.pem')
+
+        # Generate keys
+        generate_rsa_keys(private_key_path, public_key_path, key_size=2048)
+
+        # Create ZIP file in memory
+        zip_buffer = BytesIO()
+        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+            zip_file.write(private_key_path, 'private.pem')
+            zip_file.write(public_key_path, 'public.pem')
+
+        # Clean up temp files
+        os.remove(private_key_path)
+        os.remove(public_key_path)
+        os.rmdir(temp_dir)
+
+        # Send ZIP file
+        zip_buffer.seek(0)
+        return send_file(
+            zip_buffer,
+            mimetype='application/zip',
+            as_attachment=True,
+            download_name='trace_rsa_keys.zip'
+        )
+
+    except Exception as e:
+        return jsonify({'error': f'Key generation failed: {str(e)}'}), 500
+
+
+@app.route('/api/keys/validate', methods=['POST'])
+def validate_keys():
+    """Validate uploaded RSA keys"""
+    try:
+        if 'private_key' not in request.files and 'public_key' not in request.files:
+            return jsonify({'error': 'No key files provided'}), 400
+
+        result = {'valid': True, 'errors': []}
+
+        # Validate private key if provided
+        if 'private_key' in request.files:
+            private_file = request.files['private_key']
+            private_content = private_file.read().decode('utf-8')
+
+            if not ('BEGIN RSA PRIVATE KEY' in private_content or 'BEGIN PRIVATE KEY' in private_content):
+                result['valid'] = False
+                result['errors'].append('Invalid private key format. Expected PEM format.')
+            else:
+                # Try to load it
+                try:
+                    from cryptography.hazmat.primitives import serialization
+                    serialization.load_pem_private_key(
+                        private_content.encode('utf-8'),
+                        password=None
+                    )
+                except Exception as e:
+                    result['valid'] = False
+                    result['errors'].append(f'Failed to parse private key: {str(e)}')
+
+        # Validate public key if provided
+        if 'public_key' in request.files:
+            public_file = request.files['public_key']
+            public_content = public_file.read().decode('utf-8')
+
+            if not ('BEGIN PUBLIC KEY' in public_content or 'BEGIN RSA PUBLIC KEY' in public_content):
+                result['valid'] = False
+                result['errors'].append('Invalid public key format. Expected PEM format.')
+            else:
+                # Try to load it
+                try:
+                    from cryptography.hazmat.primitives import serialization
+                    serialization.load_pem_public_key(public_content.encode('utf-8'))
+                except Exception as e:
+                    result['valid'] = False
+                    result['errors'].append(f'Failed to parse public key: {str(e)}')
+
+        if result['valid']:
+            return jsonify({'valid': True, 'message': 'Keys are valid'}), 200
+        else:
+            return jsonify(result), 400
+
+    except Exception as e:
+        return jsonify({'error': f'Key validation failed: {str(e)}'}), 500
+
+
+if __name__ == '__main__':
+    print("Digital Watermarking API Server")
+    print("Users must upload their own RSA keys through the frontend Key Management section.")
     app.run(debug=True, host='0.0.0.0', port=5000)

@@ -91,7 +91,16 @@ def extract_watermark(image_path: str, n_bits: int, block_size: int = 8) -> str:
     n_bits = min(available_blocks, n_bits)
 
     bits = []
-    u, v = 3, 3
+    # Choose same mid-frequency coefficient position as embed
+    # Position depends on block size for optimal robustness
+    if block_size <= 4:
+        u, v = 1, 2  # For small blocks, use lower frequency
+    elif block_size >= 10:
+        u, v = 4, 4  # For large blocks, use slightly higher frequency
+    else:
+        u, v = 3, 3  # Standard mid-frequency for 6x6, 7x7, 8x8, 9x9
+
+    # Ensure coefficients are within block bounds
     u = min(u, block_size-1)
     v = min(v, block_size-1)
 

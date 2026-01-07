@@ -1,0 +1,422 @@
+/* Key Manager Component Styles */
+
+/* Disable all transitions on key manager to prevent icon color delays */
+.key-manager,
+.key-manager *,
+.key-manager *::before,
+.key-manager *::after {
+  transition: none !important;
+}
+
+/* Re-enable specific transitions for interactive elements - only non-color properties */
+.key-manager-header {
+  transition: background-color 0.2s ease !important;
+}
+
+.expand-toggle {
+  transition: transform 0.2s ease !important;
+}
+
+.btn-generate-keys,
+.btn-clear-keys,
+.btn-upload-key,
+.btn-download-key {
+  transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease, background-color 0.2s ease !important;
+}
+
+.key-help-text,
+.key-warning,
+.info-alert {
+  transition: box-shadow 0.3s ease, transform 0.3s ease !important;
+}
+
+.key-manager {
+  background: var(--card-bg);
+  border-radius: 12px;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 0 20px var(--glow-color);
+  overflow: hidden;
+}
+
+.key-manager-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  cursor: pointer;
+  background: var(--card-bg);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.key-manager-header:hover {
+  background: var(--hover-bg);
+}
+
+.key-manager-title {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--text-color);
+}
+
+.key-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: 12px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.key-status-badge.complete {
+  background: var(--success-bg);
+  color: var(--success-color);
+}
+
+.key-status-badge.partial {
+  background: #FEF3C7;
+  color: #D97706;
+}
+
+.key-status-badge.empty {
+  background: var(--error-bg);
+  color: var(--error-color);
+}
+
+[data-theme='dark'] .key-status-badge.partial {
+  background: #78350F;
+  color: #FCD34D;
+}
+
+.expand-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.25rem;
+  cursor: pointer;
+  padding: 0.25rem;
+}
+
+.expand-toggle:hover {
+  transform: scale(1.1);
+}
+
+.key-manager-content {
+  padding: 1.5rem;
+}
+
+.key-manager-info {
+  margin-bottom: 1.5rem;
+}
+
+.info-alert {
+  display: flex;
+  gap: 0.75rem;
+  padding: var(--space-6);
+  background: var(--bg-secondary);
+  border-left: 4px solid var(--btn-primary-bg);
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  animation: fadeIn 0.6s ease;
+}
+
+.info-alert:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.key-warning {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: var(--space-6);
+  background: var(--error-bg);
+  border-left: 4px solid var(--error-color);
+  border-radius: var(--radius-md);
+  color: var(--error-color);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-bottom: 1.5rem;
+  animation: fadeIn 0.6s ease;
+}
+
+.key-warning:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.key-actions {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+
+.btn-generate-keys,
+.btn-clear-keys,
+.btn-upload-key,
+.btn-download-key {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.btn-generate-keys {
+  background: var(--btn-primary-bg);
+  color: var(--text-on-dark);
+  box-shadow: 0 0 15px rgba(39, 52, 105, 0.25);
+}
+
+.btn-generate-keys:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(39, 52, 105, 0.4);
+}
+
+.btn-generate-keys:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+[data-theme='dark'] .btn-generate-keys {
+  background: var(--btn-primary-bg);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px rgba(214, 198, 255, 0.25);
+}
+
+[data-theme='dark'] .btn-generate-keys:hover:not(:disabled) {
+  box-shadow: 0 0 20px rgba(214, 198, 255, 0.4);
+}
+
+.btn-clear-keys {
+  background: var(--error-color);
+  color: white;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+}
+
+.btn-clear-keys:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.key-upload-section {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-bottom: 1.5rem;
+}
+
+.key-upload-item {
+  padding: 1rem;
+  background: var(--section-bg);
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+}
+
+.key-upload-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.75rem;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.key-loaded-indicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  margin-left: auto;
+  padding: 0.25rem 0.5rem;
+  background: var(--success-bg);
+  color: var(--success-color);
+  border-radius: 8px;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+.key-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.key-fingerprint {
+  font-family: 'Courier New', monospace;
+  font-size: 0.85rem;
+  padding: 0.5rem;
+  background: var(--hover-bg);
+  border-radius: 4px;
+  color: var(--text-secondary);
+  word-break: break-all;
+}
+
+.btn-upload-key {
+  background: var(--btn-primary-bg);
+  color: var(--text-on-dark);
+  width: 100%;
+  justify-content: center;
+  box-shadow: 0 0 15px rgba(39, 52, 105, 0.25);
+  font-weight: 600;
+  border-radius: 8px;
+}
+
+.btn-upload-key:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 20px rgba(39, 52, 105, 0.4);
+}
+
+[data-theme='dark'] .btn-upload-key {
+  background: var(--btn-primary-bg);
+  color: var(--bg-primary);
+  box-shadow: 0 0 15px rgba(214, 198, 255, 0.25);
+}
+
+[data-theme='dark'] .btn-upload-key:hover {
+  box-shadow: 0 0 20px rgba(214, 198, 255, 0.4);
+}
+
+.btn-download-key {
+  background: var(--btn-primary-bg);
+  color: var(--text-on-dark);
+  font-size: 0.85rem;
+  padding: 0.5rem 1rem;
+  box-shadow: 0 0 10px rgba(39, 52, 105, 0.2);
+}
+
+.btn-download-key:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 0 15px rgba(39, 52, 105, 0.35);
+}
+
+[data-theme='dark'] .btn-download-key {
+  background: var(--btn-primary-bg);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px rgba(214, 198, 255, 0.2);
+}
+
+[data-theme='dark'] .btn-download-key:hover {
+  box-shadow: 0 0 15px rgba(214, 198, 255, 0.35);
+}
+
+.key-actions-inline {
+  display: flex;
+  gap: 0.5rem;
+  align-items: stretch;
+  width: 100%;
+}
+
+.key-actions-inline .btn-download-key {
+  flex: 1;
+  justify-content: center;
+}
+
+.btn-delete-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 0.75rem;
+  border: none;
+  border-radius: 8px;
+  background: var(--error-color);
+  color: white;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(220, 53, 69, 0.3);
+  flex-shrink: 0;
+}
+
+.btn-delete-key:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(220, 53, 69, 0.4);
+}
+
+.key-help-text {
+  padding: var(--space-6);
+  background: var(--bg-secondary);
+  border-radius: var(--radius-md);
+  border-left: 4px solid var(--btn-primary-bg);
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: var(--text-primary);
+  animation: fadeIn 0.6s ease;
+}
+
+.key-help-text:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateX(4px);
+}
+
+.key-help-text p {
+  margin: var(--space-2) 0;
+}
+
+.key-help-text p:first-child {
+  margin-top: 0;
+  font-size: 1rem;
+}
+
+.key-help-text p:last-child {
+  margin-bottom: 0;
+}
+
+.key-help-text strong {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .key-upload-section {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .key-actions {
+    flex-direction: column;
+  }
+
+  .btn-generate-keys,
+  .btn-clear-keys {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .key-manager-content {
+    padding: 1rem;
+  }
+}
+
+/* Theme-specific colors */
+:root {
+  --info-bg: rgba(39, 52, 105, 0.1);
+  --section-bg: rgba(0, 0, 0, 0.02);
+  --hover-bg: rgba(0, 0, 0, 0.05);
+  --success-bg: rgba(40, 167, 69, 0.1);
+  --success-color: #28a745;
+  --error-bg: rgba(220, 53, 69, 0.1);
+  --error-color: #dc3545;
+  --secondary-color: #6c757d;
+}
+
+[data-theme='dark'] {
+  --info-bg: rgba(228, 217, 255, 0.1);
+  --section-bg: rgba(255, 255, 255, 0.05);
+  --hover-bg: rgba(255, 255, 255, 0.08);
+  --success-bg: rgba(40, 167, 69, 0.2);
+  --success-color: #4ade80;
+  --error-bg: rgba(220, 53, 69, 0.2);
+  --error-color: #f87171;
+  --secondary-color: #94a3b8;
+}
+

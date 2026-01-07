@@ -2,6 +2,8 @@ import React, { useState, useRef, useEffect } from 'react';
 import './VerifyTab.css';
 import toast from 'react-hot-toast';
 import { ImagePlusIcon, BulbIcon, ArrowDownIcon, SearchIcon, CheckIcon, XMarkIcon, LockIcon, AttentionIcon, HourglassIcon, ChartIcon } from './Icons';
+import KeyManager from './KeyManager';
+import { getPublicKey } from '../services/keyManager';
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
@@ -206,6 +208,12 @@ const VerifyTab: React.FC = () => {
     try {
       const formData = new FormData();
 
+      // Add public key if available (optional for verify)
+      const publicKey = getPublicKey();
+      if (publicKey) {
+        formData.append('public_key', publicKey);
+      }
+
       if (isBatch) {
         // Batch verification
         selectedImages.forEach(img => {
@@ -272,6 +280,8 @@ const VerifyTab: React.FC = () => {
 
   return (
     <div className="verify-tab">
+      <KeyManager requirePublicKey={false} />
+
       <div
         className={`upload-section ${dragActive ? 'drag-active' : ''}`}
         onDragEnter={handleDragIn}

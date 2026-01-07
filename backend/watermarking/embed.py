@@ -45,6 +45,14 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     - First 8 bits encode block_size for auto-detection during extraction.
     - Inverse DCT per block, unpad, inverse DWT to reconstruct blue channel, save image.
     """
+    # Increase magnitude for larger block sizes to prevent rounding errors
+    # Larger blocks have smaller DCT coefficients, need stronger embedding
+    # Note: 7x7 has fundamental issues on some images - see BLOCK_SIZE_7x7_ISSUE.md
+    if block_size >= 9:
+        mag = 200.0  # Stronger for 9x9, 10x10, etc.
+    elif block_size >= 6:
+        mag = 175.0  # Medium for 6x6, 7x7, 8x8
+    # else: use default mag (150.0)
     img = load_image(image_path)  # float32
     color = img.ndim == 3
     if color:
@@ -76,7 +84,15 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     embedded = padded.copy()
     bit_idx = 0
     # Choose a mid-frequency coefficient position (u,v) inside block
-    u, v = 3, 3  # zero-based index; adjust if block_size < 4
+    # Position depends on block size for optimal robustness
+    if block_size <= 4:
+        u, v = 1, 2  # For small blocks, use lower frequency
+    elif block_size >= 10:
+        u, v = 4, 4  # For large blocks, use slightly higher frequency
+    else:
+        u, v = 3, 3  # Standard mid-frequency for 6x6, 7x7, 8x8, 9x9
+
+    # Ensure coefficients are within block bounds
     u = min(u, block_size-1)
     v = min(v, block_size-1)
 
@@ -105,6 +121,7 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     coeffs2_emb = (cA_emb, (cH, cV, cD))
     watermarked_blue = pywt.idwt2(coeffs2_emb, 'haar')
     # Match original shape (dwt/idwt may change shape slightly)
+
     watermarked_blue = watermarked_blue[:blue.shape[0], :blue.shape[1]]
 
     # Assign back and save

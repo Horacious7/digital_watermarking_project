@@ -1,9 +1,29 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import './EmbedTab.css';
 import toast from 'react-hot-toast';
 import { ImagePlusIcon, BulbIcon, ArrowDownIcon, FileLockIcon, AttentionIcon, HourglassIcon, CheckIcon, XMarkIcon } from './Icons';
+import KeyManager from './KeyManager';
+import { getPrivateKey, getPublicKey, hasPrivateKey } from '../services/keyManager';
 
 const API_BASE_URL = 'http://localhost:5000/api';
+
+// Block size reliability categories based on extensive testing on 8 native PNG images
+const SAFE_BLOCK_SIZES = [4, 6, 8, 9, 13]; // 100% reliable
+const WARNING_BLOCK_SIZES = [10, 12, 15]; // 80-90% reliable
+const DANGER_BLOCK_SIZES = [7, 11, 14, 16, 17, 18]; // <80% reliable
+
+const getBlockSizeStatus = (bs: number): { color: string; label: string; cssClass: string } => {
+  if (SAFE_BLOCK_SIZES.includes(bs)) {
+    return { color: '#4ade80', label: 'Highly Reliable', cssClass: 'block-size-safe' };
+  }
+  if (WARNING_BLOCK_SIZES.includes(bs)) {
+    return { color: '#fbbf24', label: 'Moderately Reliable', cssClass: 'block-size-warning' };
+  }
+  if (DANGER_BLOCK_SIZES.includes(bs)) {
+    return { color: '#f87171', label: 'May Be Unreliable', cssClass: 'block-size-danger' };
+  }
+  return { color: '#94a3b8', label: 'Unknown Reliability', cssClass: 'block-size-unknown' };
+};
 
 interface CapacityInfo {
   capacity_bits: number;
@@ -26,6 +46,16 @@ const EmbedTab: React.FC = () => {
   const [dragActive, setDragActive] = useState<boolean>(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
   const debounceTimerRef = useRef<NodeJS.Timeout | null>(null);
+  const [privateKeyAvailable, setPrivateKeyAvailable] = useState<boolean>(false);
+
+  // Check for private key on mount and when keys change
+  useEffect(() => {
+    setPrivateKeyAvailable(hasPrivateKey());
+  }, []);
+
+  const handleKeysChanged = () => {
+    setPrivateKeyAvailable(hasPrivateKey());
+  };
 
   // Process files (used by both file input and drag & drop)
   const processFiles = async (files: File[]) => {
@@ -245,6 +275,13 @@ const EmbedTab: React.FC = () => {
       return;
     }
 
+    // Check if private key is loaded
+    const privateKey = getPrivateKey();
+    if (!privateKey) {
+      toast.error('Please upload a private key in the Key Management section');
+      return;
+    }
+
     setLoading(true);
     setError('');
 
@@ -257,6 +294,9 @@ const EmbedTab: React.FC = () => {
 
     try {
       const formData = new FormData();
+
+      // Add private key to form data
+      formData.append('private_key', privateKey);
 
       if (isBatch) {
         // Batch processing
@@ -306,21 +346,86 @@ const EmbedTab: React.FC = () => {
 
         if (response.ok) {
           const blob = await response.blob();
-          const url = window.URL.createObjectURL(blob);
-          const a = document.createElement('a');
-          a.href = url;
-          a.download = `watermarked_${selectedImages[0].name}`;
-          document.body.appendChild(a);
-          a.click();
-          window.URL.revokeObjectURL(url);
-          document.body.removeChild(a);
 
-          toast.success('Watermark embedded successfully! File downloaded.', {
-            id: loadingToast,
-            duration: 5000,
-          });
-          setStatus('');
-          setError('');
+          // AUTO-VERIFY: Test signature before downloading
+          toast.loading('Verifying signature...', { id: loadingToast });
+
+          const publicKey = getPublicKey();
+          const verifyFormData = new FormData();
+          verifyFormData.append('image', blob, 'watermarked.png');
+          verifyFormData.append('public_key', publicKey || ''); // Use public key for verification
+          verifyFormData.append('block_size', blockSize.toString()); // Skip auto-detection by providing block size
+
+          try {
+            const verifyResponse = await fetch(`${API_BASE_URL}/verify`, {
+              method: 'POST',
+              body: verifyFormData,
+            });
+
+            if (verifyResponse.ok) {
+              const verifyData = await verifyResponse.json();
+
+              if (verifyData.valid) {
+                // ✅ Signature valid - proceed with download
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `watermarked_${selectedImages[0].name}`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+
+                toast.success('Watermark embedded & signature verified! File downloaded.', {
+                  id: loadingToast,
+                  duration: 5000,
+                });
+                setStatus('');
+                setError('');
+              } else {
+                // ❌ Signature invalid - don't download
+                const statusText = getBlockSizeStatus(blockSize);
+                toast.error(
+                  `Signature verification failed with block size ${blockSize}×${blockSize}. ` +
+                  `This block size is "${statusText.label}". ` +
+                  `Try using a highly reliable block size.`,
+                  { id: loadingToast, duration: 8000 }
+                );
+                setError(`Signature verification failed. Block size ${blockSize}×${blockSize} may be unreliable for this image.`);
+              }
+            } else {
+              // Verification request failed - still download but warn
+              const url = window.URL.createObjectURL(blob);
+              const a = document.createElement('a');
+              a.href = url;
+              a.download = `watermarked_${selectedImages[0].name}`;
+              document.body.appendChild(a);
+              a.click();
+              window.URL.revokeObjectURL(url);
+              document.body.removeChild(a);
+
+              toast.success('Watermark embedded (verification skipped). File downloaded.', {
+                id: loadingToast,
+                duration: 5000,
+              });
+            }
+          } catch (verifyErr) {
+            // Verification error - still download but warn
+            console.error('Verification error:', verifyErr);
+            const url = window.URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `watermarked_${selectedImages[0].name}`;
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(a);
+
+            toast.success('Watermark embedded (verification skipped). File downloaded.', {
+              id: loadingToast,
+              duration: 5000,
+            });
+          }
         } else {
           const errorData = await response.json();
           setError(errorData.error || 'Failed to embed watermark');
@@ -336,15 +441,18 @@ const EmbedTab: React.FC = () => {
   };
 
   const messageBytes = new TextEncoder().encode(message).length;
-  // Use actual signature overhead from backend, or fallback to 265 bytes
-  // (4 bytes sig_len + 256 bytes RSA-2048 signature + 4 bytes terminator + 1 byte safety margin)
-  const signatureOverhead = capacity?.signature_overhead_bytes || 265;
+  // Calculate signature overhead dynamically based on whether private key is loaded
+  // If no private key: overhead is 0 (no signature will be added)
+  // If private key exists: 265 bytes (4 bytes sig_len + 256 bytes RSA-2048 + 4 bytes terminator + 1 byte safety margin)
+  const signatureOverhead = privateKeyAvailable ? (capacity?.signature_overhead_bytes || 265) : 0;
   const totalPayloadBytes = messageBytes + signatureOverhead;
   const totalPayloadBits = totalPayloadBytes * 8;
   const capacityOk = capacity && totalPayloadBits <= capacity.capacity_bits;
 
   return (
     <div className="embed-tab">
+      <KeyManager requirePrivateKey={true} onKeysChanged={handleKeysChanged} />
+
       <div
         className={`upload-section ${dragActive ? 'drag-active' : ''}`}
         onDragEnter={handleDragIn}
@@ -492,16 +600,31 @@ const EmbedTab: React.FC = () => {
         <div className="payload-info">
           <p><strong>Payload Breakdown:</strong></p>
           <p>• Message: {messageBytes} bytes</p>
-          <p>• Digital Signature + Overhead: {signatureOverhead} bytes (includes 1-byte safety margin)</p>
+          {signatureOverhead > 0 && (
+            <p>• Digital Signature + Overhead: {signatureOverhead} bytes (includes 1-byte safety margin)</p>
+          )}
           <p>• <strong>Total Required:</strong> {totalPayloadBytes} bytes ({totalPayloadBits} bits)</p>
           {capacity && (
             <>
               <p>• <strong>Available Capacity:</strong> {capacity.capacity_bytes} bytes ({capacity.capacity_bits} bits)</p>
               <p className={capacityOk ? 'text-success' : 'text-error'}>
                 {capacityOk
-                  ? <><CheckIcon size={16} /> Message + signature fits safely in image!</>
+                  ? <><CheckIcon size={16} /> Message {signatureOverhead > 0 ? '+ signature' : ''} fits safely in image!</>
                   : <><XMarkIcon size={16} /> Need {totalPayloadBytes - capacity.capacity_bytes} more bytes (reduce message or decrease block size)</>}
               </p>
+
+              {/* Block Size Reliability Indicator */}
+              {(() => {
+                const status = getBlockSizeStatus(blockSize);
+                return (
+                  <div className={`block-size-indicator ${status.cssClass}`}>
+                    <span className="indicator-dot" style={{backgroundColor: status.color}}></span>
+                    <span className="indicator-text">
+                      Block Size {blockSize}×{blockSize}: <strong>{status.label}</strong>
+                    </span>
+                  </div>
+                );
+              })()}
             </>
           )}
         </div>
@@ -526,7 +649,7 @@ const EmbedTab: React.FC = () => {
       <button
         className="btn-embed"
         onClick={handleEmbed}
-        disabled={loading || selectedImages.length === 0 || !message || !capacityOk}
+        disabled={loading || selectedImages.length === 0 || !message || !capacityOk || !privateKeyAvailable}
       >
         {loading ? (
           <><HourglassIcon size={18} /> Embedding...</>

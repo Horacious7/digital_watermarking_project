@@ -682,7 +682,7 @@ small {
 }
 
 .result-section.invalid .result-header h2 svg {
-  color: #ef4444; /* Roșu pentru X */
+  color: white; /* Alb pentru contrast pe background roșu */
 }
 
 .result-content {
