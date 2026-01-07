@@ -39,6 +39,9 @@ backend/data/watermarked/*.bmp
 !backend/data/watermarked/.gitkeep
 backend/data/test_output/
 
+# Keys
+backend/keys/*
+
 # Project specific - generated data
 data/watermarked/*.png
 data/watermarked/*.jpg
