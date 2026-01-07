@@ -694,6 +694,7 @@ The author is considering transitioning to a **dual-licensing model** after thes
 For licensing inquiries, collaboration opportunities, or permission requests:
 - **Author:** Maier Horațiu-Gabriel
 - **GitHub:** https://github.com/Horacious7/digital_watermarking_project
+- **LinkedIn:** https://www.linkedin.com/in/horațiu-gabriel-maier-514417313/
 - **Project:** TRACE - Digital Image Watermarking Platform
 
 All licensing decisions and terms are subject to change at the sole discretion of the author.
