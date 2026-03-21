@@ -4,6 +4,7 @@ import hashlib
 import tempfile
 import time
 import csv
+import sys
 import concurrent.futures
 from dataclasses import dataclass
 from pathlib import Path
@@ -79,37 +80,25 @@ class CaseResult:
     iteration: int
     success: bool
     duration_s: float
-    psnr: float = 0.0  # Added metric
+    psnr: float = 0.0
     error: str = ""
     skipped_capacity: bool = False
     margin_used: int = -1
 
 
 def process_one_case(
-    block_size: int,
-    image_path: Path,
-    iteration: int,
-    out_dir: Path,
-    private_key_path: Path,
-    public_key_path: Path,
-    base_payload_bits: str,
-    margin_fallback_bits: list[int]
+        block_size: int, image_path: Path, iteration: int, out_dir: Path,
+        private_key_path: Path, public_key_path: Path, base_payload_bits: str, margin_fallback_bits: list[int]
 ) -> CaseResult:
-    """Worker function for multiprocessing."""
     t0 = time.perf_counter()
     image_name = image_path.name
-
     try:
         available_capacity = _available_blocks(image_path, block_size)
         base_required = 8 + len(base_payload_bits)
 
         if base_required > available_capacity:
-            return CaseResult(
-                block_size=block_size, image_name=image_name,
-                iteration=iteration, success=False,
-                duration_s=time.perf_counter() - t0,
-                error="Insufficient Physical Capacity", skipped_capacity=True
-            )
+            return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=False,
+                              duration_s=time.perf_counter() - t0, error="CapacityExceeded", skipped_capacity=True)
 
         test_passed = False
         final_margin = -1
@@ -118,80 +107,60 @@ def process_one_case(
 
         for margin in margin_fallback_bits:
             total_required = base_required + margin
-
             if total_required > available_capacity:
-                last_error = f"Capacity exceeded at margin {margin}"
+                last_error = f"CapacityExceeded_Margin_{margin}"
                 break
 
             try:
                 padded_payload_bits = base_payload_bits + ("0" * margin)
                 out_path = out_dir / f"wm_{image_path.stem}_b{block_size}_i{iteration}_m{margin}.png"
+                embed_watermark(image_path=str(image_path), watermark_bits=padded_payload_bits,
+                                output_path=str(out_path), block_size=block_size)
 
-                embed_watermark(
-                    image_path=str(image_path),
-                    watermark_bits=padded_payload_bits,
-                    output_path=str(out_path),
-                    block_size=block_size,
-                )
-
-                # Calculate PSNR
                 original_img = cv2.imread(str(image_path))
                 watermarked_img = cv2.imread(str(out_path))
                 final_psnr = cv2.PSNR(original_img, watermarked_img)
 
-                extracted_bits = extract_watermark(
-                    image_path=str(out_path),
-                    n_bits=total_required,
-                    block_size=block_size,
-                )
-
+                extracted_bits = extract_watermark(image_path=str(out_path), n_bits=total_required,
+                                                   block_size=block_size)
                 if len(extracted_bits) < base_required:
-                    raise ValueError("Extracted fewer bits than base required.")
+                    raise ValueError("ExtractionTruncated")
 
                 payload_only = extracted_bits[8: 8 + len(base_payload_bits)]
-                is_valid = _verify_from_extracted_bits(payload_only, public_key_path)
-
-                if is_valid:
+                if _verify_from_extracted_bits(payload_only, public_key_path):
                     test_passed = True
                     final_margin = margin
                     break
                 else:
-                    last_error = f"Invalid Signature at margin {margin}"
-
+                    last_error = f"SignatureInvalid_Margin_{margin}"
             except Exception as e:
-                last_error = str(e)
+                last_error = f"Exception_{type(e).__name__}"
 
-        if test_passed:
-            return CaseResult(
-                block_size=block_size, image_name=image_name,
-                iteration=iteration, success=True,
-                duration_s=time.perf_counter() - t0, error="",
-                margin_used=final_margin, psnr=final_psnr
-            )
-        else:
-            return CaseResult(
-                block_size=block_size, image_name=image_name,
-                iteration=iteration, success=False,
-                duration_s=time.perf_counter() - t0, error=last_error,
-                margin_used=final_margin, psnr=final_psnr  # Keep last PSNR (usually 0 unless extract failed)
-            )
-            
+        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=test_passed,
+                          duration_s=time.perf_counter() - t0, error="" if test_passed else last_error,
+                          margin_used=final_margin, psnr=final_psnr)
     except Exception as e:
-        return CaseResult(
-            block_size=block_size, image_name=image_name,
-            iteration=iteration, success=False,
-            duration_s=time.perf_counter() - t0, error=f"Process Crash: {str(e)}"
-        )
+        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=False,
+                          duration_s=time.perf_counter() - t0, error="ProcessCrash")
+
+
+def print_progress_bar(iteration, total, prefix='', suffix='', length=40, fill='█', printEnd="\r"):
+    percent = ("{0:.1f}").format(100 * (iteration / float(total)))
+    filledLength = int(length * iteration // total)
+    bar = fill * filledLength + '-' * (length - filledLength)
+    sys.stdout.write(f'\r{prefix} |{bar}| {percent}% {suffix}')
+    sys.stdout.flush()
+    if iteration == total:
+        print()
 
 
 def run_benchmark() -> None:
     dataset_dir = _dataset_dir()
     images = _list_dataset_images(dataset_dir)
 
-    # Use a persistent temp dir for parallel workers to access keys
     temp_dir_obj = tempfile.TemporaryDirectory(prefix="trace_bench_")
     tmp_path = Path(temp_dir_obj.name)
-    
+
     try:
         private_key_path = tmp_path / "bench_private.pem"
         public_key_path = tmp_path / "bench_public.pem"
@@ -201,59 +170,42 @@ def run_benchmark() -> None:
         generate_rsa_keys(str(private_key_path), str(public_key_path), key_size=2048)
         base_payload_bits = _build_payload(FIXED_MESSAGE, private_key_path)
 
-        print(f"Dataset: {dataset_dir}")
-        print(f"Images: {len(images)}")
-        print(f"Block sizes: {BLOCK_SIZES}")
-        print(f"Parallel Workers: {min(32, len(BLOCK_SIZES) * len(images))}") # Simple heuristic
-        print("-" * 90)
+        print("\n" + "=" * 80)
+        print(" TRACE EMPIRICAL RESILIENCE & CAPACITY BENCHMARK")
+        print("=" * 80)
+        print(f" Target Dataset : {dataset_dir.name} ({len(images)} images)")
+        print(f" Block Sizes    : {len(BLOCK_SIZES)} configurations (2x2 to 18x18)")
+        print(f" Iterations     : {ITERATIONS} per configuration")
+        print(f" Margin Policy  : Dynamic Fallback {MARGIN_FALLBACK_BITS}")
+        print("-" * 80)
 
         tasks = []
         with concurrent.futures.ProcessPoolExecutor() as executor:
             for block_size in BLOCK_SIZES:
                 for image_path in images:
                     for iteration in range(1, ITERATIONS + 1):
-                        tasks.append(
-                            executor.submit(
-                                process_one_case,
-                                block_size,
-                                image_path,
-                                iteration,
-                                out_dir,
-                                private_key_path,
-                                public_key_path,
-                                base_payload_bits,
-                                MARGIN_FALLBACK_BITS
-                            )
-                        )
-            
+                        tasks.append(executor.submit(process_one_case, block_size, image_path, iteration,
+                                                     out_dir, private_key_path, public_key_path, base_payload_bits,
+                                                     MARGIN_FALLBACK_BITS))
+
             results = []
-            completed = 0
             total = len(tasks)
-            print(f"Processing {total} tasks...")
-            
-            for future in concurrent.futures.as_completed(tasks):
-                res = future.result()
-                results.append(res)
-                completed += 1
-                if completed % 10 == 0 or completed == total:
-                    print(f"Progress: {completed}/{total} ({res.block_size}px finished)", end="\r")
-            
-            print(f"\nCompleted all {total} tasks.")
+            print_progress_bar(0, total, prefix=' Progress:', suffix='Complete', length=50)
 
-        # Prepare CSV output
-        timestamp = time.strftime("%Y%m%d-%H%M%S")
-        csv_path = Path(f"benchmark_results_{timestamp}.csv")
+            for i, future in enumerate(concurrent.futures.as_completed(tasks), 1):
+                results.append(future.result())
+                print_progress_bar(i, total, prefix=' Progress:', suffix=f'({i}/{total}) Processed', length=50)
 
-        # Sort results for consistent table output
+        timestamp = time.strftime("%Y%m%d_%H%M%S")
+        csv_path = Path(f"empirical_benchmark_{timestamp}.csv")
         results.sort(key=lambda x: (x.block_size, x.image_name, x.iteration))
 
-        # --- SUMMARY TABLE ---
-        print("\n" + "=" * 105)
-        print("BLOCK SIZE RELIABILITY SUMMARY (WITH QUALITY METRICS)")
-        print("=" * 105)
+        print("\n" + "=" * 95)
+        print(" FINAL RESULTS MATRIX")
+        print("=" * 95)
         print(
-            f"{'Block':>6} | {'Tested':>6} | {'Passed':>6} | {'Skipped':>7} | {'Success %':>9} | {'Avg PSNR':>9} | {'Avg Time':>10}")
-        print("-" * 105)
+            f"{'Block':>6} | {'Tested':>8} | {'Passed':>8} | {'Skipped':>8} | {'Success %':>10} | {'Avg PSNR':>9} | {'Avg Time':>10}")
+        print("-" * 95)
 
         overall_tested, overall_passed, overall_skipped = 0, 0, 0
 
@@ -262,8 +214,7 @@ def run_benchmark() -> None:
             skipped = sum(1 for r in sub if r.skipped_capacity)
             tested = len(sub) - skipped
             passed = sum(1 for r in sub if r.success)
-            
-            # Avg PSNR only for successful cases
+
             successful_cases = [r for r in sub if r.success]
             avg_psnr = sum(r.psnr for r in successful_cases) / len(successful_cases) if successful_cases else 0.0
 
@@ -274,25 +225,30 @@ def run_benchmark() -> None:
             success_rate = (passed / tested * 100.0) if tested > 0 else 0.0
             avg_time = sum(r.duration_s for r in sub if not r.skipped_capacity) / tested if tested > 0 else 0.0
 
-            print(f"{size:>6} | {tested:>6} | {passed:>6} | {skipped:>7} | {success_rate:>8.2f}% | {avg_psnr:>9.2f} | {avg_time:>10.3f}s")
+            print(
+                f"{size:>6} | {tested:>8} | {passed:>8} | {skipped:>8} | {success_rate:>9.2f}% | {avg_psnr:>6.2f} dB | {avg_time:>9.3f}s")
 
         overall_rate = (overall_passed / overall_tested * 100.0) if overall_tested > 0 else 0.0
-        print("-" * 105)
-        print(f"Overall Tested: {overall_passed}/{overall_tested} ({overall_rate:.2f}%)")
-        print(f"Skipped due to Capacity: {overall_skipped}")
-        
-        # Save to CSV
+        print("-" * 95)
+        print(
+            f" OVERALL: {overall_passed}/{overall_tested} Passed ({overall_rate:.2f}%) | {overall_skipped} Skipped (Capacity Limits)")
+        print("=" * 95)
+
         try:
             with open(csv_path, mode="w", newline="") as f:
                 writer = csv.writer(f)
-                writer.writerow(["BlockSize", "Image", "Iteration", "Success", "Margin", "PSNR", "Duration", "Error"])
+                writer.writerow(
+                    ["BlockSize", "Image", "Iteration", "Success", "MarginUsed", "PSNR_dB", "Duration_s", "ErrorCode"])
                 for r in results:
-                    writer.writerow([r.block_size, r.image_name, r.iteration, r.success, r.margin_used, f"{r.psnr:.2f}", f"{r.duration_s:.4f}", r.error])
-            print(f"\n[INFO] Detailed results saved to: {csv_path.absolute()}")
+                    writer.writerow([r.block_size, r.image_name, r.iteration, r.success, r.margin_used, f"{r.psnr:.2f}",
+                                     f"{r.duration_s:.4f}", r.error])
+            print(f"\n [✓] CSV Report exported to: {csv_path.name}")
         except Exception as e:
-            print(f"\n[ERROR] Could not save CSV: {e}")
+            print(f"\n [!] Error saving CSV: {e}")
+
     finally:
-        temp_dir_obj.cleanup()  # Ensure temp dir is cleaned up
+        temp_dir_obj.cleanup()
+
 
 if __name__ == "__main__":
     run_benchmark()

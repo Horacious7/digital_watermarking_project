@@ -60,7 +60,18 @@ if st.sidebar.button("Run Benchmark Now"):
 # --- Main Content: Analysis ---
 
 # Find all CSV files matching the pattern
-csv_files = sorted(glob.glob("benchmark_results_*.csv"), reverse=True)
+# Search in current directory and backend/benchmark/ subdirectory to be flexible
+patterns = [
+    "benchmark_results_*.csv",
+    "empirical_benchmark_*.csv",
+    "backend/benchmark/benchmark_results_*.csv",
+    "backend/benchmark/empirical_benchmark_*.csv"
+]
+found_files = []
+for p in patterns:
+    found_files.extend(glob.glob(p))
+
+csv_files = sorted(list(set(found_files)), reverse=True)
 
 if not csv_files:
     st.info("No benchmark results found. Click 'Run Benchmark Now' in the sidebar.")
@@ -69,6 +80,15 @@ else:
     
     if selected_file:
         df = pd.read_csv(selected_file)
+        
+        # Normalize column names for compatibility with different benchmark scripts
+        # (e.g. handle empirical_benchmark vs run_block_size output)
+        df = df.rename(columns={
+            "PSNR_dB": "PSNR",
+            "Duration_s": "Duration",
+            "MarginUsed": "Margin",
+            "ErrorCode": "Error"
+        })
         
         # Basic Stats
         st.header(f"Analysis: {selected_file}")
@@ -140,10 +160,12 @@ else:
             x_max = plot_df["BlockSize"].max()
             
             chart = alt.Chart(plot_df).mark_circle(size=100, opacity=0.7).encode(
-                x=alt.X('BlockSize', scale=alt.Scale(domain=[x_min - 1, x_max + 1])),
+                x=alt.X('BlockSize', 
+                        scale=alt.Scale(domain=[x_min - 1, x_max + 1]), 
+                        axis=alt.Axis(tickMinStep=1)),
                 # zero=False allow the axis to start near min value (e.g. 30) instead of 0
                 y=alt.Y('PSNR', scale=alt.Scale(zero=False, padding=1)),
-                color='Success',
+                color=alt.Color('Success', scale=alt.Scale(domain=[True, False], range=['#1f77b4', '#d62728'])), # Blue for Success, Red for Failure
                 size='Duration',
                 tooltip=['Image', 'BlockSize', 'PSNR', 'Duration', 'Success', 'Margin']
             ).interactive()
