@@ -6,3 +6,5 @@ numpy>=2.1.0
 opencv-python
 pywavelets
 pytest>=8.0
+streamlit
+pandas

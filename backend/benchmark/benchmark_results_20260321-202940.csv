@@ -1,0 +1,409 @@
+BlockSize,Image,Iteration,Success,Margin,PSNR,Duration,Error
+2,01_solid_gray_1920x1080.png,1,True,0,38.81,0.5831,
+2,01_solid_gray_1920x1080.png,2,True,0,38.81,0.6385,
+2,01_solid_gray_1920x1080.png,3,True,0,38.81,0.5685,
+2,02_horizontal_gradient_1920x1080.png,1,True,0,39.33,0.6316,
+2,02_horizontal_gradient_1920x1080.png,2,True,0,39.33,0.6762,
+2,02_horizontal_gradient_1920x1080.png,3,True,0,39.33,0.6823,
+2,03_checkerboard_1920x1080.png,1,True,0,41.82,0.6497,
+2,03_checkerboard_1920x1080.png,2,True,0,41.82,0.5716,
+2,03_checkerboard_1920x1080.png,3,True,0,41.82,0.5305,
+2,04_random_noise_1920x1080.png,1,True,0,38.39,0.5579,
+2,04_random_noise_1920x1080.png,2,True,0,38.39,0.6307,
+2,04_random_noise_1920x1080.png,3,True,0,38.39,0.5718,
+2,05_sine_waves_1920x1080.png,1,True,0,39.83,0.6849,
+2,05_sine_waves_1920x1080.png,2,True,0,39.83,0.6757,
+2,05_sine_waves_1920x1080.png,3,True,0,39.83,0.6679,
+2,06_rgb_blocks_1920x1080.png,1,True,0,41.86,0.5038,
+2,06_rgb_blocks_1920x1080.png,2,True,0,41.86,0.4738,
+2,06_rgb_blocks_1920x1080.png,3,True,0,41.86,0.5146,
+2,07_concentric_circles_1920x1080.png,1,True,0,39.84,0.6518,
+2,07_concentric_circles_1920x1080.png,2,True,0,39.84,0.6609,
+2,07_concentric_circles_1920x1080.png,3,True,0,39.84,0.6461,
+2,08_large_uniform_2400x1800.png,1,True,0,42.17,1.2253,
+2,08_large_uniform_2400x1800.png,2,True,0,42.17,1.2383,
+2,08_large_uniform_2400x1800.png,3,True,0,42.17,1.2454,
+3,01_solid_gray_1920x1080.png,1,True,0,38.81,0.4853,
+3,01_solid_gray_1920x1080.png,2,True,0,38.81,0.6131,
+3,01_solid_gray_1920x1080.png,3,True,0,38.81,0.5580,
+3,02_horizontal_gradient_1920x1080.png,1,True,0,39.35,0.5789,
+3,02_horizontal_gradient_1920x1080.png,2,True,0,39.35,0.5870,
+3,02_horizontal_gradient_1920x1080.png,3,True,0,39.35,0.5845,
+3,03_checkerboard_1920x1080.png,1,True,0,40.11,0.5370,
+3,03_checkerboard_1920x1080.png,2,True,0,40.11,0.5247,
+3,03_checkerboard_1920x1080.png,3,True,0,40.11,0.4889,
+3,04_random_noise_1920x1080.png,1,True,0,38.47,0.5519,
+3,04_random_noise_1920x1080.png,2,True,0,38.47,0.5991,
+3,04_random_noise_1920x1080.png,3,True,0,38.47,0.6456,
+3,05_sine_waves_1920x1080.png,1,True,0,39.79,0.7272,
+3,05_sine_waves_1920x1080.png,2,True,0,39.79,0.7253,
+3,05_sine_waves_1920x1080.png,3,True,0,39.79,0.7110,
+3,06_rgb_blocks_1920x1080.png,1,True,0,41.86,0.4903,
+3,06_rgb_blocks_1920x1080.png,2,True,0,41.86,0.5623,
+3,06_rgb_blocks_1920x1080.png,3,True,0,41.86,0.5102,
+3,07_concentric_circles_1920x1080.png,1,True,0,39.81,0.6807,
+3,07_concentric_circles_1920x1080.png,2,True,0,39.81,0.6473,
+3,07_concentric_circles_1920x1080.png,3,True,0,39.81,0.6825,
+3,08_large_uniform_2400x1800.png,1,True,0,42.16,1.1407,
+3,08_large_uniform_2400x1800.png,2,True,0,42.16,1.1246,
+3,08_large_uniform_2400x1800.png,3,True,0,42.16,1.1471,
+4,01_solid_gray_1920x1080.png,1,True,0,38.78,0.4718,
+4,01_solid_gray_1920x1080.png,2,True,0,38.78,0.5486,
+4,01_solid_gray_1920x1080.png,3,True,0,38.78,0.5838,
+4,02_horizontal_gradient_1920x1080.png,1,True,0,39.13,0.6407,
+4,02_horizontal_gradient_1920x1080.png,2,True,0,39.13,0.5127,
+4,02_horizontal_gradient_1920x1080.png,3,True,0,39.13,0.5437,
+4,03_checkerboard_1920x1080.png,1,True,0,41.79,0.5745,
+4,03_checkerboard_1920x1080.png,2,True,0,41.79,0.5181,
+4,03_checkerboard_1920x1080.png,3,True,0,41.79,0.4991,
+4,04_random_noise_1920x1080.png,1,True,0,38.23,0.5987,
+4,04_random_noise_1920x1080.png,2,True,0,38.23,0.5842,
+4,04_random_noise_1920x1080.png,3,True,0,38.23,0.6607,
+4,05_sine_waves_1920x1080.png,1,True,0,39.54,0.6948,
+4,05_sine_waves_1920x1080.png,2,True,0,39.54,0.7094,
+4,05_sine_waves_1920x1080.png,3,True,0,39.54,0.7185,
+4,06_rgb_blocks_1920x1080.png,1,True,0,41.84,0.5356,
+4,06_rgb_blocks_1920x1080.png,2,True,0,41.84,0.5004,
+4,06_rgb_blocks_1920x1080.png,3,True,0,41.84,0.5230,
+4,07_concentric_circles_1920x1080.png,1,True,0,39.57,0.6645,
+4,07_concentric_circles_1920x1080.png,2,True,0,39.57,0.6490,
+4,07_concentric_circles_1920x1080.png,3,True,0,39.57,0.6380,
+4,08_large_uniform_2400x1800.png,1,True,0,42.12,1.0989,
+4,08_large_uniform_2400x1800.png,2,True,0,42.12,1.0967,
+4,08_large_uniform_2400x1800.png,3,True,0,42.12,1.0887,
+5,01_solid_gray_1920x1080.png,1,True,0,38.81,0.5124,
+5,01_solid_gray_1920x1080.png,2,True,0,38.81,0.4756,
+5,01_solid_gray_1920x1080.png,3,True,0,38.81,0.5250,
+5,02_horizontal_gradient_1920x1080.png,1,True,0,39.14,0.5386,
+5,02_horizontal_gradient_1920x1080.png,2,True,0,39.14,0.5715,
+5,02_horizontal_gradient_1920x1080.png,3,True,0,39.14,0.5343,
+5,03_checkerboard_1920x1080.png,1,True,0,41.28,0.5476,
+5,03_checkerboard_1920x1080.png,2,True,0,41.28,0.5118,
+5,03_checkerboard_1920x1080.png,3,True,0,41.28,0.5601,
+5,04_random_noise_1920x1080.png,1,True,0,38.29,0.5865,
+5,04_random_noise_1920x1080.png,2,True,0,38.29,0.5600,
+5,04_random_noise_1920x1080.png,3,True,0,38.29,0.5631,
+5,05_sine_waves_1920x1080.png,1,True,0,39.56,0.6436,
+5,05_sine_waves_1920x1080.png,2,True,0,39.56,0.7255,
+5,05_sine_waves_1920x1080.png,3,True,0,39.56,0.6968,
+5,06_rgb_blocks_1920x1080.png,1,True,0,41.88,0.5279,
+5,06_rgb_blocks_1920x1080.png,2,True,0,41.88,0.5164,
+5,06_rgb_blocks_1920x1080.png,3,True,0,41.88,0.4726,
+5,07_concentric_circles_1920x1080.png,1,True,0,39.57,0.6704,
+5,07_concentric_circles_1920x1080.png,2,True,0,39.57,0.7247,
+5,07_concentric_circles_1920x1080.png,3,True,0,39.57,0.7654,
+5,08_large_uniform_2400x1800.png,1,True,0,42.15,1.0846,
+5,08_large_uniform_2400x1800.png,2,True,0,42.15,1.1818,
+5,08_large_uniform_2400x1800.png,3,True,0,42.15,1.1239,
+6,01_solid_gray_1920x1080.png,1,True,0,37.58,0.5452,
+6,01_solid_gray_1920x1080.png,2,True,0,37.58,0.5848,
+6,01_solid_gray_1920x1080.png,3,True,0,37.58,0.5914,
+6,02_horizontal_gradient_1920x1080.png,1,True,0,37.81,0.6295,
+6,02_horizontal_gradient_1920x1080.png,2,True,0,37.81,0.5651,
+6,02_horizontal_gradient_1920x1080.png,3,True,0,37.81,0.5373,
+6,03_checkerboard_1920x1080.png,1,True,0,40.59,0.5231,
+6,03_checkerboard_1920x1080.png,2,True,0,40.59,0.5342,
+6,03_checkerboard_1920x1080.png,3,True,0,40.59,0.5025,
+6,04_random_noise_1920x1080.png,1,True,0,36.97,0.5554,
+6,04_random_noise_1920x1080.png,2,True,0,36.97,0.5491,
+6,04_random_noise_1920x1080.png,3,True,0,36.97,0.5574,
+6,05_sine_waves_1920x1080.png,1,True,0,38.19,0.6724,
+6,05_sine_waves_1920x1080.png,2,True,0,38.19,0.7337,
+6,05_sine_waves_1920x1080.png,3,True,0,38.19,0.6570,
+6,06_rgb_blocks_1920x1080.png,1,True,0,40.68,0.5834,
+6,06_rgb_blocks_1920x1080.png,2,True,0,40.68,0.5191,
+6,06_rgb_blocks_1920x1080.png,3,True,0,40.68,0.4973,
+6,07_concentric_circles_1920x1080.png,1,True,0,38.19,0.7123,
+6,07_concentric_circles_1920x1080.png,2,True,0,38.19,0.7333,
+6,07_concentric_circles_1920x1080.png,3,True,0,38.19,0.7749,
+6,08_large_uniform_2400x1800.png,1,True,0,40.88,1.1148,
+6,08_large_uniform_2400x1800.png,2,True,0,40.88,1.1874,
+6,08_large_uniform_2400x1800.png,3,True,0,40.88,1.1439,
+7,01_solid_gray_1920x1080.png,1,False,-1,37.33,2.1586,Invalid Signature at margin 96
+7,01_solid_gray_1920x1080.png,2,False,-1,37.33,2.0775,Invalid Signature at margin 96
+7,01_solid_gray_1920x1080.png,3,False,-1,37.33,2.1566,Invalid Signature at margin 96
+7,02_horizontal_gradient_1920x1080.png,1,False,-1,37.60,2.2302,Invalid Signature at margin 96
+7,02_horizontal_gradient_1920x1080.png,2,False,-1,37.60,2.2910,Invalid Signature at margin 96
+7,02_horizontal_gradient_1920x1080.png,3,False,-1,37.60,2.1533,Invalid Signature at margin 96
+7,03_checkerboard_1920x1080.png,1,False,-1,39.37,2.2115,Invalid Signature at margin 96
+7,03_checkerboard_1920x1080.png,2,False,-1,39.37,2.1626,Invalid Signature at margin 96
+7,03_checkerboard_1920x1080.png,3,False,-1,39.37,2.0113,Invalid Signature at margin 96
+7,04_random_noise_1920x1080.png,1,False,-1,36.91,2.2074,Invalid Signature at margin 96
+7,04_random_noise_1920x1080.png,2,False,-1,36.91,2.1305,Invalid Signature at margin 96
+7,04_random_noise_1920x1080.png,3,False,-1,36.91,2.2129,Invalid Signature at margin 96
+7,05_sine_waves_1920x1080.png,1,False,-1,38.00,2.6505,Invalid Signature at margin 96
+7,05_sine_waves_1920x1080.png,2,False,-1,38.00,2.6592,Invalid Signature at margin 96
+7,05_sine_waves_1920x1080.png,3,False,-1,38.00,2.5559,Invalid Signature at margin 96
+7,06_rgb_blocks_1920x1080.png,1,False,-1,40.42,1.9210,Invalid Signature at margin 96
+7,06_rgb_blocks_1920x1080.png,2,False,-1,40.42,1.9981,Invalid Signature at margin 96
+7,06_rgb_blocks_1920x1080.png,3,False,-1,40.42,1.9050,Invalid Signature at margin 96
+7,07_concentric_circles_1920x1080.png,1,False,-1,38.05,2.6116,Invalid Signature at margin 96
+7,07_concentric_circles_1920x1080.png,2,False,-1,38.05,2.4954,Invalid Signature at margin 96
+7,07_concentric_circles_1920x1080.png,3,False,-1,38.05,2.5718,Invalid Signature at margin 96
+7,08_large_uniform_2400x1800.png,1,True,0,40.78,1.1920,
+7,08_large_uniform_2400x1800.png,2,True,0,40.78,1.1619,
+7,08_large_uniform_2400x1800.png,3,True,0,40.78,1.1994,
+8,01_solid_gray_1920x1080.png,1,True,0,37.53,0.5338,
+8,01_solid_gray_1920x1080.png,2,True,0,37.53,0.5412,
+8,01_solid_gray_1920x1080.png,3,True,0,37.53,0.5005,
+8,02_horizontal_gradient_1920x1080.png,1,True,0,37.76,0.5163,
+8,02_horizontal_gradient_1920x1080.png,2,True,0,37.76,0.5312,
+8,02_horizontal_gradient_1920x1080.png,3,True,0,37.76,0.5039,
+8,03_checkerboard_1920x1080.png,1,True,0,40.54,0.5898,
+8,03_checkerboard_1920x1080.png,2,True,0,40.54,0.5496,
+8,03_checkerboard_1920x1080.png,3,True,0,40.54,0.5365,
+8,04_random_noise_1920x1080.png,1,True,0,37.05,0.6111,
+8,04_random_noise_1920x1080.png,2,True,0,37.05,0.6846,
+8,04_random_noise_1920x1080.png,3,True,0,37.05,0.6450,
+8,05_sine_waves_1920x1080.png,1,True,0,38.17,0.8071,
+8,05_sine_waves_1920x1080.png,2,True,0,38.17,0.7005,
+8,05_sine_waves_1920x1080.png,3,True,0,38.17,0.7691,
+8,06_rgb_blocks_1920x1080.png,1,True,0,40.64,0.5329,
+8,06_rgb_blocks_1920x1080.png,2,True,0,40.64,0.5329,
+8,06_rgb_blocks_1920x1080.png,3,True,0,40.64,0.5986,
+8,07_concentric_circles_1920x1080.png,1,True,0,38.16,0.7571,
+8,07_concentric_circles_1920x1080.png,2,True,0,38.16,0.7603,
+8,07_concentric_circles_1920x1080.png,3,True,0,38.16,0.7328,
+8,08_large_uniform_2400x1800.png,1,True,0,40.81,1.1146,
+8,08_large_uniform_2400x1800.png,2,True,0,40.81,1.1785,
+8,08_large_uniform_2400x1800.png,3,True,0,40.81,1.1938,
+9,01_solid_gray_1920x1080.png,1,True,0,36.50,0.5873,
+9,01_solid_gray_1920x1080.png,2,True,0,36.50,0.5549,
+9,01_solid_gray_1920x1080.png,3,True,0,36.50,0.5096,
+9,02_horizontal_gradient_1920x1080.png,1,True,0,36.74,0.5759,
+9,02_horizontal_gradient_1920x1080.png,2,True,0,36.74,0.6263,
+9,02_horizontal_gradient_1920x1080.png,3,True,0,36.74,0.5845,
+9,03_checkerboard_1920x1080.png,1,True,0,37.72,0.5574,
+9,03_checkerboard_1920x1080.png,2,True,0,37.72,0.5330,
+9,03_checkerboard_1920x1080.png,3,True,0,37.72,0.5502,
+9,04_random_noise_1920x1080.png,1,True,0,36.17,0.6138,
+9,04_random_noise_1920x1080.png,2,True,0,36.17,0.6102,
+9,04_random_noise_1920x1080.png,3,True,0,36.17,0.5978,
+9,05_sine_waves_1920x1080.png,1,True,0,37.14,0.7135,
+9,05_sine_waves_1920x1080.png,2,True,0,37.14,0.6941,
+9,05_sine_waves_1920x1080.png,3,True,0,37.14,0.6920,
+9,06_rgb_blocks_1920x1080.png,1,True,0,39.59,0.5273,
+9,06_rgb_blocks_1920x1080.png,2,True,0,39.59,0.5353,
+9,06_rgb_blocks_1920x1080.png,3,True,0,39.59,0.4907,
+9,07_concentric_circles_1920x1080.png,1,True,0,37.14,0.6578,
+9,07_concentric_circles_1920x1080.png,2,True,0,37.14,0.7122,
+9,07_concentric_circles_1920x1080.png,3,True,0,37.14,0.6866,
+9,08_large_uniform_2400x1800.png,1,True,0,39.78,1.2156,
+9,08_large_uniform_2400x1800.png,2,True,0,39.78,1.1899,
+9,08_large_uniform_2400x1800.png,3,True,0,39.78,1.1457,
+10,01_solid_gray_1920x1080.png,1,True,0,36.25,0.5517,
+10,01_solid_gray_1920x1080.png,2,True,0,36.25,0.5617,
+10,01_solid_gray_1920x1080.png,3,True,0,36.25,0.5273,
+10,02_horizontal_gradient_1920x1080.png,1,True,0,36.45,0.5742,
+10,02_horizontal_gradient_1920x1080.png,2,True,0,36.45,0.6091,
+10,02_horizontal_gradient_1920x1080.png,3,True,0,36.45,0.6102,
+10,03_checkerboard_1920x1080.png,1,True,0,38.32,0.5059,
+10,03_checkerboard_1920x1080.png,2,True,0,38.32,0.5114,
+10,03_checkerboard_1920x1080.png,3,True,0,38.32,0.5493,
+10,04_random_noise_1920x1080.png,1,True,0,36.08,0.5737,
+10,04_random_noise_1920x1080.png,2,True,0,36.08,0.5596,
+10,04_random_noise_1920x1080.png,3,True,0,36.08,0.5580,
+10,05_sine_waves_1920x1080.png,1,True,0,36.82,0.6822,
+10,05_sine_waves_1920x1080.png,2,True,0,36.82,0.7072,
+10,05_sine_waves_1920x1080.png,3,True,0,36.82,0.7026,
+10,06_rgb_blocks_1920x1080.png,1,True,0,39.27,0.5464,
+10,06_rgb_blocks_1920x1080.png,2,True,0,39.27,0.5260,
+10,06_rgb_blocks_1920x1080.png,3,True,0,39.27,0.5460,
+10,07_concentric_circles_1920x1080.png,1,True,0,36.84,0.6532,
+10,07_concentric_circles_1920x1080.png,2,True,0,36.84,0.6590,
+10,07_concentric_circles_1920x1080.png,3,True,0,36.84,0.6807,
+10,08_large_uniform_2400x1800.png,1,True,0,39.56,1.0800,
+10,08_large_uniform_2400x1800.png,2,True,0,39.56,1.1314,
+10,08_large_uniform_2400x1800.png,3,True,0,39.56,1.1151,
+11,01_solid_gray_1920x1080.png,1,True,0,36.46,0.5443,
+11,01_solid_gray_1920x1080.png,2,True,0,36.46,0.5201,
+11,01_solid_gray_1920x1080.png,3,True,0,36.46,0.6042,
+11,02_horizontal_gradient_1920x1080.png,1,True,0,36.63,0.5804,
+11,02_horizontal_gradient_1920x1080.png,2,True,0,36.63,0.5713,
+11,02_horizontal_gradient_1920x1080.png,3,True,0,36.63,0.5996,
+11,03_checkerboard_1920x1080.png,1,False,-1,36.74,1.9901,Invalid Signature at margin 96
+11,03_checkerboard_1920x1080.png,2,False,-1,36.74,2.0916,Invalid Signature at margin 96
+11,03_checkerboard_1920x1080.png,3,False,-1,36.74,2.1184,Invalid Signature at margin 96
+11,04_random_noise_1920x1080.png,1,False,-1,35.87,2.1594,Invalid Signature at margin 96
+11,04_random_noise_1920x1080.png,2,False,-1,35.87,2.1802,Invalid Signature at margin 96
+11,04_random_noise_1920x1080.png,3,False,-1,35.87,2.1243,Invalid Signature at margin 96
+11,05_sine_waves_1920x1080.png,1,True,0,37.00,0.6946,
+11,05_sine_waves_1920x1080.png,2,True,0,37.00,0.7274,
+11,05_sine_waves_1920x1080.png,3,True,0,37.00,0.6841,
+11,06_rgb_blocks_1920x1080.png,1,True,0,39.56,0.5545,
+11,06_rgb_blocks_1920x1080.png,2,True,0,39.56,0.5945,
+11,06_rgb_blocks_1920x1080.png,3,True,0,39.56,0.5370,
+11,07_concentric_circles_1920x1080.png,1,True,0,37.03,0.7711,
+11,07_concentric_circles_1920x1080.png,2,True,0,37.03,0.7104,
+11,07_concentric_circles_1920x1080.png,3,True,0,37.03,0.6831,
+11,08_large_uniform_2400x1800.png,1,False,-1,39.51,4.0799,Invalid Signature at margin 96
+11,08_large_uniform_2400x1800.png,2,False,-1,39.51,4.1254,Invalid Signature at margin 96
+11,08_large_uniform_2400x1800.png,3,False,-1,39.51,4.3553,Invalid Signature at margin 96
+12,01_solid_gray_1920x1080.png,1,True,0,36.41,0.4937,
+12,01_solid_gray_1920x1080.png,2,True,0,36.41,0.5094,
+12,01_solid_gray_1920x1080.png,3,True,0,36.41,0.5707,
+12,02_horizontal_gradient_1920x1080.png,1,True,0,36.58,0.5887,
+12,02_horizontal_gradient_1920x1080.png,2,True,0,36.58,0.5769,
+12,02_horizontal_gradient_1920x1080.png,3,True,0,36.58,0.5955,
+12,03_checkerboard_1920x1080.png,1,True,0,37.61,0.5661,
+12,03_checkerboard_1920x1080.png,2,True,0,37.61,0.6344,
+12,03_checkerboard_1920x1080.png,3,True,0,37.61,0.6108,
+12,04_random_noise_1920x1080.png,1,True,0,36.07,0.6719,
+12,04_random_noise_1920x1080.png,2,True,0,36.07,0.6775,
+12,04_random_noise_1920x1080.png,3,True,0,36.07,0.6290,
+12,05_sine_waves_1920x1080.png,1,True,0,36.95,0.7856,
+12,05_sine_waves_1920x1080.png,2,True,0,36.95,0.8952,
+12,05_sine_waves_1920x1080.png,3,True,0,36.95,0.8467,
+12,06_rgb_blocks_1920x1080.png,1,True,0,39.48,0.6179,
+12,06_rgb_blocks_1920x1080.png,2,True,0,39.48,0.6389,
+12,06_rgb_blocks_1920x1080.png,3,True,0,39.48,0.5096,
+12,07_concentric_circles_1920x1080.png,1,True,0,36.95,0.7151,
+12,07_concentric_circles_1920x1080.png,2,True,0,36.95,0.6924,
+12,07_concentric_circles_1920x1080.png,3,True,0,36.95,0.6733,
+12,08_large_uniform_2400x1800.png,1,True,0,39.63,1.0903,
+12,08_large_uniform_2400x1800.png,2,True,0,39.63,1.1045,
+12,08_large_uniform_2400x1800.png,3,True,0,39.63,1.1325,
+13,01_solid_gray_1920x1080.png,1,True,0,36.40,0.5792,
+13,01_solid_gray_1920x1080.png,2,True,0,36.40,0.6541,
+13,01_solid_gray_1920x1080.png,3,True,0,36.40,0.6125,
+13,02_horizontal_gradient_1920x1080.png,1,True,0,36.55,0.6737,
+13,02_horizontal_gradient_1920x1080.png,2,True,0,36.55,0.6003,
+13,02_horizontal_gradient_1920x1080.png,3,True,0,36.55,0.6710,
+13,03_checkerboard_1920x1080.png,1,False,-1,37.81,2.2127,Invalid Signature at margin 96
+13,03_checkerboard_1920x1080.png,2,False,-1,37.81,2.2283,Invalid Signature at margin 96
+13,03_checkerboard_1920x1080.png,3,False,-1,37.81,2.2356,Invalid Signature at margin 96
+13,04_random_noise_1920x1080.png,1,True,0,36.01,0.6296,
+13,04_random_noise_1920x1080.png,2,True,0,36.01,0.7059,
+13,04_random_noise_1920x1080.png,3,True,0,36.01,0.6429,
+13,05_sine_waves_1920x1080.png,1,True,0,36.90,0.7840,
+13,05_sine_waves_1920x1080.png,2,True,0,36.90,0.7507,
+13,05_sine_waves_1920x1080.png,3,True,0,36.90,0.7430,
+13,06_rgb_blocks_1920x1080.png,1,True,0,39.45,0.6025,
+13,06_rgb_blocks_1920x1080.png,2,True,0,39.45,0.5617,
+13,06_rgb_blocks_1920x1080.png,3,True,0,39.45,0.5448,
+13,07_concentric_circles_1920x1080.png,1,True,0,36.91,0.7131,
+13,07_concentric_circles_1920x1080.png,2,True,0,36.91,0.6945,
+13,07_concentric_circles_1920x1080.png,3,True,0,36.91,0.7008,
+13,08_large_uniform_2400x1800.png,1,True,0,39.64,1.1974,
+13,08_large_uniform_2400x1800.png,2,True,0,39.64,1.1308,
+13,08_large_uniform_2400x1800.png,3,True,0,39.64,1.1416,
+14,01_solid_gray_1920x1080.png,1,True,0,36.52,0.6406,
+14,01_solid_gray_1920x1080.png,2,True,0,36.52,0.6108,
+14,01_solid_gray_1920x1080.png,3,True,0,36.52,0.5874,
+14,02_horizontal_gradient_1920x1080.png,1,True,0,36.65,0.5952,
+14,02_horizontal_gradient_1920x1080.png,2,True,0,36.65,0.6325,
+14,02_horizontal_gradient_1920x1080.png,3,True,0,36.65,0.6096,
+14,03_checkerboard_1920x1080.png,1,True,0,38.57,0.5840,
+14,03_checkerboard_1920x1080.png,2,True,0,38.57,0.5864,
+14,03_checkerboard_1920x1080.png,3,True,0,38.57,0.5606,
+14,04_random_noise_1920x1080.png,1,True,0,35.92,0.5650,
+14,04_random_noise_1920x1080.png,2,True,0,35.92,0.5689,
+14,04_random_noise_1920x1080.png,3,True,0,35.92,0.5687,
+14,05_sine_waves_1920x1080.png,1,True,0,36.99,0.7960,
+14,05_sine_waves_1920x1080.png,2,True,0,36.99,0.7057,
+14,05_sine_waves_1920x1080.png,3,True,0,36.99,0.7418,
+14,06_rgb_blocks_1920x1080.png,1,True,0,39.56,0.5730,
+14,06_rgb_blocks_1920x1080.png,2,True,0,39.56,0.6137,
+14,06_rgb_blocks_1920x1080.png,3,True,0,39.56,0.5942,
+14,07_concentric_circles_1920x1080.png,1,True,0,37.02,0.7020,
+14,07_concentric_circles_1920x1080.png,2,True,0,37.02,0.6779,
+14,07_concentric_circles_1920x1080.png,3,True,0,37.02,0.6713,
+14,08_large_uniform_2400x1800.png,1,True,0,39.72,1.0913,
+14,08_large_uniform_2400x1800.png,2,True,0,39.72,1.0988,
+14,08_large_uniform_2400x1800.png,3,True,0,39.72,1.1423,
+15,01_solid_gray_1920x1080.png,1,True,0,36.45,0.5415,
+15,01_solid_gray_1920x1080.png,2,True,0,36.45,0.5866,
+15,01_solid_gray_1920x1080.png,3,True,0,36.45,0.5844,
+15,02_horizontal_gradient_1920x1080.png,1,True,0,36.57,0.5796,
+15,02_horizontal_gradient_1920x1080.png,2,True,0,36.57,0.6387,
+15,02_horizontal_gradient_1920x1080.png,3,True,0,36.57,0.6326,
+15,03_checkerboard_1920x1080.png,1,True,0,39.41,0.5763,
+15,03_checkerboard_1920x1080.png,2,True,0,39.41,0.5404,
+15,03_checkerboard_1920x1080.png,3,True,0,39.41,0.5600,
+15,04_random_noise_1920x1080.png,1,True,0,36.00,0.6321,
+15,04_random_noise_1920x1080.png,2,True,0,36.00,0.6588,
+15,04_random_noise_1920x1080.png,3,True,0,36.00,0.6122,
+15,05_sine_waves_1920x1080.png,1,True,0,36.90,0.7265,
+15,05_sine_waves_1920x1080.png,2,True,0,36.90,0.7868,
+15,05_sine_waves_1920x1080.png,3,True,0,36.90,0.7792,
+15,06_rgb_blocks_1920x1080.png,1,True,0,39.46,0.6044,
+15,06_rgb_blocks_1920x1080.png,2,True,0,39.46,0.6546,
+15,06_rgb_blocks_1920x1080.png,3,True,0,39.46,0.6073,
+15,07_concentric_circles_1920x1080.png,1,True,0,36.90,1.0045,
+15,07_concentric_circles_1920x1080.png,2,True,0,36.90,0.8668,
+15,07_concentric_circles_1920x1080.png,3,True,0,36.90,0.8163,
+15,08_large_uniform_2400x1800.png,1,True,0,39.64,1.1102,
+15,08_large_uniform_2400x1800.png,2,True,0,39.64,1.1693,
+15,08_large_uniform_2400x1800.png,3,True,0,39.64,1.1279,
+16,01_solid_gray_1920x1080.png,1,False,-1,0.00,0.0671,Insufficient Physical Capacity
+16,01_solid_gray_1920x1080.png,2,False,-1,0.00,0.1077,Insufficient Physical Capacity
+16,01_solid_gray_1920x1080.png,3,False,-1,0.00,0.0639,Insufficient Physical Capacity
+16,02_horizontal_gradient_1920x1080.png,1,False,-1,0.00,0.0795,Insufficient Physical Capacity
+16,02_horizontal_gradient_1920x1080.png,2,False,-1,0.00,0.0858,Insufficient Physical Capacity
+16,02_horizontal_gradient_1920x1080.png,3,False,-1,0.00,0.0692,Insufficient Physical Capacity
+16,03_checkerboard_1920x1080.png,1,False,-1,0.00,0.1124,Insufficient Physical Capacity
+16,03_checkerboard_1920x1080.png,2,False,-1,0.00,0.1137,Insufficient Physical Capacity
+16,03_checkerboard_1920x1080.png,3,False,-1,0.00,0.0893,Insufficient Physical Capacity
+16,04_random_noise_1920x1080.png,1,False,-1,0.00,0.1160,Insufficient Physical Capacity
+16,04_random_noise_1920x1080.png,2,False,-1,0.00,0.1066,Insufficient Physical Capacity
+16,04_random_noise_1920x1080.png,3,False,-1,0.00,0.0812,Insufficient Physical Capacity
+16,05_sine_waves_1920x1080.png,1,False,-1,0.00,0.0997,Insufficient Physical Capacity
+16,05_sine_waves_1920x1080.png,2,False,-1,0.00,0.0846,Insufficient Physical Capacity
+16,05_sine_waves_1920x1080.png,3,False,-1,0.00,0.0843,Insufficient Physical Capacity
+16,06_rgb_blocks_1920x1080.png,1,False,-1,0.00,0.0661,Insufficient Physical Capacity
+16,06_rgb_blocks_1920x1080.png,2,False,-1,0.00,0.0647,Insufficient Physical Capacity
+16,06_rgb_blocks_1920x1080.png,3,False,-1,0.00,0.0638,Insufficient Physical Capacity
+16,07_concentric_circles_1920x1080.png,1,False,-1,0.00,0.0952,Insufficient Physical Capacity
+16,07_concentric_circles_1920x1080.png,2,False,-1,0.00,0.0965,Insufficient Physical Capacity
+16,07_concentric_circles_1920x1080.png,3,False,-1,0.00,0.0985,Insufficient Physical Capacity
+16,08_large_uniform_2400x1800.png,1,True,0,39.74,1.1661,
+16,08_large_uniform_2400x1800.png,2,True,0,39.74,1.1796,
+16,08_large_uniform_2400x1800.png,3,True,0,39.74,1.0791,
+17,01_solid_gray_1920x1080.png,1,False,-1,0.00,0.0634,Insufficient Physical Capacity
+17,01_solid_gray_1920x1080.png,2,False,-1,0.00,0.0637,Insufficient Physical Capacity
+17,01_solid_gray_1920x1080.png,3,False,-1,0.00,0.0756,Insufficient Physical Capacity
+17,02_horizontal_gradient_1920x1080.png,1,False,-1,0.00,0.0747,Insufficient Physical Capacity
+17,02_horizontal_gradient_1920x1080.png,2,False,-1,0.00,0.0781,Insufficient Physical Capacity
+17,02_horizontal_gradient_1920x1080.png,3,False,-1,0.00,0.0772,Insufficient Physical Capacity
+17,03_checkerboard_1920x1080.png,1,False,-1,0.00,0.0736,Insufficient Physical Capacity
+17,03_checkerboard_1920x1080.png,2,False,-1,0.00,0.0633,Insufficient Physical Capacity
+17,03_checkerboard_1920x1080.png,3,False,-1,0.00,0.0712,Insufficient Physical Capacity
+17,04_random_noise_1920x1080.png,1,False,-1,0.00,0.0626,Insufficient Physical Capacity
+17,04_random_noise_1920x1080.png,2,False,-1,0.00,0.0624,Insufficient Physical Capacity
+17,04_random_noise_1920x1080.png,3,False,-1,0.00,0.0664,Insufficient Physical Capacity
+17,05_sine_waves_1920x1080.png,1,False,-1,0.00,0.0852,Insufficient Physical Capacity
+17,05_sine_waves_1920x1080.png,2,False,-1,0.00,0.0902,Insufficient Physical Capacity
+17,05_sine_waves_1920x1080.png,3,False,-1,0.00,0.0860,Insufficient Physical Capacity
+17,06_rgb_blocks_1920x1080.png,1,False,-1,0.00,0.0675,Insufficient Physical Capacity
+17,06_rgb_blocks_1920x1080.png,2,False,-1,0.00,0.0672,Insufficient Physical Capacity
+17,06_rgb_blocks_1920x1080.png,3,False,-1,0.00,0.0756,Insufficient Physical Capacity
+17,07_concentric_circles_1920x1080.png,1,False,-1,0.00,0.0950,Insufficient Physical Capacity
+17,07_concentric_circles_1920x1080.png,2,False,-1,0.00,0.0982,Insufficient Physical Capacity
+17,07_concentric_circles_1920x1080.png,3,False,-1,0.00,0.0902,Insufficient Physical Capacity
+17,08_large_uniform_2400x1800.png,1,True,0,39.62,1.1336,
+17,08_large_uniform_2400x1800.png,2,True,0,39.62,1.1547,
+17,08_large_uniform_2400x1800.png,3,True,0,39.62,1.1321,
+18,01_solid_gray_1920x1080.png,1,False,-1,0.00,0.0782,Insufficient Physical Capacity
+18,01_solid_gray_1920x1080.png,2,False,-1,0.00,0.0857,Insufficient Physical Capacity
+18,01_solid_gray_1920x1080.png,3,False,-1,0.00,0.0773,Insufficient Physical Capacity
+18,02_horizontal_gradient_1920x1080.png,1,False,-1,0.00,0.0775,Insufficient Physical Capacity
+18,02_horizontal_gradient_1920x1080.png,2,False,-1,0.00,0.0685,Insufficient Physical Capacity
+18,02_horizontal_gradient_1920x1080.png,3,False,-1,0.00,0.0687,Insufficient Physical Capacity
+18,03_checkerboard_1920x1080.png,1,False,-1,0.00,0.0777,Insufficient Physical Capacity
+18,03_checkerboard_1920x1080.png,2,False,-1,0.00,0.0654,Insufficient Physical Capacity
+18,03_checkerboard_1920x1080.png,3,False,-1,0.00,0.0774,Insufficient Physical Capacity
+18,04_random_noise_1920x1080.png,1,False,-1,0.00,0.0811,Insufficient Physical Capacity
+18,04_random_noise_1920x1080.png,2,False,-1,0.00,0.0711,Insufficient Physical Capacity
+18,04_random_noise_1920x1080.png,3,False,-1,0.00,0.0728,Insufficient Physical Capacity
+18,05_sine_waves_1920x1080.png,1,False,-1,0.00,0.0901,Insufficient Physical Capacity
+18,05_sine_waves_1920x1080.png,2,False,-1,0.00,0.0880,Insufficient Physical Capacity
+18,05_sine_waves_1920x1080.png,3,False,-1,0.00,0.0998,Insufficient Physical Capacity
+18,06_rgb_blocks_1920x1080.png,1,False,-1,0.00,0.0808,Insufficient Physical Capacity
+18,06_rgb_blocks_1920x1080.png,2,False,-1,0.00,0.0729,Insufficient Physical Capacity
+18,06_rgb_blocks_1920x1080.png,3,False,-1,0.00,0.0694,Insufficient Physical Capacity
+18,07_concentric_circles_1920x1080.png,1,False,-1,0.00,0.0795,Insufficient Physical Capacity
+18,07_concentric_circles_1920x1080.png,2,False,-1,0.00,0.0826,Insufficient Physical Capacity
+18,07_concentric_circles_1920x1080.png,3,False,-1,0.00,0.0774,Insufficient Physical Capacity
+18,08_large_uniform_2400x1800.png,1,True,0,39.76,0.9895,
+18,08_large_uniform_2400x1800.png,2,True,0,39.76,1.0078,
+18,08_large_uniform_2400x1800.png,3,True,0,39.76,1.0009,
