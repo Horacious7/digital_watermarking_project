@@ -34,7 +34,7 @@ def _idct2(block):
     return cv2.idct(block)
 
 
-def embed_watermark(image_path: str, watermark_bits: str, output_path: str, block_size: int = 8, mag: float = 150.0):
+def embed_watermark(image_path: str, watermark_bits: str, output_path: str, block_size: int = 8, mag: float = 150.0, use_optimization: bool = True):
     """
     Hybrid DWT + block-DCT watermark embedding.
     - Load image (color or grayscale).
@@ -44,6 +44,9 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     - Embed one bit per block by setting a mid-frequency coefficient to +mag (bit=1) or -mag (bit=0).
     - First 8 bits encode block_size for auto-detection during extraction.
     - Inverse DCT per block, unpad, inverse DWT to reconstruct blue channel, save image.
+    
+    :param use_optimization: If True, crops the image to be perfectly divisible by (2 * block_size)
+                             to avoid asymmetric padding issues in DWT.
     """
     # Increase magnitude for larger block sizes to prevent rounding errors
     # Larger blocks have smaller DCT coefficients, need stronger embedding
@@ -54,11 +57,20 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
         mag = 175.0  # Medium for 6x6, 7x7, 8x8
     # else: use default mag (150.0)
     img = load_image(image_path)  # float32
+    original_h, original_w = img.shape[:2]
 
     # --- RESONANT CROP (Cleaning Edges) ---
-    # Ensure image size is perfectly divisible by 2*block_size (for DWT + Block DCT)
-    img = get_resonant_crop(img, block_size)
-    h, w = img.shape[:2]
+    if use_optimization:
+        # Ensure image size is perfectly divisible by 2*block_size (for DWT + Block DCT)
+        img = get_resonant_crop(img, block_size)
+        h, w = img.shape[:2]
+        if h != original_h or w != original_w:
+            print(f"[INFO] Resonance Optimization active: Image adjusted from {original_w}x{original_h} to {w}x{h}")
+        else:
+            print("[INFO] Resonance Optimization active: Image dimensions already optimal.")
+    else:
+        h, w = original_h, original_w
+        print(f"[INFO] Resonance Optimization disabled: Using original dimensions {w}x{h} (Risk of asymmetric padding)")
 
     # Capacity Check (DWT Level 1 reduces size by 2)
     # Each block in cA stores 1 bit

@@ -148,6 +148,7 @@ def embed():
 
     message = request.form.get('message', '')
     block_size = int(request.form.get('block_size', 8))
+    use_optimization = request.form.get('use_optimization', 'true').lower() == 'true'
 
     if not message:
         return jsonify({'error': 'No message provided'}), 400
@@ -211,11 +212,13 @@ def embed():
                 'available_bits': num_blocks
             }), 400
 
-        # Embed watermark
-        output_path = os.path.join(app.config['UPLOAD_FOLDER'], f'watermarked_{unique_id}_{filename}')
-        embed_watermark(input_path, payload_bits, output_path, block_size=block_size)
-
-        # Clean up input
+        # Perform embedding
+        output_filename = f"watermarked_{unique_id}_{filename}"
+        output_path = os.path.join(app.config['UPLOAD_FOLDER'], output_filename)
+        
+        embed_watermark(input_path, payload_bits, output_path, block_size, use_optimization=use_optimization)
+        
+        # Clean up input file
         os.remove(input_path)
 
         # Return watermarked image
@@ -391,6 +394,9 @@ def embed_batch():
         elif 'private_key' in request.form:
             private_key_content = request.form.get('private_key').encode('utf-8')
 
+        # Add optimization toggle for batch mode too
+        use_optimization = request.form.get('use_optimization', 'true').lower() == 'true'
+        
         # Check if public key is provided in request (needed for verification)
         public_key_content = None
         if 'public_key' in request.files:
@@ -476,7 +482,7 @@ def embed_batch():
 
                 # Embed watermark
                 output_path = os.path.join(app.config['UPLOAD_FOLDER'], f'watermarked_{unique_id}_{filename}')
-                embed_watermark(input_path, payload_bits, output_path, block_size=block_size)
+                embed_watermark(input_path, payload_bits, output_path, block_size=block_size, use_optimization=use_optimization)
                 temp_files.append(output_path)
 
                 # AUTO-VERIFY: Check signature before adding to ZIP
@@ -568,7 +574,7 @@ def embed_batch():
         successful_results = [r for r in results if r['success']]
         failed_results = [{'filename': r['filename'], 'error': r.get('error', 'Unknown error')} for r in results if not r['success']]
 
-        if len(successful_results) == 0:
+        if len(successful_results) == 0 and len(failed_results) > 0:
             # No images succeeded - return error with details
             for temp_file in temp_files:
                 if os.path.exists(temp_file):
@@ -582,27 +588,53 @@ def embed_batch():
                 'failed_images': failed_results
             }), 400
 
-        zip_buffer = BytesIO()
-        with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
-            for result in successful_results:
-                zip_file.write(result['output_path'], result['watermarked_filename'])
+        # Optimization: If only one image succeeded and no failures, return it directly (not ZIP)
+        if len(successful_results) == 1 and len(failed_results) == 0:
+            result = successful_results[0]
+            output_path = result['output_path']
+            original_filename = result['filename']
+            # Ensure filename ends with .png (as embed outputs PNG)
+            download_fn = f"watermarked_{os.path.splitext(original_filename)[0]}.png"
+            
+            with open(output_path, 'rb') as f:
+                file_io = BytesIO(f.read())
+            
+            # Clean up temp files immediately
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
+            
+            print(f"✅ Single embed complete: {download_fn}")
+            
+            response = send_file(
+                file_io,
+                mimetype='image/png',
+                as_attachment=True,
+                download_name=download_fn
+            )
+        else:
+            # Multiple images or mixed results - return ZIP
+            zip_buffer = BytesIO()
+            with zipfile.ZipFile(zip_buffer, 'w', zipfile.ZIP_DEFLATED) as zip_file:
+                for result in successful_results:
+                    zip_file.write(result['output_path'], result['watermarked_filename'])
 
-        zip_buffer.seek(0)
+            zip_buffer.seek(0)
 
-        # Clean up temp files
-        for temp_file in temp_files:
-            if os.path.exists(temp_file):
-                os.remove(temp_file)
+            # Clean up temp files
+            for temp_file in temp_files:
+                if os.path.exists(temp_file):
+                    os.remove(temp_file)
 
-        print(f"✅ Batch embed complete: {len(successful_results)}/{len(files)} successful")
+            print(f"✅ Batch embed complete: {len(successful_results)}/{len(files)} successful")
 
-        # If some failed, include failed_images in response header (as JSON string)
-        response = send_file(
-            zip_buffer,
-            mimetype='application/zip',
-            as_attachment=True,
-            download_name='watermarked_images.zip'
-        )
+            # If some failed, include failed_images in response header (as JSON string)
+            response = send_file(
+                zip_buffer,
+                mimetype='application/zip',
+                as_attachment=True,
+                download_name='watermarked_images.zip'
+            )
 
         # Add custom headers with batch statistics
         response.headers['X-Batch-Total'] = str(len(files))
@@ -613,7 +645,7 @@ def embed_batch():
             response.headers['X-Batch-Failed-Images'] = json.dumps(failed_results)
 
         # CORS: Expose custom headers to frontend
-        response.headers['Access-Control-Expose-Headers'] = 'X-Batch-Total, X-Batch-Successful, X-Batch-Failed, X-Batch-Failed-Images'
+        response.headers['Access-Control-Expose-Headers'] = 'X-Batch-Total, X-Batch-Successful, X-Batch-Failed, X-Batch-Failed-Images, Content-Disposition'
 
         return response
 
@@ -741,8 +773,8 @@ def verify_batch():
                             message_bytes_clean = message_bytes[:i]
                         except UnicodeDecodeError:
                             break
-                        if message_bytes[i-1:i] == b'\x00':
-                            break
+                    if message_bytes[i-1:i] == b'\x00':
+                        break
 
                 # Decode message
                 try:
