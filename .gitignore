@@ -69,3 +69,5 @@ frontend/.env.production.local
 Thumbs.db
 .DS_Store
 
+thesis
+/thesis/
