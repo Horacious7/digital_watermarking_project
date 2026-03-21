@@ -7,10 +7,10 @@ import { getPrivateKey, getPublicKey, hasPrivateKey } from '../services/keyManag
 
 const API_BASE_URL = 'http://localhost:5000/api';
 
-// Block size reliability categories based on extensive testing on 8 native PNG images
-const SAFE_BLOCK_SIZES = [4, 6, 8, 9, 13]; // 100% reliable
-const WARNING_BLOCK_SIZES = [10, 12, 15]; // 80-90% reliable
-const DANGER_BLOCK_SIZES = [7, 11, 14, 16, 17, 18]; // <80% reliable
+// Block size reliability categories based on extensive testing on 15 synthetic stress-test images
+const SAFE_BLOCK_SIZES = [3, 5, 6]; // 100% reliable
+const WARNING_BLOCK_SIZES = [2, 4, 8, 9, 10]; // 80-90% reliable
+const DANGER_BLOCK_SIZES = [7, 11, 12, 13, 14, 15, 16, 17, 18]; // <80% reliable
 
 const getBlockSizeStatus = (bs: number): { color: string; label: string; cssClass: string } => {
   if (SAFE_BLOCK_SIZES.includes(bs)) {

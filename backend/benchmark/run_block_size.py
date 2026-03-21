@@ -79,6 +79,7 @@ class CaseResult:
     block_size: int
     image_name: str
     iteration: int
+    optimization: bool
     success: bool
     duration_s: float
     psnr: float = 0.0
@@ -89,7 +90,8 @@ class CaseResult:
 
 def process_one_case(
         block_size: int, image_path: Path, iteration: int, out_dir: Path,
-        private_key_path: Path, public_key_path: Path, base_payload_bits: str, margin_fallback_bits: list[int]
+        private_key_path: Path, public_key_path: Path, base_payload_bits: str, margin_fallback_bits: list[int],
+        use_optimization: bool  # Added parameter
 ) -> CaseResult:
     t0 = time.perf_counter()
     image_name = image_path.name
@@ -98,7 +100,7 @@ def process_one_case(
         base_required = 8 + len(base_payload_bits)
 
         if base_required > available_capacity:
-            return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=False,
+            return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, optimization=use_optimization, success=False,
                               duration_s=time.perf_counter() - t0, error="CapacityExceeded", skipped_capacity=True)
 
         test_passed = False
@@ -114,15 +116,32 @@ def process_one_case(
 
             try:
                 padded_payload_bits = base_payload_bits + ("0" * margin)
-                out_path = out_dir / f"wm_{image_path.stem}_b{block_size}_i{iteration}_m{margin}.png"
+                out_path = out_dir / f"wm_{image_path.stem}_b{block_size}_i{iteration}_m{margin}_opt{use_optimization}.png"
                 embed_watermark(image_path=str(image_path), watermark_bits=padded_payload_bits,
-                                output_path=str(out_path), block_size=block_size)
+                                output_path=str(out_path), block_size=block_size, use_optimization=use_optimization)
 
                 original_img = cv2.imread(str(image_path))
-                # Ensure original has same dimensions as watermarked output for PSNR calc
-                original_img_cropped = get_resonant_crop(original_img, block_size)
                 watermarked_img = cv2.imread(str(out_path))
-                final_psnr = cv2.PSNR(original_img_cropped, watermarked_img)
+                
+                # Determine reference image for PSNR calculation based on optimization mode
+                if use_optimization:
+                    # When optimization is enabled, the embedded image is cropped.
+                    original_img_for_psnr = get_resonant_crop(original_img, block_size)
+                else:
+                    # When optimization is disabled, use original, but ensure dimensions match
+                    original_img_for_psnr = original_img
+
+                # Ensure dimensions match exactly for PSNR (handle edge cases)
+                h_ref, w_ref = original_img_for_psnr.shape[:2]
+                h_wm, w_wm = watermarked_img.shape[:2]
+                
+                h_common = min(h_ref, h_wm)
+                w_common = min(w_ref, w_wm)
+                
+                original_img_for_psnr = original_img_for_psnr[:h_common, :w_common]
+                watermarked_img = watermarked_img[:h_common, :w_common]
+                
+                final_psnr = cv2.PSNR(original_img_for_psnr, watermarked_img)
 
                 extracted_bits = extract_watermark(image_path=str(out_path), n_bits=total_required,
                                                    block_size=block_size)
@@ -139,11 +158,11 @@ def process_one_case(
             except Exception as e:
                 last_error = f"Exception_{type(e).__name__}"
 
-        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=test_passed,
+        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, optimization=use_optimization, success=test_passed,
                           duration_s=time.perf_counter() - t0, error="" if test_passed else last_error,
                           margin_used=final_margin, psnr=final_psnr)
     except Exception as e:
-        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, success=False,
+        return CaseResult(block_size=block_size, image_name=image_name, iteration=iteration, optimization=use_optimization, success=False,
                           duration_s=time.perf_counter() - t0, error="ProcessCrash")
 
 
@@ -184,12 +203,13 @@ def run_benchmark() -> None:
 
         tasks = []
         with concurrent.futures.ProcessPoolExecutor() as executor:
-            for block_size in BLOCK_SIZES:
-                for image_path in images:
-                    for iteration in range(1, ITERATIONS + 1):
-                        tasks.append(executor.submit(process_one_case, block_size, image_path, iteration,
-                                                     out_dir, private_key_path, public_key_path, base_payload_bits,
-                                                     MARGIN_FALLBACK_BITS))
+            for use_optimization in [True, False]:
+                for block_size in BLOCK_SIZES:
+                    for image_path in images:
+                        for iteration in range(1, ITERATIONS + 1):
+                            tasks.append(executor.submit(process_one_case, block_size, image_path, iteration,
+                                                         out_dir, private_key_path, public_key_path, base_payload_bits,
+                                                         MARGIN_FALLBACK_BITS, use_optimization))
 
             results = []
             total = len(tasks)
@@ -201,35 +221,37 @@ def run_benchmark() -> None:
 
         timestamp = time.strftime("%Y%m%d_%H%M%S")
         csv_path = Path(f"empirical_benchmark_{timestamp}.csv")
-        results.sort(key=lambda x: (x.block_size, x.image_name, x.iteration))
+        results.sort(key=lambda x: (x.optimization, x.block_size, x.image_name, x.iteration))
 
         print("\n" + "=" * 95)
         print(" FINAL RESULTS MATRIX")
         print("=" * 95)
         print(
-            f"{'Block':>6} | {'Tested':>8} | {'Passed':>8} | {'Skipped':>8} | {'Success %':>10} | {'Avg PSNR':>9} | {'Avg Time':>10}")
+            f"{'Opt':>5} | {'Block':>6} | {'Tested':>8} | {'Passed':>8} | {'Skipped':>8} | {'Success %':>10} | {'Avg PSNR':>9} | {'Avg Time':>10}")
         print("-" * 95)
 
         overall_tested, overall_passed, overall_skipped = 0, 0, 0
 
-        for size in BLOCK_SIZES:
-            sub = [r for r in results if r.block_size == size]
-            skipped = sum(1 for r in sub if r.skipped_capacity)
-            tested = len(sub) - skipped
-            passed = sum(1 for r in sub if r.success)
+        for opt in [True, False]:
+            for size in BLOCK_SIZES:
+                sub = [r for r in results if r.optimization == opt and r.block_size == size]
+                skipped = sum(1 for r in sub if r.skipped_capacity)
+                tested = len(sub) - skipped
+                passed = sum(1 for r in sub if r.success)
 
-            successful_cases = [r for r in sub if r.success]
-            avg_psnr = sum(r.psnr for r in successful_cases) / len(successful_cases) if successful_cases else 0.0
+                successful_cases = [r for r in sub if r.success]
+                avg_psnr = sum(r.psnr for r in successful_cases) / len(successful_cases) if successful_cases else 0.0
 
-            overall_skipped += skipped
-            overall_tested += tested
-            overall_passed += passed
+                overall_skipped += skipped
+                overall_tested += tested
+                overall_passed += passed
 
-            success_rate = (passed / tested * 100.0) if tested > 0 else 0.0
-            avg_time = sum(r.duration_s for r in sub if not r.skipped_capacity) / tested if tested > 0 else 0.0
-
-            print(
-                f"{size:>6} | {tested:>8} | {passed:>8} | {skipped:>8} | {success_rate:>9.2f}% | {avg_psnr:>6.2f} dB | {avg_time:>9.3f}s")
+                success_rate = (passed / tested * 100.0) if tested > 0 else 0.0
+                avg_time = sum(r.duration_s for r in sub if not r.skipped_capacity) / tested if tested > 0 else 0.0
+                
+                opt_str = "ON" if opt else "OFF"
+                print(
+                    f"{opt_str:>5} | {size:>6} | {tested:>8} | {passed:>8} | {skipped:>8} | {success_rate:>9.2f}% | {avg_psnr:>6.2f} dB | {avg_time:>9.3f}s")
 
         overall_rate = (overall_passed / overall_tested * 100.0) if overall_tested > 0 else 0.0
         print("-" * 95)
@@ -241,9 +263,9 @@ def run_benchmark() -> None:
             with open(csv_path, mode="w", newline="") as f:
                 writer = csv.writer(f)
                 writer.writerow(
-                    ["BlockSize", "Image", "Iteration", "Success", "MarginUsed", "PSNR_dB", "Duration_s", "ErrorCode"])
+                    ["BlockSize", "Image", "Iteration", "Optimization", "Success", "MarginUsed", "PSNR_dB", "Duration_s", "ErrorCode"])
                 for r in results:
-                    writer.writerow([r.block_size, r.image_name, r.iteration, r.success, r.margin_used, f"{r.psnr:.2f}",
+                    writer.writerow([r.block_size, r.image_name, r.iteration, r.optimization, r.success, r.margin_used, f"{r.psnr:.2f}",
                                      f"{r.duration_s:.4f}", r.error])
             print(f"\n [✓] CSV Report exported to: {csv_path.name}")
         except Exception as e:
