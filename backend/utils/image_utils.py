@@ -18,6 +18,23 @@ def save_image(image: np.ndarray, path: str):
     """
     cv2.imwrite(path, np.clip(image, 0, 255).astype(np.uint8))
 
+def get_resonant_crop(image: np.ndarray, block_size: int) -> np.ndarray:
+    """
+    Ensure the image is perfectly divisible by block_size * 2, 
+    so DWT sub-bands align precisely with block analysis.
+    """
+    h, w = image.shape[:2]
+    # DWT (Haar) reduces size by 2. We want the resulting cA to be divisible by block_size.
+    # So original image must be divisible by block_size * 2.
+    m = block_size * 2
+    
+    new_h = h - (h % m)
+    new_w = w - (w % m)
+
+    # Perform crop (bottom-right based, equivalent to image[:new_h, :new_w])
+    cropped = image[:new_h, :new_w]
+    return cropped
+
 def embed_lsb_watermark(image_path: str, watermark_bits: str, output_path: str):
     img = load_image(image_path)
     flat = img.flatten()

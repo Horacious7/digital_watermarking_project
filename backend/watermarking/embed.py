@@ -2,7 +2,7 @@
 import numpy as np
 import pywt
 import cv2
-from backend.utils.image_utils import load_image, save_image
+from backend.utils.image_utils import load_image, save_image, get_resonant_crop
 
 
 def _pad_to_block(img, block_size):
@@ -54,6 +54,26 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
         mag = 175.0  # Medium for 6x6, 7x7, 8x8
     # else: use default mag (150.0)
     img = load_image(image_path)  # float32
+
+    # --- RESONANT CROP (Cleaning Edges) ---
+    # Ensure image size is perfectly divisible by 2*block_size (for DWT + Block DCT)
+    img = get_resonant_crop(img, block_size)
+    h, w = img.shape[:2]
+
+    # Capacity Check (DWT Level 1 reduces size by 2)
+    # Each block in cA stores 1 bit
+    blocks_h = (h // 2) // block_size
+    blocks_w = (w // 2) // block_size
+    available_capacity = blocks_h * blocks_w
+
+    if available_capacity < 2272:
+        raise ValueError(
+            f"Image too small for required payload (2272 bits). "
+            f"Capacity: {available_capacity} bits (BlockSize={block_size}). "
+            f"Try a smaller block size or larger image."
+        )
+    # --------------------------------------
+
     color = img.ndim == 3
     if color:
         blue = img[:, :, 0].astype(np.float32).copy()

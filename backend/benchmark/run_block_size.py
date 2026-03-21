@@ -16,6 +16,7 @@ from backend.crypto.keys import generate_rsa_keys
 from backend.crypto.sign import sign_hash
 from backend.crypto.verify import verify_signature
 from backend.utils.conversions import bits_to_bytes, bytes_to_bits
+from backend.utils.image_utils import get_resonant_crop
 from backend.watermarking.embed import embed_watermark
 from backend.watermarking.extract import extract_watermark
 
@@ -118,8 +119,10 @@ def process_one_case(
                                 output_path=str(out_path), block_size=block_size)
 
                 original_img = cv2.imread(str(image_path))
+                # Ensure original has same dimensions as watermarked output for PSNR calc
+                original_img_cropped = get_resonant_crop(original_img, block_size)
                 watermarked_img = cv2.imread(str(out_path))
-                final_psnr = cv2.PSNR(original_img, watermarked_img)
+                final_psnr = cv2.PSNR(original_img_cropped, watermarked_img)
 
                 extracted_bits = extract_watermark(image_path=str(out_path), n_bits=total_required,
                                                    block_size=block_size)
