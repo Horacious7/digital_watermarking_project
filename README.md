@@ -368,11 +368,11 @@ For block_size in [2, 3, 4, ..., 64]:
 
 Based on extensive reliability testing, the system applies different safety margins:
 
-**Safe Block Sizes (4, 6, 8, 9, 13):** 32 bits (4 bytes)
+**Safe Block Sizes (3, 5, 6):** 32 bits (4 bytes)
 - Minimal margin for maximum capacity
 - Proven 100% reliable across all tested images
 
-**Warning Block Sizes (10, 12, 15):** 64 bits (8 bytes)
+**Warning Block Sizes (2, 4, 8, 9, 10):** 64 bits (8 bytes)
 - Moderate margin for borderline cases
 - 80-90% reliability in testing
 

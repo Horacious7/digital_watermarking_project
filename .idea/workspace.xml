@@ -5,14 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="add optimization toggle for watermark embedding and enhance image processing logic">
-      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/benchmark/benchmark_results_20260321-202940.csv" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/benchmark/dashboard.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/benchmark/dashboard.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/benchmark/generate_data.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/benchmark/generate_data.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/benchmark/run_block_size.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/benchmark/run_block_size.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/EmbedTab.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/backend/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,7 +17,11 @@
   <component name="CopilotPersistence">
     <persistenceIdMap>
       <entry key="_C:/Users/Horatiu/Desktop/facultate/licenta/digital_watermarking_project" value="33v2vNAaO9yxOMmv4QrXyJLOhHT" />
+      <entry key="_C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project" value="3BM34dL1ggawK98H7YkaSmsGHaN" />
     </persistenceIdMap>
+  </component>
+  <component name="CopilotUserSelectedChatMode">
+    <option name="chatModeId" value="Agent" />
   </component>
   <component name="CopilotUserSelectedModel">
     <selectedModels>
@@ -58,12 +57,12 @@
     &quot;assignee&quot;: &quot;Horacious7&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/Horacious7/digital_watermarking_project.git&quot;,
-    &quot;accountId&quot;: &quot;17b28730-7bb6-49b2-b9d1-a358e878ec54&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/Horacious7/digital_watermarking_project.git",
+    "accountId": "9537e3cc-35ca-4124-a876-f1d066ec3643"
   }
-}</component>
+}]]></component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
@@ -82,58 +81,58 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ASKED_ADD_EXTERNAL_FILES&quot;: &quot;true&quot;,
-    &quot;ASKED_MARK_IGNORED_FILES_AS_EXCLUDED&quot;: &quot;true&quot;,
-    &quot;Jest.App.test.tsx.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests in test_crypto.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests in test_math.py.executor&quot;: &quot;Run&quot;,
-    &quot;Python tests.Python tests in tests.executor&quot;: &quot;Run&quot;,
-    &quot;Python.__main__.executor&quot;: &quot;Run&quot;,
-    &quot;Python.api.executor&quot;: &quot;Run&quot;,
-    &quot;Python.complete_readme.executor&quot;: &quot;Run&quot;,
-    &quot;Python.conversions.executor&quot;: &quot;Run&quot;,
-    &quot;Python.embed.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generate_data.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generate_more_natives.executor&quot;: &quot;Run&quot;,
-    &quot;Python.generate_native_pngs.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.main_window.executor&quot;: &quot;Run&quot;,
-    &quot;Python.qt_compat.executor&quot;: &quot;Run&quot;,
-    &quot;Python.quick_check.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_block_size.executor&quot;: &quot;Run&quot;,
-    &quot;Python.run_ui.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_13_fixed.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_13_varying_lengths.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_13x13.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_on_multiple_images.executor&quot;: &quot;Run&quot;,
-    &quot;Python.test_prime_theory.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;WebServerToolWindowFactoryState&quot;: &quot;false&quot;,
-    &quot;ai.playground.ignore.import.keys.banner.in.settings&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;javascript.preferred.runtime.type.id&quot;: &quot;node&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;C:/Users/Horatiu/Desktop/facultate/licenta/digital_watermarking_project/backend/benchmark/dataset&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs.jest.jest_package&quot;: &quot;C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project/frontend/node_modules/react-scripts&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;configurable.tailwindcss&quot;,
-    &quot;ts.external.directory.path&quot;: &quot;C:\\Users\\Horatiu\\Desktop\\facultate\\licenta\\digital_watermarking_project\\frontend\\node_modules\\typescript\\lib&quot;,
-    &quot;vue.rearranger.settings.migration&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ASKED_ADD_EXTERNAL_FILES": "true",
+    "ASKED_MARK_IGNORED_FILES_AS_EXCLUDED": "true",
+    "Jest.App.test.tsx.executor": "Run",
+    "Python tests.Python tests in test_crypto.py.executor": "Run",
+    "Python tests.Python tests in test_math.py.executor": "Run",
+    "Python tests.Python tests in tests.executor": "Run",
+    "Python.__main__.executor": "Run",
+    "Python.api.executor": "Run",
+    "Python.complete_readme.executor": "Run",
+    "Python.conversions.executor": "Run",
+    "Python.embed.executor": "Run",
+    "Python.generate_data.executor": "Run",
+    "Python.generate_more_natives.executor": "Run",
+    "Python.generate_native_pngs.executor": "Run",
+    "Python.main.executor": "Run",
+    "Python.main_window.executor": "Run",
+    "Python.qt_compat.executor": "Run",
+    "Python.quick_check.executor": "Run",
+    "Python.run_block_size.executor": "Run",
+    "Python.run_ui.executor": "Run",
+    "Python.test_13_fixed.executor": "Run",
+    "Python.test_13_varying_lengths.executor": "Run",
+    "Python.test_13x13.executor": "Run",
+    "Python.test_on_multiple_images.executor": "Run",
+    "Python.test_prime_theory.executor": "Run",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.OpenProjectViewOnStart": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "WebServerToolWindowFactoryState": "false",
+    "ai.playground.ignore.import.keys.banner.in.settings": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "main",
+    "javascript.preferred.runtime.type.id": "node",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs.jest.jest_package": "C:/Users/maier/Desktop/facultate/licenta cu Crivei/digital_watermarking_project/frontend/node_modules/react-scripts",
+    "nodejs_package_manager_path": "npm",
+    "settings.editor.selected.configurable": "configurable.tailwindcss",
+    "ts.external.directory.path": "C:\\Users\\maier\\Desktop\\facultate\\licenta cu Crivei\\digital_watermarking_project\\frontend\\node_modules\\typescript\\lib",
+    "vue.rearranger.settings.migration": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
       <recent name="C:\Users\Horatiu\Desktop\facultate\licenta\digital_watermarking_project\backend\benchmark\dataset" />
@@ -145,7 +144,7 @@
       <recent name="C:\Users\maier\Desktop\facultate\licenta cu Crivei\digital_watermarking_project\backend" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Python.main">
     <configuration name="main" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="digital_watermarking_project" />
       <option name="ENV_FILES" value="" />
@@ -188,17 +187,12 @@
       <option name="_new_targetType" value="&quot;PATH&quot;" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python tests.Python tests in tests" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.29346.142" />
-        <option value="bundled-python-sdk-f2b7a9f6281b-6e1f45a539f7-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.29346.142" />
+        <option value="bundled-js-predefined-d6986cc7102b-9b0f141eb926-JavaScript-PY-253.31033.139" />
+        <option value="bundled-python-sdk-2653e85de345-6d6dccd035ac-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-253.31033.139" />
       </set>
     </attachedChunks>
   </component>
@@ -250,6 +244,7 @@
       <workItem from="1774049609314" duration="15000" />
       <workItem from="1774112821704" duration="3765000" />
       <workItem from="1774116707135" duration="14484000" />
+      <workItem from="1774284929790" duration="1084000" />
     </task>
     <task id="LOCAL-00001" summary="Structura Initiala">
       <option name="closed" value="true" />

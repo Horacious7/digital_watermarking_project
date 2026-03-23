@@ -54,18 +54,18 @@ def get_safety_margin_bits(block_size):
     Get adaptive safety margin based on block size reliability.
 
     Based on extensive testing on native PNG images:
-    - Safe block sizes (4,6,8,9,13): 100% reliable → minimal margin
-    - Warning block sizes (10,12,15): 80-90% reliable → moderate margin
+    - Safe block sizes (3,5,6): 100% reliable → minimal margin
+    - Warning block sizes (2,4,8,9,10): 80-90% reliable → moderate margin
     - Danger block sizes (7,11,14,16,17,18): <80% reliable → large margin
 
     Returns safety margin in bits.
     """
     # Safe block sizes (100% tested) - minimal margin
-    if block_size in [4, 6, 8, 9, 13]:
+    if block_size in [3, 5, 6]:
         return 32  # 4 bytes = header (8) + extraction safety (8) + padding (16)
 
     # Warning block sizes (80-90% reliable) - moderate margin
-    elif block_size in [10, 12, 15]:
+    elif block_size in [2, 4, 8, 9, 10]:
         return 64  # 8 bytes = safe + extra buffer for edge cases
 
     # Danger/unknown block sizes (<80% reliable) - large margin
