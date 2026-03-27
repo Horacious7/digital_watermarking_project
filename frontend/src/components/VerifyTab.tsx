@@ -56,6 +56,7 @@ const VerifyTab: React.FC = () => {
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
     processFiles(files);
+    e.target.value = '';
   };
 
   // Drag & Drop handlers
