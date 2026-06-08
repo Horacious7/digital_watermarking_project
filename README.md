@@ -725,7 +725,9 @@ All licensing decisions and terms are subject to change at the sole discretion o
 ## Project Statistics
 
 **Development Period:** September 2025 - June 2026
+
 **Total Lines of Code:** ~9,000+ (Python + TypeScript)
+
 **Test Coverage:** Automated benchmark suite spanning 1,500+ empirical scenarios
 
 **Last Updated:** June 8, 2026

@@ -7,12 +7,8 @@
     <list default="true" id="5c9a4a99-d1f3-4e08-88ab-658e186b58d4" name="Changes" comment="enhance dashboard with optimization filtering and error analysis features">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/api.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/api.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/crypto/keys.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/crypto/keys.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/utils/image_utils.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/utils/image_utils.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/watermarking/embed.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/watermarking/embed.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/backend/watermarking/extract.py" beforeDir="false" afterPath="$PROJECT_DIR$/backend/watermarking/extract.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/src/components/VerifyTab.tsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/frontend/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/frontend/package.json" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -632,7 +628,7 @@
     <SUITE FILE_PATH="coverage/digital_watermarking_project$quick_check.coverage" NAME="quick_check Coverage Results" MODIFIED="1767798390187" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$__main__.coverage" NAME="__main__ Coverage Results" MODIFIED="1760183480681" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/.venv/Lib/site-packages/pip" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$test_13_varying_lengths.coverage" NAME="test_13_varying_lengths Coverage Results" MODIFIED="1767805268701" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
-    <SUITE FILE_PATH="coverage/digital_watermarking_project$api.coverage" NAME="api Coverage Results" MODIFIED="1780947922097" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
+    <SUITE FILE_PATH="coverage/digital_watermarking_project$api.coverage" NAME="api Coverage Results" MODIFIED="1780949003859" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/backend" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$conversions.coverage" NAME="conversions Coverage Results" MODIFIED="1760191271619" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/utils" />
     <SUITE FILE_PATH="coverage/main_py$main.coverage" NAME="main Coverage Results" MODIFIED="1762881806133" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
     <SUITE FILE_PATH="coverage/digital_watermarking_project$main_window.coverage" NAME="main_window Coverage Results" MODIFIED="1760185363913" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$/gui" />
