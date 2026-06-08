@@ -58,6 +58,7 @@ const VerifyTab: React.FC = () => {
     // Reset the input value to allow selecting the same file again if needed
     e.target.value = '';
     processFiles(files);
+    e.target.value = '';
   };
 
   // Drag & Drop handlers

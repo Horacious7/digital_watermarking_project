@@ -3,6 +3,7 @@ import pytest
 
 import watermarking.embed as embed_module
 import watermarking.extract as extract_module
+from utils.conversions import bits_to_bytes, bytes_to_bits
 
 
 def _resolve_pad_func(module):
@@ -56,3 +57,21 @@ def test_padding_no_change_when_already_divisible():
 
     assert padded.shape == arr.shape
     assert pad == (0, 0)
+
+
+def test_binary_translation_fidelity():
+    """
+    Evaluates the bits_to_bytes and bytes_to_bits utility functions.
+    Confirms that the binary payload translates consistently without
+    structural offsets caused by bit-order (endianness) irregularities.
+    """
+    original_data = b"TRACE binary translation test payload 2026! \x00\xff\xaa\x55"
+
+    bits_str = bytes_to_bits(original_data)
+    reconstructed_data = bits_to_bytes(bits_str)
+
+    assert reconstructed_data == original_data
+    assert isinstance(bits_str, str)
+    assert all(bit in ('0', '1') for bit in bits_str)
+    assert len(bits_str) == len(original_data) * 8
+
