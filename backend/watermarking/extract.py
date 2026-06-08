@@ -48,7 +48,7 @@ def detect_block_size(image_path: str) -> int:
 
             # The correct block_size will decode its own value from the header!
             if detected_value == try_block_size:
-                print(f"✅ Auto-detected block_size: {detected_value} (header matched: '{header_bits}')")
+                print(f" Auto-detected block_size: {detected_value} (header matched: '{header_bits}')")
                 return detected_value
 
             # Optional: show first few and last few attempts for debugging

@@ -265,10 +265,10 @@ def verify():
         # Auto-detect block_size if not provided
         if block_size_param is None or block_size_param == '':
             block_size = detect_block_size(filepath)
-            print(f"🔍 Auto-detected block_size: {block_size}")
+            print(f" Auto-detected block_size: {block_size}")
         else:
             block_size = int(block_size_param)
-            print(f"📌 Using manual block_size: {block_size}")
+            print(f" Using manual block_size: {block_size}")
 
         # Calculate capacity to know how many bits to extract
         img = cv2.imread(filepath, cv2.IMREAD_COLOR)
@@ -448,7 +448,7 @@ def embed_batch():
                 file.save(input_path)
                 temp_files.append(input_path)
 
-                print(f"  📥 {idx+1}/{len(files)}: Saved {filename} to temp")
+                print(f"   {idx+1}/{len(files)}: Saved {filename} to temp")
 
                 # Check capacity
                 img = cv2.imread(input_path, cv2.IMREAD_COLOR)

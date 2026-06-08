@@ -1,6 +1,6 @@
 ﻿# TRACE - Digital Image Watermarking Platform
 A production-ready full-stack web application for embedding and verifying cryptographically signed invisible watermarks in digital images. This system implements a hybrid DWT+DCT watermarking technique with RSA-2048 digital signatures, providing both content authentication and tamper detection for digital imagery.
-**Author:** Maier Horatiu-Gabriel  
+**Author:** Maier Horațiu-Gabriel  
 **Project Type:** Bachelor's Thesis - Computer Science  
 **Year:** 2026  
 **License:** All rights reserved - Proprietary intellectual property
@@ -242,10 +242,10 @@ The system supports multiple DCT block sizes with reliability indicators:
 - **All Block Sizes (Green):** When enabled, the system automatically crops the image to guarantee perfect alignment, making all block sizes cryptographically stable.
 
 **Resonance Optimization Disabled (Legacy):**
-- **Highly Reliable (Green):** 4x4, 6x6, 8x8, 9x9, 13x13 (100% success rate)
-- **May Be Unreliable (Yellow):** 10x10, 12x12, 15x15 (80-90% success rate)
-- **Unreliable (Red):** 7x7, 11x11, 14x14, 16x16, 17x17, 18x18 (<80% success rate)
-
+- **Highly Reliable (Green):** 3x3, 5x5, 6x6 (100% success rate)
+- **May Be Unreliable (Yellow):** 2x2, 4x4, 8x8, 9x9, 10x10 (80-90% success rate)
+- **Unreliable (Red):** 7x7, 11x11, 12x12 and larger (<80% success rate)
+- 
 **Recommendation:** Use 8x8 with Resonance Optimization for maximum compatibility and reliability.
 
 ### Batch Processing
@@ -410,12 +410,12 @@ If you wish to run performance tests yourself:
 Comprehensive reliability testing was conducted to validate the watermarking system across multiple variables:
 
 **Test Matrix:**
-- **Images:** 8 native PNG images with varied dimensions (640x1138 to 3000x3000 pixels) and content types (gradient, noise, checkerboard, photographs)
-- **Block Sizes:** 18 different configurations (2x2 through 18x18)
-- **Messages:** 5 different message lengths (1 byte to 150 bytes)
-- **Iterations:** 3 repetitions per configuration for consistency verification
+- **Images:** 15 native PNG images with varied dimensions and high/low-frequency attributes.
+- **Block Sizes:** 17 different configurations (ranging from 2x2 to 18x18).
+- **Optimization Modes:** 2 distinct processing modes (Resonance Optimization ON and OFF).
+- **Iterations:** 3 repetitions per configuration to stabilize CPU-level execution time metrics.
 
-**Total Test Cases:** 8 images x 18 block sizes x 5 messages x 3 iterations = **2,160 individual tests**
+**Total Test Cases:** 15 images x 17 block sizes x 2 modes x 3 iterations = **1,530 individual test events**
 
 
 ### Test Results (Baseline / Unoptimized)
@@ -444,7 +444,7 @@ Comprehensive reliability testing was conducted to validate the watermarking sys
 
 3. **Message Length:** Reliability remains consistent across message lengths, provided capacity constraints are respected.
 
-4. **Signature Overhead:** RSA-2048 signatures add a fixed 265-byte overhead (4 bytes length + 256 bytes signature + 4 bytes terminator + 1 byte safety margin).
+4. **Signature Overhead:** RSA-2048 signatures require a base 265-byte structural overhead (1-byte block-size header + 4-byte signature length + 256-byte signature + 4-byte null terminator), plus an adaptive safety margin (up to 12 additional bytes, depending on the block size stability).
 
 ### Test Scripts
 
@@ -606,8 +606,7 @@ Fields:
 | 1920x1080 | 2,025 bytes | 1,760 bytes |
 | 3840x2160 | 8,100 bytes | 7,835 bytes |
 
-**Note:** Message capacity = Total capacity - 265 bytes (signature overhead)
-
+**Note:** Message capacity = Total capacity - structural overhead (~265 to 277 bytes, depending on the applied adaptive safety margin).
 ---
 
 ## Security Analysis
@@ -616,7 +615,7 @@ Fields:
 
 **RSA-2048 Digital Signatures:**
 - Key size: 2048 bits (considered secure until 2030+ by NIST standards)
-- Signature algorithm: PKCS#1 v1.5 (RSA-SHA256)
+- Signature algorithm: RSA-PSS (Probabilistic Signature Scheme with SHA-256)
 - Hash function: SHA-256 (256-bit security)
 
 **Attack Resistance:**
@@ -725,8 +724,8 @@ All licensing decisions and terms are subject to change at the sole discretion o
 
 ## Project Statistics
 
-**Development Period:** September 2025 - March 2026
+**Development Period:** September 2025 - June 2026
 **Total Lines of Code:** ~9,000+ (Python + TypeScript)
-**Test Coverage:** 10,000+ validated configurations
+**Test Coverage:** Automated benchmark suite spanning 1,500+ empirical scenarios
 
-**Last Updated:** March 22, 2026
+**Last Updated:** June 8, 2026

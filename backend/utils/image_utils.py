@@ -43,7 +43,7 @@ def embed_lsb_watermark(image_path: str, watermark_bits: str, output_path: str):
         flat[i] = flat[i] - (flat[i] % 2) + int(watermark_bits[i])
     img_wm = flat.reshape(img.shape)
     save_image(img_wm, output_path)
-    print(f"✅ LSB Watermark embedded: {output_path}")
+    print(f" LSB Watermark embedded: {output_path}")
 
 def extract_lsb_watermark(image_path: str, n_bits: int) -> str:
     img = load_image(image_path)

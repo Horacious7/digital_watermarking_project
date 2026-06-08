@@ -55,6 +55,8 @@ const VerifyTab: React.FC = () => {
 
   const handleImageSelect = (e: React.ChangeEvent<HTMLInputElement>) => {
     const files = Array.from(e.target.files || []);
+    // Reset the input value to allow selecting the same file again if needed
+    e.target.value = '';
     processFiles(files);
   };
 
@@ -532,4 +534,3 @@ const VerifyTab: React.FC = () => {
 };
 
 export default VerifyTab;
-

@@ -29,4 +29,4 @@ def generate_rsa_keys(private_key_path, public_key_path, key_size=2048):
             encoding=serialization.Encoding.PEM,
             format=serialization.PublicFormat.SubjectPublicKeyInfo
         ))
-        print(f"✅ RSA keys generated: {private_key_path}, {public_key_path}")
+        print(f" RSA keys generated: {private_key_path}, {public_key_path}")

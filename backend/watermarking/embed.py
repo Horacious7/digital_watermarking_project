@@ -164,4 +164,4 @@ def embed_watermark(image_path: str, watermark_bits: str, output_path: str, bloc
     else:
         save_image(watermarked_blue, output_path)
 
-    print(f"✅ Watermark embedded (hybrid DWT+DCT, blue channel): {output_path}")
+    print(f" Watermark embedded (hybrid DWT+DCT, blue channel): {output_path}")
